@@ -1,0 +1,227 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color: #21242A;
+    background-color: #F8FAFC;
+    font-size: 16px;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    @apply bg-bg font-sans;
+    font-size: 1rem;
+    line-height: 1.5;
+    font-weight: 500;
+    color: #21242A;
+  }
+
+  p,
+  li,
+  label,
+  span,
+  td,
+  th,
+  button,
+  input,
+  textarea,
+  select {
+    color: inherit;
+    line-height: 1.5;
+    font-weight: 550;
+    font-size: 1rem;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #101923;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  h2 {
+    font-size: 1.7rem;
+  }
+
+  h3 {
+    font-size: 1.35rem;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+  }
+
+  h5 {
+    font-size: 1.05rem;
+  }
+
+  h6 {
+    font-size: 1rem;
+  }
+
+  strong,
+  b {
+    font-weight: 700;
+  }
+
+  .text-slate-300,
+  .text-slate-400,
+  .text-slate-500,
+  .text-slate-600,
+  .text-gray-400,
+  .text-gray-500,
+  .text-gray-600,
+  .text-zinc-400,
+  .text-zinc-500,
+  .text-zinc-600 {
+    color: #364152 !important;
+  }
+
+  .text-slate-200,
+  .text-slate-100,
+  .text-gray-300,
+  .text-zinc-300 {
+    color: #4B5563 !important;
+  }
+
+  .text-slate-700,
+  .text-slate-800,
+  .text-gray-700,
+  .text-zinc-700 {
+    color: #21242A !important;
+  }
+}
+
+/* Keep landing-page overflow usable without showing a scrollbar. */
+.landing-scroll-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.landing-scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Every top-level admin route uses the same available application window.
+   Intentional widths inside modals and nested forms remain untouched. */
+.admin-main > .mx-auto,
+.admin-main > main.mx-auto,
+.admin-main > div.mx-auto {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* The pinned list scrollbar is the primary bar; keep the duplicate native bar hidden. */
+.list-scroll-area {
+  scrollbar-width: none;
+}
+
+.list-scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+/* Keep dense admin lists readable on narrow screens; horizontal scrolling is
+   preferable to wrapping columns into an unreadable stack. */
+.list-scroll-area > table {
+  width: max-content;
+  min-width: 100%;
+  table-layout: auto;
+}
+
+.list-scroll-area > table.task-list-table {
+  width: max-content;
+  min-width: 720px;
+  table-layout: auto;
+}
+
+.list-scroll-area > table th,
+.list-scroll-area > table td {
+  white-space: nowrap;
+}
+
+.list-scroll-area > table.task-list-table th,
+.list-scroll-area > table.task-list-table td {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+@media (min-width: 1024px) {
+  .list-scroll-area > table.task-list-table {
+    width: 100%;
+    min-width: 100%;
+    table-layout: fixed;
+  }
+
+  .list-scroll-area > table.task-list-table th,
+  .list-scroll-area > table.task-list-table td {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .list-scroll-area > table th,
+  .list-scroll-area > table td {
+    padding: 0.55rem 0.65rem !important;
+    font-size: 0.68rem;
+  }
+
+  .list-scroll-area > table.task-list-table {
+    width: max-content;
+    min-width: 720px;
+    table-layout: auto;
+  }
+}
+
+@layer components {
+  .back-button {
+    display: none;
+  }
+
+  .task-list-table th,
+  .task-list-table td {
+    min-width: 0;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    overflow-wrap: anywhere;
+    border-right: 1px solid #e9edf2;
+  }
+
+  .task-list-table th:last-child,
+  .task-list-table td:last-child {
+    border-right: 0;
+  }
+
+  .task-list-table thead th {
+    background-color: #f8fafc;
+    line-height: 1.2;
+  }
+}
+@media (min-width: 768px) {
+  .sidebar-collapsed > main > .mx-auto {
+    margin-left: 0;
+    margin-right: auto;
+  }
+}

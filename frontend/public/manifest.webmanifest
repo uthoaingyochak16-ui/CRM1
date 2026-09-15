@@ -1,0 +1,26 @@
+{
+  "name": "Quantum Foundation CRM",
+  "short_name": "Quantum CRM",
+  "description": "Quantum Foundation event registration and client management software",
+  "start_url": "/admin",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "background_color": "#f8fafc",
+  "theme_color": "#2554c7",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/pwa-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

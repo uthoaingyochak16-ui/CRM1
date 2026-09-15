@@ -1,0 +1,100 @@
+# ---------------------------------------------------------------------------
+# Secrets and local environment configuration
+# Keep the documented example files, never commit real credentials.
+
+!.env.example
+
+# Demo-only configuration and tooling
+.env.demo
+.env.demo.*
+.env.public-demo
+docker-compose.public-demo.yml
+/backend/app/seed_demo.py
+/scripts/start-public-demo.sh
+/scripts/public-demo-status.sh
+/scripts/stop-public-demo.sh
+CLOUDFLARE_R2_BACKUP.md
+# Private keys and certificates
+*.pem
+*.key
+*.p12c
+*.pfx
+*.crt
+*.cer
+
+# ---------------------------------------------------------------------------
+# Python / FastAPI
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Local SQLite databases and runtime logs
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.log
+logs/
+
+# Runtime uploads: retain only the empty directory marker
+/backend/uploads/*
+!/backend/uploads/.gitkeep
+
+# ---------------------------------------------------------------------------
+# Node / React / Vite
+# ---------------------------------------------------------------------------
+node_modules/
+/frontend/dist/
+dist/
+.vite/
+coverage/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---------------------------------------------------------------------------
+# Database exports, archives and backups
+# ---------------------------------------------------------------------------
+*.dump
+*.sql
+*.bak
+*.backup
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+
+# ---------------------------------------------------------------------------
+# Docker/runtime generated files
+# ---------------------------------------------------------------------------
+docker-compose.override.yml
+get-docker.sh
+
+# ---------------------------------------------------------------------------
+# Editors, operating systems and temporary files
+# ---------------------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
+.cache/
+tmp/
+temp/
+*.md
+!README.md
