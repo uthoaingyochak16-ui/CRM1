@@ -27,6 +27,14 @@ function isDynamicSegment(seg) {
   return /^[0-9a-fA-F-]{8,}$/.test(seg) || /^\d+$/.test(seg);
 }
 
+function dynamicSegmentLabel(parentSegment, fallback) {
+  if (fallback) return fallback;
+  if (parentSegment === "projects") return "Event Details";
+  if (parentSegment === "customers") return "Guest Details";
+  if (parentSegment === "performance") return "Communicator Details";
+  return "Page Details";
+}
+
 /**
  * Breadcrumb / page-path bar.
  * Place ONCE in the shared admin layout (e.g. AdminApp.jsx), above <Routes>,
@@ -55,7 +63,11 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
     pathAcc += `/${seg}`;
     const isLast = i === rest.length - 1;
     if (isDynamicSegment(seg)) {
-      crumbs.push({ label: dynamicLabel || "Details", href: pathAcc, isLast });
+      crumbs.push({
+        label: dynamicSegmentLabel(rest[i - 1], dynamicLabel),
+        href: pathAcc,
+        isLast,
+      });
       return;
     }
     crumbs.push({ label: SEGMENT_LABELS[seg] || seg, href: pathAcc, isLast });
