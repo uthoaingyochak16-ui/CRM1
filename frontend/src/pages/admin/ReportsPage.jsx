@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createReport, getMyReports, getReportPrefill, listAllReports, listUsers } from "../../api/guest.js";
 import guest from "../../api/guest.js";
-import { useRealtimeRefresh } from "../../realtime/RealtimeContext.jsx";
+import { useRealtimeRefresh } from "../../realtime/realtimeHooks.js";
 import ListScrollArea from "../../components/ListScrollArea.jsx";
 import PeriodRangeFilter from "../../components/PeriodRangeFilter.jsx";
 import {
@@ -18,9 +18,9 @@ export default function ReportsPage({ currentUser, onLoggedOut }) {
     : <ExecutiveReports currentUser={currentUser} onLoggedOut={onLoggedOut} />;
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    EXECUTIVE VIEW
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function ExecutiveReports({ currentUser, onLoggedOut }) {
   const [view, setView] = useState("list"); // list | form | detail
   const [reports, setReports] = useState([]);
@@ -40,7 +40,7 @@ function ExecutiveReports({ currentUser, onLoggedOut }) {
       })
       .finally(() => { if (mounted) setLoading(false); });
     return () => { mounted = false; };
-  }, []);
+  }, [onLoggedOut]);
 
   useRealtimeRefresh(["reports", "report_feedbacks"], () => {
     getMyReports().then((r) => {
@@ -90,7 +90,7 @@ function ExecutiveReports({ currentUser, onLoggedOut }) {
                 <div className="mb-1 text-[10px] font-bold text-amber-700">Admin Feedback</div>
                 <div className="text-sm text-slate-700">{selected.admin_feedback}</div>
               </div>
-            : <div className="py-10 text-center text-sm text-slate-400">এখনো কোনো feedback নেই।</div>}
+            : <div className="py-10 text-center text-sm text-slate-400">à¦à¦–à¦¨à§‹ à¦•à§‹à¦¨à§‹ feedback à¦¨à§‡à¦‡à¥¤</div>}
         </div>
       )}
     </div>
@@ -101,30 +101,30 @@ function ExecutiveReports({ currentUser, onLoggedOut }) {
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="text-xl font-black text-slate-900"> Reports</h1>
-          <p className="mt-0.5 text-xs text-slate-500">জমা দেওয়া সব report এর তালিকা।</p>
+          <p className="mt-0.5 text-xs text-slate-500">à¦œà¦®à¦¾ à¦¦à§‡à¦“à¦¯à¦¼à¦¾ à¦¸à¦¬ report à¦à¦° à¦¤à¦¾à¦²à¦¿à¦•à¦¾à¥¤</p>
         </div>
         <div className="flex flex-wrap items-center justify-end gap-2">
           <PeriodRangeFilter onChange={setFilterRange} />
           <button onClick={() => setView("form")}
             className="flex items-center gap-1 rounded-full bg-indigo-600 px-4 py-2 text-xs font-bold text-white hover:bg-indigo-500">
-            <PlusIcon className="h-3.5 w-3.5" /> নতুন Report
+            <PlusIcon className="h-3.5 w-3.5" /> à¦¨à¦¤à§à¦¨ Report
           </button>
         </div>
       </div>
 
       {loading && (
         <div className="flex items-center justify-center gap-2 py-14 text-sm font-semibold text-slate-500">
-          <LoaderIcon className="h-4 w-4 animate-spin text-indigo-600" /> লোড হচ্ছে…
+          <LoaderIcon className="h-4 w-4 animate-spin text-indigo-600" /> à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦
         </div>
       )}
       {!loading && reports.length === 0 && (
         <div className="rounded-2xl border border-slate-200 bg-white py-16 text-center text-sm text-slate-400 shadow-sm">
-          কোনো report নেই। নতুন report জমা দিন।
+          à¦•à§‹à¦¨à§‹ report à¦¨à§‡à¦‡à¥¤ à¦¨à¦¤à§à¦¨ report à¦œà¦®à¦¾ à¦¦à¦¿à¦¨à¥¤
         </div>
       )}
       {!loading && reports.length > 0 && filteredReports.length === 0 && (
         <div className="rounded-2xl border border-slate-200 bg-white py-12 text-center text-sm text-slate-400 shadow-sm">
-          নির্বাচিত তারিখে কোনো report নেই।
+          à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¿à¦¤ à¦¤à¦¾à¦°à¦¿à¦–à§‡ à¦•à§‹à¦¨à§‹ report à¦¨à§‡à¦‡à¥¤
         </div>
       )}
 
@@ -143,9 +143,9 @@ function ExecutiveReports({ currentUser, onLoggedOut }) {
   );
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    ADMIN VIEW
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function AdminReports({ onLoggedOut }) {
   const [allReports, setAllReports] = useState([]);
   const [executives, setExecutives] = useState([]);
@@ -232,12 +232,12 @@ function AdminReports({ onLoggedOut }) {
             <div className="text-sm text-slate-700">{selected.admin_feedback}</div>
           </div>
         )}
-        <textarea rows={3} placeholder="Feedback লিখুন…" value={fbText}
+        <textarea rows={3} placeholder="Feedback à¦²à¦¿à¦–à§à¦¨â€¦" value={fbText}
           onChange={(e) => setFbText(e.target.value)}
           className="input mb-3 w-full resize-none" />
         <button onClick={handleFeedback} disabled={fbSaving || !fbText.trim()}
           className="rounded-full bg-indigo-600 px-6 py-2.5 text-xs font-bold text-white hover:bg-indigo-500 disabled:opacity-50">
-          {fbSaving ? "পাঠানো হচ্ছে…" : "Feedback পাঠান"}
+          {fbSaving ? "à¦ªà¦¾à¦ à¦¾à¦¨à§‹ à¦¹à¦šà§à¦›à§‡â€¦" : "Feedback à¦ªà¦¾à¦ à¦¾à¦¨"}
         </button>
       </div>
       <style>{`
@@ -251,7 +251,7 @@ function AdminReports({ onLoggedOut }) {
     <div className="w-full max-w-none px-2 py-6 sm:px-3">
       <div className="mb-5">
         <h1 className="text-xl font-black text-slate-900">Reports</h1>
-        <p className="mt-0.5 text-xs text-slate-500">সকল communicator এর submitted report।</p>
+        <p className="mt-0.5 text-xs text-slate-500">à¦¸à¦•à¦² communicator à¦à¦° submitted reportà¥¤</p>
       </div>
 
       {/* Filters */}
@@ -267,7 +267,7 @@ function AdminReports({ onLoggedOut }) {
 
       {/* Tabs */}
       <div className="mb-5 inline-flex w-full gap-1 rounded-full bg-slate-100 p-1 sm:w-auto">
-        {[["new", "নতুন"], ["seen", "দেখা হয়েছে"], ["feedback", "Feedback দেওয়া"]].map(([k, l]) => (
+        {[["new", "à¦¨à¦¤à§à¦¨"], ["seen", "à¦¦à§‡à¦–à¦¾ à¦¹à¦¯à¦¼à§‡à¦›à§‡"], ["feedback", "Feedback à¦¦à§‡à¦“à¦¯à¦¼à¦¾"]].map(([k, l]) => (
           <button key={k} onClick={() => setTab(k)}
             className={`flex flex-1 items-center justify-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition-all sm:flex-none ${tab === k ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}>
             {l}
@@ -278,11 +278,11 @@ function AdminReports({ onLoggedOut }) {
 
       {loading && (
         <div className="flex items-center justify-center gap-2 py-14 text-sm font-semibold text-slate-500">
-          <LoaderIcon className="h-4 w-4 animate-spin text-indigo-600" /> লোড হচ্ছে…
+          <LoaderIcon className="h-4 w-4 animate-spin text-indigo-600" /> à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦
         </div>
       )}
       {!loading && tabs[tab].length === 0 && (
-        <div className="rounded-2xl border border-slate-200 bg-white py-14 text-center text-sm text-slate-400 shadow-sm">কোনো report নেই।</div>
+        <div className="rounded-2xl border border-slate-200 bg-white py-14 text-center text-sm text-slate-400 shadow-sm">à¦•à§‹à¦¨à§‹ report à¦¨à§‡à¦‡à¥¤</div>
       )}
 
       {!loading && tabs[tab].length > 0 && (
@@ -304,15 +304,15 @@ function AdminReports({ onLoggedOut }) {
 function ReportTable({ reports, mode, seenIds = new Set(), onOpen }) {
   function statusFor(report) {
     if (report.admin_feedback) {
-      return { label: "Feedback দেওয়া", badge: "bg-emerald-100 text-emerald-800" };
+      return { label: "Feedback à¦¦à§‡à¦“à¦¯à¦¼à¦¾", badge: "bg-emerald-100 text-emerald-800" };
     }
     if (mode === "admin" && !seenIds.has(report.id)) {
-      return { label: "নতুন", badge: "bg-indigo-100 text-indigo-800" };
+      return { label: "à¦¨à¦¤à§à¦¨", badge: "bg-indigo-100 text-indigo-800" };
     }
     if (mode === "admin") {
-      return { label: "দেখা হয়েছে", badge: "bg-violet-100 text-violet-800" };
+      return { label: "à¦¦à§‡à¦–à¦¾ à¦¹à¦¯à¦¼à§‡à¦›à§‡", badge: "bg-violet-100 text-violet-800" };
     }
-    return { label: "Feedback অপেক্ষমাণ", badge: "bg-amber-100 text-amber-800" };
+    return { label: "Feedback à¦…à¦ªà§‡à¦•à§à¦·à¦®à¦¾à¦£", badge: "bg-amber-100 text-amber-800" };
   }
 
   return (
@@ -348,19 +348,19 @@ function ReportTable({ reports, mode, seenIds = new Set(), onOpen }) {
                     )}
                   </td>
                   <td className="px-4 py-3 text-xs font-semibold text-slate-700">
-                    {report.executive_name || "নিজের report"}
+                    {report.executive_name || "à¦¨à¦¿à¦œà§‡à¦° report"}
                   </td>
                   <td className="whitespace-nowrap px-4 py-3 text-xs text-slate-500">
-                    {report.report_date ? new Date(report.report_date).toLocaleDateString("en-GB") : "—"}
+                    {report.report_date ? new Date(report.report_date).toLocaleDateString("en-GB") : "â€”"}
                   </td>
-                  <td className="px-4 py-3 text-xs text-slate-500">{report.center || "—"}</td>
+                  <td className="px-4 py-3 text-xs text-slate-500">{report.center || "â€”"}</td>
                   <td className="px-4 py-3">
                     <span className={`inline-flex whitespace-nowrap rounded-full px-2.5 py-1 text-[10px] font-bold ${status.badge}`}>
                       {status.label}
                     </span>
                   </td>
                   <td className="whitespace-nowrap px-4 py-3 text-[11px] text-slate-500">
-                    {report.created_at ? new Date(report.created_at).toLocaleString("en-GB", { dateStyle: "short", timeStyle: "short" }) : "—"}
+                    {report.created_at ? new Date(report.created_at).toLocaleString("en-GB", { dateStyle: "short", timeStyle: "short" }) : "â€”"}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button
@@ -371,7 +371,7 @@ function ReportTable({ reports, mode, seenIds = new Set(), onOpen }) {
                       }}
                       className="rounded-full bg-indigo-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-indigo-500"
                     >
-                      Open →
+                      Open â†’
                     </button>
                   </td>
                 </tr>
@@ -384,37 +384,37 @@ function ReportTable({ reports, mode, seenIds = new Set(), onOpen }) {
   );
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    SHARED: Report Detail Card
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function ReportCard({ r }) {
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      {/* Header — flat single color, no gradient */}
+      {/* Header â€” flat single color, no gradient */}
       <div className="bg-indigo-600 px-6 py-5 text-white">
         <div className="text-center">
-          <div className="text-lg font-black tracking-wide">— সংযোগায়ন সারাংশ —</div>
+          <div className="text-lg font-black tracking-wide">â€” à¦¸à¦‚à¦¯à§‹à¦—à¦¾à¦¯à¦¼à¦¨ à¦¸à¦¾à¦°à¦¾à¦‚à¦¶ â€”</div>
           <div className="mt-0.5 text-xs text-indigo-100">Submitted Contact Report</div>
         </div>
         <div className="mt-3 flex justify-end">
           <div className="rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs text-indigo-50">
-            তারিখ: {r.report_date ? new Date(r.report_date).toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }) : "—"}
+            à¦¤à¦¾à¦°à¦¿à¦–: {r.report_date ? new Date(r.report_date).toLocaleDateString("bn-BD", { day: "numeric", month: "long", year: "numeric" }) : "â€”"}
           </div>
         </div>
       </div>
 
       <div className="space-y-4 p-5">
-        {/* Basic Info + Contact + Time — 3 col */}
+        {/* Basic Info + Contact + Time â€” 3 col */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {/* 1. Basic */}
           <CardSection icon={InfoIcon} title="1. Basic Information">
-            <InfoRow label="নাম" value={r.executive_name} />
-            <InfoRow label="পদবী" value={r.designation} />
-            <InfoRow label="মোবাইল" value={r.mobile} />
-            <InfoRow label="সেক্টর/শাখা/সেল" value={r.center} />
-            <InfoRow label="প্রোগ্রাম/উদ্দেশ্য" value={r.purpose} />
-            <InfoRow label="সুনির্দিষ্ট প্রোগ্রাম" value={r.specific_program} />
-            <InfoRow label="যাদের সাথে যোগাযোগ" value={r.contact_target} />
+            <InfoRow label="à¦¨à¦¾à¦®" value={r.executive_name} />
+            <InfoRow label="à¦ªà¦¦à¦¬à§€" value={r.designation} />
+            <InfoRow label="à¦®à§‹à¦¬à¦¾à¦‡à¦²" value={r.mobile} />
+            <InfoRow label="à¦¸à§‡à¦•à§à¦Ÿà¦°/à¦¶à¦¾à¦–à¦¾/à¦¸à§‡à¦²" value={r.center} />
+            <InfoRow label="à¦ªà§à¦°à§‹à¦—à§à¦°à¦¾à¦®/à¦‰à¦¦à§à¦¦à§‡à¦¶à§à¦¯" value={r.purpose} />
+            <InfoRow label="à¦¸à§à¦¨à¦¿à¦°à§à¦¦à¦¿à¦·à§à¦Ÿ à¦ªà§à¦°à§‹à¦—à§à¦°à¦¾à¦®" value={r.specific_program} />
+            <InfoRow label="à¦¯à¦¾à¦¦à§‡à¦° à¦¸à¦¾à¦¥à§‡ à¦¯à§‹à¦—à¦¾à¦¯à§‹à¦—" value={r.contact_target} />
           </CardSection>
 
           {/* 2. Contact */}
@@ -423,13 +423,13 @@ function ReportCard({ r }) {
           </CardSection>
 
           {/* 3. Time */}
-          <CardSection icon={HistoryIcon} title="৩. সংযোগায়নের সময়">
-            <InfoRow label="সময় ১" value={r.time1_start && r.time1_end ? `${r.time1_start} – ${r.time1_end}` : "—"} />
-            <InfoRow label="সময় ২" value={r.time2_start && r.time2_end ? `${r.time2_start} – ${r.time2_end}` : "—"} />
-            <InfoRow label="সময় ৩" value={r.time3_start && r.time3_end ? `${r.time3_start} – ${r.time3_end}` : "—"} />
-            <InfoRow label="মোট সময়" value={formatDuration(getTotalDuration([r.time1_start, r.time1_end], [r.time2_start, r.time2_end], [r.time3_start, r.time3_end]))} />
-            <InfoRow label="সংযোগায়নের আগে মেডিটেশন" value={r.meditation_before} />
-            <InfoRow label="সংযোগায়ন শেষে প্রার্থনা" value={r.prayer_after} />
+          <CardSection icon={HistoryIcon} title="à§©. à¦¸à¦‚à¦¯à§‹à¦—à¦¾à¦¯à¦¼à¦¨à§‡à¦° à¦¸à¦®à¦¯à¦¼">
+            <InfoRow label="à¦¸à¦®à¦¯à¦¼ à§§" value={r.time1_start && r.time1_end ? `${r.time1_start} â€“ ${r.time1_end}` : "â€”"} />
+            <InfoRow label="à¦¸à¦®à¦¯à¦¼ à§¨" value={r.time2_start && r.time2_end ? `${r.time2_start} â€“ ${r.time2_end}` : "â€”"} />
+            <InfoRow label="à¦¸à¦®à¦¯à¦¼ à§©" value={r.time3_start && r.time3_end ? `${r.time3_start} â€“ ${r.time3_end}` : "â€”"} />
+            <InfoRow label="à¦®à§‹à¦Ÿ à¦¸à¦®à¦¯à¦¼" value={formatDuration(getTotalDuration([r.time1_start, r.time1_end], [r.time2_start, r.time2_end], [r.time3_start, r.time3_end]))} />
+            <InfoRow label="à¦¸à¦‚à¦¯à§‹à¦—à¦¾à¦¯à¦¼à¦¨à§‡à¦° à¦†à¦—à§‡ à¦®à§‡à¦¡à¦¿à¦Ÿà§‡à¦¶à¦¨" value={r.meditation_before} />
+            <InfoRow label="à¦¸à¦‚à¦¯à§‹à¦—à¦¾à¦¯à¦¼à¦¨ à¦¶à§‡à¦·à§‡ à¦ªà§à¦°à¦¾à¦°à§à¦¥à¦¨à¦¾" value={r.prayer_after} />
           </CardSection>
         </div>
 
@@ -437,31 +437,31 @@ function ReportCard({ r }) {
         <CardSection icon={ClipboardIcon} title="4. C & A Summary">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div>
-              <p className="mb-1 border-b border-slate-100 pb-1 text-[10px] font-bold text-slate-600">আজকের সংযোগায়নের ইতিবাচক দিক</p>
-              <ul className="space-y-0.5">{(r.positives || "").split("\n").filter(Boolean).map((l, i) => <li key={i} className="flex gap-1 text-xs text-slate-500"><span>•</span>{l}</li>)}</ul>
+              <p className="mb-1 border-b border-slate-100 pb-1 text-[10px] font-bold text-slate-600">à¦†à¦œà¦•à§‡à¦° à¦¸à¦‚à¦¯à§‹à¦—à¦¾à¦¯à¦¼à¦¨à§‡à¦° à¦‡à¦¤à¦¿à¦¬à¦¾à¦šà¦• à¦¦à¦¿à¦•</p>
+              <ul className="space-y-0.5">{(r.positives || "").split("\n").filter(Boolean).map((l, i) => <li key={i} className="flex gap-1 text-xs text-slate-500"><span>â€¢</span>{l}</li>)}</ul>
             </div>
             <div>
-              <p className="mb-1 border-b border-slate-100 pb-1 text-[10px] font-bold text-slate-600">যেসব চ্যালেঞ্জ হয়েছে</p>
-              <ul className="space-y-0.5">{(r.challenges || "").split("\n").filter(Boolean).map((l, i) => <li key={i} className="flex gap-1 text-xs text-slate-500"><span>•</span>{l}</li>)}</ul>
+              <p className="mb-1 border-b border-slate-100 pb-1 text-[10px] font-bold text-slate-600">à¦¯à§‡à¦¸à¦¬ à¦šà§à¦¯à¦¾à¦²à§‡à¦žà§à¦œ à¦¹à¦¯à¦¼à§‡à¦›à§‡</p>
+              <ul className="space-y-0.5">{(r.challenges || "").split("\n").filter(Boolean).map((l, i) => <li key={i} className="flex gap-1 text-xs text-slate-500"><span>â€¢</span>{l}</li>)}</ul>
             </div>
             <div>
-              <p className="mb-1 border-b border-slate-100 pb-1 text-[10px] font-bold text-slate-600">আপনার পরামর্শ</p>
-              <ul className="space-y-0.5">{(r.suggestions || "").split("\n").filter(Boolean).map((l, i) => <li key={i} className="flex gap-1 text-xs text-slate-500"><span>•</span>{l}</li>)}</ul>
+              <p className="mb-1 border-b border-slate-100 pb-1 text-[10px] font-bold text-slate-600">à¦†à¦ªà¦¨à¦¾à¦° à¦ªà¦°à¦¾à¦®à¦°à§à¦¶</p>
+              <ul className="space-y-0.5">{(r.suggestions || "").split("\n").filter(Boolean).map((l, i) => <li key={i} className="flex gap-1 text-xs text-slate-500"><span>â€¢</span>{l}</li>)}</ul>
             </div>
           </div>
         </CardSection>
 
         <div className="text-right text-[10px] text-slate-400">
-          জমা দেওয়ার সময়: {r.created_at ? new Date(r.created_at).toLocaleString("bn-BD") : ""}
+          à¦œà¦®à¦¾ à¦¦à§‡à¦“à¦¯à¦¼à¦¾à¦° à¦¸à¦®à¦¯à¦¼: {r.created_at ? new Date(r.created_at).toLocaleString("bn-BD") : ""}
         </div>
       </div>
     </div>
   );
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    SUBMIT FORM
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function SubmitForm({ currentUser, onSuccess, onCancel, onLoggedOut }) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -480,8 +480,8 @@ function SubmitForm({ currentUser, onSuccess, onCancel, onLoggedOut }) {
   const [time2End, setTime2End] = useState("");
   const [time3Start, setTime3Start] = useState("");
   const [time3End, setTime3End] = useState("");
-  const [meditationBefore, setMeditationBefore] = useState("হ্যাঁ");
-  const [prayerAfter, setPrayerAfter] = useState("হ্যাঁ");
+  const [meditationBefore, setMeditationBefore] = useState("à¦¹à§à¦¯à¦¾à¦");
+  const [prayerAfter, setPrayerAfter] = useState("à¦¹à§à¦¯à¦¾à¦");
   const [positives, setPositives] = useState("");
   const [challenges, setChallenges] = useState("");
   const [suggestions, setSuggestions] = useState("");
@@ -515,7 +515,7 @@ function SubmitForm({ currentUser, onSuccess, onCancel, onLoggedOut }) {
     } catch (err) {
       const status = err.response?.status;
       const detail = err.response?.data?.detail;
-      setError(detail || "Report জমা দেওয়া যায়নি।");
+      setError(detail || "Report à¦œà¦®à¦¾ à¦¦à§‡à¦“à¦¯à¦¼à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
       if (status === 401 && typeof onLoggedOut === "function") onLoggedOut();
     }
     finally { setSubmitting(false); }
@@ -528,63 +528,63 @@ function SubmitForm({ currentUser, onSuccess, onCancel, onLoggedOut }) {
           <ArrowLeftIcon className="h-3.5 w-3.5" /> Back
         </button>
         <div className="pl-1">
-          <h1 className="text-xl font-black text-slate-900">নতুন Report জমা দিন</h1>
-          <p className="mt-0.5 text-xs text-slate-500">আপনার দৈনন্দিন কাজের সারসংক্ষেপ।</p>
+          <h1 className="text-xl font-black text-slate-900">à¦¨à¦¤à§à¦¨ Report à¦œà¦®à¦¾ à¦¦à¦¿à¦¨</h1>
+          <p className="mt-0.5 text-xs text-slate-500">à¦†à¦ªà¦¨à¦¾à¦° à¦¦à§ˆà¦¨à¦¨à§à¦¦à¦¿à¦¨ à¦•à¦¾à¦œà§‡à¦° à¦¸à¦¾à¦°à¦¸à¦‚à¦•à§à¦·à§‡à¦ªà¥¤</p>
         </div>
       </div>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Section title="মূল তথ্য">
+        <Section title="à¦®à§‚à¦² à¦¤à¦¥à§à¦¯">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <Field label="তারিখ"><input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="input w-full" /></Field>
-            <Field label="নাম"><input readOnly value={currentUser?.name || ""} className="input w-full bg-slate-50 text-slate-500" /></Field>
-            <Field label="পদবী"><input readOnly value={designation} className="input w-full bg-slate-100 text-slate-600" /></Field>
-            <Field label="মোবাইল"><input required readOnly value={mobile} className="input w-full bg-slate-100 text-slate-600" /></Field>
-            <Field label="সেন্টার/শাখা/সেল"><input value={center} onChange={(e) => setCenter(e.target.value)} placeholder="সেন্টার লিখুন" className="input w-full" /></Field>
-            <Field label="প্রোগ্রাম/উদ্দেশ্য"><input value={purpose} onChange={(e) => setPurpose(e.target.value)} placeholder="উদ্দেশ্য লিখুন" className="input w-full" /></Field>
-            <Field label="সুনির্দিষ্ট প্রোগ্রাম" className="sm:col-span-2 lg:col-span-3"><input value={specificProgram} onChange={(e) => setSpecificProgram(e.target.value)} placeholder="সুনির্দিষ্ট প্রোগ্রাম" className="input w-full" /></Field>
+            <Field label="à¦¤à¦¾à¦°à¦¿à¦–"><input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="input w-full" /></Field>
+            <Field label="à¦¨à¦¾à¦®"><input readOnly value={currentUser?.name || ""} className="input w-full bg-slate-50 text-slate-500" /></Field>
+            <Field label="à¦ªà¦¦à¦¬à§€"><input readOnly value={designation} className="input w-full bg-slate-100 text-slate-600" /></Field>
+            <Field label="à¦®à§‹à¦¬à¦¾à¦‡à¦²"><input required readOnly value={mobile} className="input w-full bg-slate-100 text-slate-600" /></Field>
+            <Field label="à¦¸à§‡à¦¨à§à¦Ÿà¦¾à¦°/à¦¶à¦¾à¦–à¦¾/à¦¸à§‡à¦²"><input value={center} onChange={(e) => setCenter(e.target.value)} placeholder="à¦¸à§‡à¦¨à§à¦Ÿà¦¾à¦° à¦²à¦¿à¦–à§à¦¨" className="input w-full" /></Field>
+            <Field label="à¦ªà§à¦°à§‹à¦—à§à¦°à¦¾à¦®/à¦‰à¦¦à§à¦¦à§‡à¦¶à§à¦¯"><input value={purpose} onChange={(e) => setPurpose(e.target.value)} placeholder="à¦‰à¦¦à§à¦¦à§‡à¦¶à§à¦¯ à¦²à¦¿à¦–à§à¦¨" className="input w-full" /></Field>
+            <Field label="à¦¸à§à¦¨à¦¿à¦°à§à¦¦à¦¿à¦·à§à¦Ÿ à¦ªà§à¦°à§‹à¦—à§à¦°à¦¾à¦®" className="sm:col-span-2 lg:col-span-3"><input value={specificProgram} onChange={(e) => setSpecificProgram(e.target.value)} placeholder="à¦¸à§à¦¨à¦¿à¦°à§à¦¦à¦¿à¦·à§à¦Ÿ à¦ªà§à¦°à§‹à¦—à§à¦°à¦¾à¦®" className="input w-full" /></Field>
           </div>
         </Section>
         <Section title="Contact Summary">
-          <Field label="যাদের সাথে যোগাযোগ করা হচ্ছে" className="mb-4 max-w-sm">
+          <Field label="à¦¯à¦¾à¦¦à§‡à¦° à¦¸à¦¾à¦¥à§‡ à¦¯à§‹à¦—à¦¾à¦¯à§‹à¦— à¦•à¦°à¦¾ à¦¹à¦šà§à¦›à§‡" className="mb-4 max-w-sm">
             <input value={contactTarget} onChange={(e) => setContactTarget(e.target.value)} className="input w-full" />
           </Field>
           <StageSummary stages={stageSummary} conversions={stageConversions} />
         </Section>
-        <Section title="সংযোগায়নের সময়">
+        <Section title="à¦¸à¦‚à¦¯à§‹à¦—à¦¾à¦¯à¦¼à¦¨à§‡à¦° à¦¸à¦®à¦¯à¦¼">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-3">
-              <TimeRow label="সময় ১" start={time1Start} end={time1End} onStart={setTime1Start} onEnd={setTime1End} />
-              <TimeRow label="সময় ২" start={time2Start} end={time2End} onStart={setTime2Start} onEnd={setTime2End} />
-              <TimeRow label="সময় ৩" start={time3Start} end={time3End} onStart={setTime3Start} onEnd={setTime3End} />
+              <TimeRow label="à¦¸à¦®à¦¯à¦¼ à§§" start={time1Start} end={time1End} onStart={setTime1Start} onEnd={setTime1End} />
+              <TimeRow label="à¦¸à¦®à¦¯à¦¼ à§¨" start={time2Start} end={time2End} onStart={setTime2Start} onEnd={setTime2End} />
+              <TimeRow label="à¦¸à¦®à¦¯à¦¼ à§©" start={time3Start} end={time3End} onStart={setTime3Start} onEnd={setTime3End} />
               <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <div className="text-[11px] font-semibold text-slate-600">মোট সংযোগ সময়</div>
+                <div className="text-[11px] font-semibold text-slate-600">à¦®à§‹à¦Ÿ à¦¸à¦‚à¦¯à§‹à¦— à¦¸à¦®à¦¯à¦¼</div>
                 <div className="mt-2 text-2xl font-black text-slate-900">
                   {formatDuration(getTotalDuration([time1Start, time1End], [time2Start, time2End], [time3Start, time3End]))}
                 </div>
               </div>
             </div>
             <div className="space-y-3">
-              <Field label="সংযোগায়নের আগে মেডিটেশন">
-                <select value={meditationBefore} onChange={(e) => setMeditationBefore(e.target.value)} className="input w-full"><option>হ্যাঁ</option><option>না</option></select>
+              <Field label="à¦¸à¦‚à¦¯à§‹à¦—à¦¾à¦¯à¦¼à¦¨à§‡à¦° à¦†à¦—à§‡ à¦®à§‡à¦¡à¦¿à¦Ÿà§‡à¦¶à¦¨">
+                <select value={meditationBefore} onChange={(e) => setMeditationBefore(e.target.value)} className="input w-full"><option>à¦¹à§à¦¯à¦¾à¦</option><option>à¦¨à¦¾</option></select>
               </Field>
-              <Field label="সংযোগায়ন শেষে প্রার্থনা">
-                <select value={prayerAfter} onChange={(e) => setPrayerAfter(e.target.value)} className="input w-full"><option>হ্যাঁ</option><option>না</option></select>
+              <Field label="à¦¸à¦‚à¦¯à§‹à¦—à¦¾à¦¯à¦¼à¦¨ à¦¶à§‡à¦·à§‡ à¦ªà§à¦°à¦¾à¦°à§à¦¥à¦¨à¦¾">
+                <select value={prayerAfter} onChange={(e) => setPrayerAfter(e.target.value)} className="input w-full"><option>à¦¹à§à¦¯à¦¾à¦</option><option>à¦¨à¦¾</option></select>
               </Field>
             </div>
           </div>
         </Section>
         <Section title="C & A Summary">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <Field label="আজকের ইতিবাচক দিক"><textarea rows={3} value={positives} onChange={(e) => setPositives(e.target.value)} placeholder="ইতিবাচক দিকগুলো লিখুন..." className="input w-full resize-none" /></Field>
-            <Field label="যেসব চ্যালেঞ্জ হয়েছে"><textarea rows={3} value={challenges} onChange={(e) => setChallenges(e.target.value)} placeholder="চ্যালেঞ্জগুলো লিখুন..." className="input w-full resize-none" /></Field>
-            <Field label="আপনার পরামর্শ"><textarea rows={3} value={suggestions} onChange={(e) => setSuggestions(e.target.value)} placeholder="পরামর্শ লিখুন..." className="input w-full resize-none" /></Field>
+            <Field label="à¦†à¦œà¦•à§‡à¦° à¦‡à¦¤à¦¿à¦¬à¦¾à¦šà¦• à¦¦à¦¿à¦•"><textarea rows={3} value={positives} onChange={(e) => setPositives(e.target.value)} placeholder="à¦‡à¦¤à¦¿à¦¬à¦¾à¦šà¦• à¦¦à¦¿à¦•à¦—à§à¦²à§‹ à¦²à¦¿à¦–à§à¦¨..." className="input w-full resize-none" /></Field>
+            <Field label="à¦¯à§‡à¦¸à¦¬ à¦šà§à¦¯à¦¾à¦²à§‡à¦žà§à¦œ à¦¹à¦¯à¦¼à§‡à¦›à§‡"><textarea rows={3} value={challenges} onChange={(e) => setChallenges(e.target.value)} placeholder="à¦šà§à¦¯à¦¾à¦²à§‡à¦žà§à¦œà¦—à§à¦²à§‹ à¦²à¦¿à¦–à§à¦¨..." className="input w-full resize-none" /></Field>
+            <Field label="à¦†à¦ªà¦¨à¦¾à¦° à¦ªà¦°à¦¾à¦®à¦°à§à¦¶"><textarea rows={3} value={suggestions} onChange={(e) => setSuggestions(e.target.value)} placeholder="à¦ªà¦°à¦¾à¦®à¦°à§à¦¶ à¦²à¦¿à¦–à§à¦¨..." className="input w-full resize-none" /></Field>
           </div>
         </Section>
         {error && <div className="rounded-xl bg-rose-50 px-4 py-3 text-xs text-rose-600">{error}</div>}
         <div className="flex justify-end gap-3 pt-2">
           <button type="button" onClick={onCancel} className="rounded-full border border-slate-200 px-6 py-2.5 text-sm font-semibold text-slate-600">Cancel</button>
           <button type="submit" disabled={submitting} className="rounded-full bg-indigo-600 px-8 py-2.5 text-sm font-bold text-white hover:bg-indigo-500 disabled:opacity-60">
-            {submitting ? "জমা হচ্ছে..." : "জমা দিন"}
+            {submitting ? "à¦œà¦®à¦¾ à¦¹à¦šà§à¦›à§‡..." : "à¦œà¦®à¦¾ à¦¦à¦¿à¦¨"}
           </button>
         </div>
       </form>
@@ -596,7 +596,7 @@ function SubmitForm({ currentUser, onSuccess, onCancel, onLoggedOut }) {
   );
 }
 
-/* ── Small Helpers ── */
+/* â”€â”€ Small Helpers â”€â”€ */
 function Section({ title, children }) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -614,7 +614,7 @@ function StageSummary({ stages = [], conversions = [] }) {
           <div className="grid grid-cols-2 gap-2">
             {stages.map((item) => <ContactRow key={item.stage} label={item.stage} value={item.count} />)}
           </div>
-        ) : <p className="text-xs text-slate-400">এই তারিখে কোনো completed stage নেই।</p>}
+        ) : <p className="text-xs text-slate-400">à¦à¦‡ à¦¤à¦¾à¦°à¦¿à¦–à§‡ à¦•à§‹à¦¨à§‹ completed stage à¦¨à§‡à¦‡à¥¤</p>}
       </div>
       <div>
         <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-slate-500">Stage conversion</p>
@@ -622,12 +622,12 @@ function StageSummary({ stages = [], conversions = [] }) {
           <div className="space-y-1.5">
             {conversions.map((item) => (
               <div key={`${item.from_stage}-${item.to_stage}`} className="flex items-center justify-between rounded-lg bg-indigo-50 px-3 py-2 text-xs">
-                <span className="font-semibold text-slate-700">{item.from_stage} → {item.to_stage}</span>
+                <span className="font-semibold text-slate-700">{item.from_stage} â†’ {item.to_stage}</span>
                 <span className="font-black text-indigo-700">{item.count}</span>
               </div>
             ))}
           </div>
-        ) : <p className="text-xs text-slate-400">এই তারিখে কোনো stage conversion নেই।</p>}
+        ) : <p className="text-xs text-slate-400">à¦à¦‡ à¦¤à¦¾à¦°à¦¿à¦–à§‡ à¦•à§‹à¦¨à§‹ stage conversion à¦¨à§‡à¦‡à¥¤</p>}
       </div>
     </div>
   );
@@ -645,7 +645,7 @@ function TimeRow({ label, start, end, onStart, onEnd }) {
     <div className="flex items-center gap-2">
       <span className="w-16 flex-shrink-0 text-xs font-semibold text-slate-500">{label}</span>
       <input type="time" value={start} onChange={(e) => onStart(e.target.value)} className="input flex-1" />
-      <span className="text-xs text-slate-400">–</span>
+      <span className="text-xs text-slate-400">â€“</span>
       <input type="time" value={end} onChange={(e) => onEnd(e.target.value)} className="input flex-1" />
     </div>
   );
@@ -664,12 +664,12 @@ function getTotalDuration(...pairs) {
   }, 0);
 }
 function formatDuration(minutes) {
-  if (!minutes) return "—";
+  if (!minutes) return "â€”";
   const hrs = Math.floor(minutes / 60);
   const mins = minutes % 60;
   return `${hrs > 0 ? `${hrs}h ` : ""}${mins}m`.trim();
 }
-function CountCard({ label, value, onChange }) {
+function _CountCard({ label, value, onChange }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
       <label className="mb-2 block text-xs font-semibold text-slate-700">{label}</label>
@@ -693,7 +693,7 @@ function InfoRow({ label, value }) {
   return (
     <div className="flex gap-2 py-0.5">
       <span className="w-28 flex-shrink-0 text-[10px] text-slate-400">{label}</span>
-      <span className="text-[11px] font-semibold text-slate-700">{value || "—"}</span>
+      <span className="text-[11px] font-semibold text-slate-700">{value || "â€”"}</span>
     </div>
   );
 }

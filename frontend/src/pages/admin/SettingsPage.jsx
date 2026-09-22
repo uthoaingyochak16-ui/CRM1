@@ -13,7 +13,7 @@ import {
 } from "../../api/guest.js";
 import { useAutosave } from "../../hooks/useAutosave.js";
 import { consumeReloadState, reloadPage } from "../../utils/reload.js";
-import { useRealtimeRefresh } from "../../realtime/RealtimeContext.jsx";
+import { useRealtimeRefresh } from "../../realtime/realtimeHooks.js";
 import PasswordInput from "../../components/PasswordInput.jsx";
 
 const CALL_FIELDS = [
@@ -40,12 +40,12 @@ const WHATSAPP_FIELDS = [
 ];
 
 const SETTINGS_OPTIONS = [
-  { id: "password", title: "My Account & Profile", desc: "Profile data, photo এবং password update করুন", icon: "👤", adminOnly: false },
-  { id: "login-appearance", title: "Login Page Image", desc: "Login card-এর image পরিবর্তন করুন", icon: "🖼️", superAdminOnly: true },
-  { id: "call", title: "Direct Call & Zoiper Setup", desc: "Zoiper, system dialer অথবা custom SIP/softphone configure করুন", icon: "📞", adminOnly: true },
-  { id: "email", title: "Email Configuration", desc: "SMTP Host, Port, User, Password setup", icon: "✉️", adminOnly: true },
-  { id: "whatsapp", title: "WhatsApp Configuration", desc: "API Key, Instance ID, Webhook setup", icon: "💬", adminOnly: true },
-  { id: "ai", title: "AI Setup", desc: "AI widget enable/disable এবং AI access permission setup", icon: "✨", adminOnly: true },
+  { id: "password", title: "My Account & Profile", desc: "Profile data, photo à¦à¦¬à¦‚ password update à¦•à¦°à§à¦¨", icon: "ðŸ‘¤", adminOnly: false },
+  { id: "login-appearance", title: "Login Page Image", desc: "Login card-à¦à¦° image à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¨ à¦•à¦°à§à¦¨", icon: "ðŸ–¼ï¸", superAdminOnly: true },
+  { id: "call", title: "Direct Call & Zoiper Setup", desc: "Zoiper, system dialer à¦…à¦¥à¦¬à¦¾ custom SIP/softphone configure à¦•à¦°à§à¦¨", icon: "ðŸ“ž", adminOnly: true },
+  { id: "email", title: "Email Configuration", desc: "SMTP Host, Port, User, Password setup", icon: "âœ‰ï¸", adminOnly: true },
+  { id: "whatsapp", title: "WhatsApp Configuration", desc: "API Key, Instance ID, Webhook setup", icon: "ðŸ’¬", adminOnly: true },
+  { id: "ai", title: "AI Setup", desc: "AI widget enable/disable à¦à¦¬à¦‚ AI access permission setup", icon: "âœ¨", adminOnly: true },
 ];
 
 const AI_SETTING_DEFS = [
@@ -116,7 +116,7 @@ export default function SettingsPage({ currentUser, onLoggedOut }) {
         <main className="mx-auto max-w-3xl px-3 py-3">
           <div className="mb-6">
             <h1 className="font-display text-xl font-black text-[#101828]">Settings</h1>
-            <p className="mt-1 text-xs text-[#667085]">Account এবং system settings manage করুন।</p>
+            <p className="mt-1 text-xs text-[#667085]">Account à¦à¦¬à¦‚ system settings manage à¦•à¦°à§à¦¨à¥¤</p>
           </div>
 
           <div className="flex flex-col gap-2.5">
@@ -131,7 +131,7 @@ export default function SettingsPage({ currentUser, onLoggedOut }) {
                   <div className="text-sm font-bold text-[#101828]">{o.title}</div>
                   <div className="text-xs text-[#667085]">{o.desc}</div>
                 </div>
-                <span className="text-[#98A2B3]">→</span>
+                <span className="text-[#98A2B3]">â†’</span>
               </button>
             ))}
           </div>
@@ -145,7 +145,7 @@ function LoginAppearanceSection({ onBack, onLoggedOut }) {
   const [preview, setPreview] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [panelTitle, setPanelTitle] = useState("Manage everything from one secure dashboard.");
-  const [panelSubtitle, setPanelSubtitle] = useState("Registrations, records, and reports — all in one panel.");
+  const [panelSubtitle, setPanelSubtitle] = useState("Registrations, records, and reports â€” all in one panel.");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState(null);
 
@@ -156,7 +156,7 @@ function LoginAppearanceSection({ onBack, onLoggedOut }) {
         setPreview(value && !value.startsWith("http") ? `${API_BASE}${value}` : value);
         setImageUrl(value.startsWith("http") ? value : "");
         setPanelTitle(response.data.find((item) => item.key === "login_panel_title")?.value || "Manage everything from one secure dashboard.");
-        setPanelSubtitle(response.data.find((item) => item.key === "login_panel_subtitle")?.value || "Registrations, records, and reports — all in one panel.");
+        setPanelSubtitle(response.data.find((item) => item.key === "login_panel_subtitle")?.value || "Registrations, records, and reports â€” all in one panel.");
       })
       .catch((error) => {
         if (error.response?.status === 401 && onLoggedOut) onLoggedOut();
@@ -167,7 +167,7 @@ function LoginAppearanceSection({ onBack, onLoggedOut }) {
     const nextFile = event.target.files?.[0];
     if (!nextFile) return;
     if (nextFile.size > 8 * 1024 * 1024) {
-      setMessage({ type: "error", text: "Login image সর্বোচ্চ 8 MB হতে পারবে।" });
+      setMessage({ type: "error", text: "Login image à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š 8 MB à¦¹à¦¤à§‡ à¦ªà¦¾à¦°à¦¬à§‡à¥¤" });
       return;
     }
     setFile(nextFile);
@@ -178,7 +178,7 @@ function LoginAppearanceSection({ onBack, onLoggedOut }) {
   async function handleUpload(event) {
     event.preventDefault();
     if (!file) {
-      setMessage({ type: "error", text: "প্রথমে একটি image নির্বাচন করুন।" });
+      setMessage({ type: "error", text: "à¦ªà§à¦°à¦¥à¦®à§‡ à¦à¦•à¦Ÿà¦¿ image à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à§à¦¨à¥¤" });
       return;
     }
     setBusy(true);
@@ -189,13 +189,13 @@ function LoginAppearanceSection({ onBack, onLoggedOut }) {
       setPreview(value.startsWith("http") ? value : `${API_BASE}${value}`);
       setImageUrl("");
       setFile(null);
-      setMessage({ type: "success", text: "✓ Login page image পরিবর্তন হয়েছে।" });
+      setMessage({ type: "success", text: "âœ“ Login page image à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¨ à¦¹à¦¯à¦¼à§‡à¦›à§‡à¥¤" });
     } catch (error) {
       if (error.response?.status === 401 && onLoggedOut) {
         onLoggedOut();
         return;
       }
-      setMessage({ type: "error", text: error.response?.data?.detail || "Image upload করা যায়নি।" });
+      setMessage({ type: "error", text: error.response?.data?.detail || "Image upload à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤" });
     } finally {
       setBusy(false);
     }
@@ -204,7 +204,7 @@ function LoginAppearanceSection({ onBack, onLoggedOut }) {
   async function handleUrlSave() {
     const value = imageUrl.trim();
     if (!/^https?:\/\//i.test(value)) {
-      setMessage({ type: "error", text: "সঠিক http:// অথবা https:// image URL দিন।" });
+      setMessage({ type: "error", text: "à¦¸à¦ à¦¿à¦• http:// à¦…à¦¥à¦¬à¦¾ https:// image URL à¦¦à¦¿à¦¨à¥¤" });
       return;
     }
     setBusy(true);
@@ -213,13 +213,13 @@ function LoginAppearanceSection({ onBack, onLoggedOut }) {
       const response = await saveLoginImageUrl(value);
       setPreview(response.data.panel_image_url);
       setFile(null);
-      setMessage({ type: "success", text: "✓ Login image URL save হয়েছে।" });
+      setMessage({ type: "success", text: "âœ“ Login image URL save à¦¹à¦¯à¦¼à§‡à¦›à§‡à¥¤" });
     } catch (error) {
       if (error.response?.status === 401 && onLoggedOut) {
         onLoggedOut();
         return;
       }
-      setMessage({ type: "error", text: error.response?.data?.detail || "Image URL save করা যায়নি।" });
+      setMessage({ type: "error", text: error.response?.data?.detail || "Image URL save à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤" });
     } finally {
       setBusy(false);
     }
@@ -227,7 +227,7 @@ function LoginAppearanceSection({ onBack, onLoggedOut }) {
 
   async function handleTextSave() {
     if (!panelTitle.trim()) {
-      setMessage({ type: "error", text: "Login card title খালি রাখা যাবে না।" });
+      setMessage({ type: "error", text: "Login card title à¦–à¦¾à¦²à¦¿ à¦°à¦¾à¦–à¦¾ à¦¯à¦¾à¦¬à§‡ à¦¨à¦¾à¥¤" });
       return;
     }
     setBusy(true);
@@ -236,13 +236,13 @@ function LoginAppearanceSection({ onBack, onLoggedOut }) {
       const response = await saveLoginPanelText(panelTitle.trim(), panelSubtitle.trim());
       setPanelTitle(response.data.panel_title);
       setPanelSubtitle(response.data.panel_subtitle);
-      setMessage({ type: "success", text: "✓ Login card text পরিবর্তন হয়েছে।" });
+      setMessage({ type: "success", text: "âœ“ Login card text à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¨ à¦¹à¦¯à¦¼à§‡à¦›à§‡à¥¤" });
     } catch (error) {
       if (error.response?.status === 401 && onLoggedOut) {
         onLoggedOut();
         return;
       }
-      setMessage({ type: "error", text: error.response?.data?.detail || "Login card text save করা যায়নি।" });
+      setMessage({ type: "error", text: error.response?.data?.detail || "Login card text save à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤" });
     } finally {
       setBusy(false);
     }
@@ -250,17 +250,17 @@ function LoginAppearanceSection({ onBack, onLoggedOut }) {
 
   return (
     <main className="mx-auto max-w-3xl px-3 py-3">
-      <button onClick={onBack} className="back-button mb-4">← Back to Settings</button>
+      <button onClick={onBack} className="back-button mb-4">â† Back to Settings</button>
       <section className="rounded-xl border border-[#E4E7EC] bg-white p-5">
         <h2 className="text-base font-bold text-[#101828]">Login Page Image</h2>
-        <p className="mt-1 text-xs text-[#667085]">এই image login card-এর image panel-এ সব account-এর জন্য দেখাবে।</p>
+        <p className="mt-1 text-xs text-[#667085]">à¦à¦‡ image login card-à¦à¦° image panel-à¦ à¦¸à¦¬ account-à¦à¦° à¦œà¦¨à§à¦¯ à¦¦à§‡à¦–à¦¾à¦¬à§‡à¥¤</p>
 
         <form onSubmit={handleUpload} className="mt-5 max-w-md">
           <div className="flex aspect-[4/5] w-full items-center justify-center overflow-hidden rounded-xl border border-[#E4E7EC] bg-white sm:aspect-[16/10]">
             {preview ? (
               <img src={preview} alt="Login page preview" className="h-full w-full object-contain" />
             ) : (
-              <span className="text-xs text-[#98A2B3]">Current image preview নেই</span>
+              <span className="text-xs text-[#98A2B3]">Current image preview à¦¨à§‡à¦‡</span>
             )}
           </div>
 
@@ -273,10 +273,10 @@ function LoginAppearanceSection({ onBack, onLoggedOut }) {
               {busy ? "Uploading..." : "Save Login Image"}
             </button>
           </div>
-          <p className="mt-2 text-[11px] text-[#667085]">JPG, PNG বা WEBP · সর্বোচ্চ 8 MB</p>
+          <p className="mt-2 text-[11px] text-[#667085]">JPG, PNG à¦¬à¦¾ WEBP Â· à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š 8 MB</p>
 
           <div className="my-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-wide text-[#98A2B3]">
-            <span className="h-px flex-1 bg-[#E4E7EC]" /> অথবা URL ব্যবহার করুন <span className="h-px flex-1 bg-[#E4E7EC]" />
+            <span className="h-px flex-1 bg-[#E4E7EC]" /> à¦…à¦¥à¦¬à¦¾ URL à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦° à¦•à¦°à§à¦¨ <span className="h-px flex-1 bg-[#E4E7EC]" />
           </div>
 
           <label className="block">
@@ -303,7 +303,7 @@ function LoginAppearanceSection({ onBack, onLoggedOut }) {
           <div className="space-y-3">
             <div>
               <h3 className="text-sm font-bold text-[#101828]">Image Card Text</h3>
-              <p className="mt-1 text-[11px] text-[#667085]">Image-এর উপরে দেখানো title এবং subtitle পরিবর্তন করুন।</p>
+              <p className="mt-1 text-[11px] text-[#667085]">Image-à¦à¦° à¦‰à¦ªà¦°à§‡ à¦¦à§‡à¦–à¦¾à¦¨à§‹ title à¦à¦¬à¦‚ subtitle à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¨ à¦•à¦°à§à¦¨à¥¤</p>
             </div>
             <label className="block">
               <span className="mb-1.5 block text-[11px] font-bold uppercase tracking-wide text-[#667085]">Title</span>
@@ -370,7 +370,7 @@ function AISetupSection({ onBack, onLoggedOut }) {
           if (onLoggedOut) onLoggedOut();
           return;
         }
-        setError("AI settings লোড করা যায়নি।");
+        setError("AI settings à¦²à§‹à¦¡ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
       })
       .finally(() => setLoading(false));
   }, [onLoggedOut]);
@@ -402,7 +402,7 @@ function AISetupSection({ onBack, onLoggedOut }) {
         if (onLoggedOut) onLoggedOut();
         return;
       }
-      setError(requestError.response?.data?.detail || "AI settings save করা যায়নি।");
+      setError(requestError.response?.data?.detail || "AI settings save à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
     } finally {
       setSaving(false);
     }
@@ -411,26 +411,26 @@ function AISetupSection({ onBack, onLoggedOut }) {
   return (
     <main className="mx-auto max-w-3xl px-3 py-3">
       <button onClick={onBack} className="back-button mb-4">
-        ← Back to Settings
+        â† Back to Settings
       </button>
 
       <section className="rounded-xl border border-[#E4E7EC] bg-white p-5">
         <h2 className="text-sm font-bold text-[#101828]">AI Setup</h2>
-        <p className="mt-1 text-[12px] text-[#667085]">AI chat widget system-wide on/off করুন, তারপর AI কোন কোন data area use করতে পারবে সেটার permission দিন।</p>
+        <p className="mt-1 text-[12px] text-[#667085]">AI chat widget system-wide on/off à¦•à¦°à§à¦¨, à¦¤à¦¾à¦°à¦ªà¦° AI à¦•à§‹à¦¨ à¦•à§‹à¦¨ data area use à¦•à¦°à¦¤à§‡ à¦ªà¦¾à¦°à¦¬à§‡ à¦¸à§‡à¦Ÿà¦¾à¦° permission à¦¦à¦¿à¦¨à¥¤</p>
 
         {loading ? (
-          <div className="py-6 text-center text-xs text-[#98A2B3]">লোড হচ্ছে…</div>
+          <div className="py-6 text-center text-xs text-[#98A2B3]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>
         ) : (
           <div className="mt-5 space-y-4">
             <div className="rounded-xl border border-[#B2CCFF] bg-[#EEF4FF] p-4">
-              <div className="text-sm font-bold text-[#1849A9]">AI Widget সবার জন্য Available</div>
-              <div className="mt-1 text-xs text-[#2554C7]">সব active Admin ও Communicator নিজ account থেকে AI widget এবং provider settings ব্যবহার করতে পারবেন।</div>
+              <div className="text-sm font-bold text-[#1849A9]">AI Widget à¦¸à¦¬à¦¾à¦° à¦œà¦¨à§à¦¯ Available</div>
+              <div className="mt-1 text-xs text-[#2554C7]">à¦¸à¦¬ active Admin à¦“ Communicator à¦¨à¦¿à¦œ account à¦¥à§‡à¦•à§‡ AI widget à¦à¦¬à¦‚ provider settings à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦° à¦•à¦°à¦¤à§‡ à¦ªà¦¾à¦°à¦¬à§‡à¦¨à¥¤</div>
             </div>
 
             <div className={`rounded-xl border p-4 ${widgetEnabled ? "border-[#E4E7EC] bg-white" : "border-[#E4E7EC] bg-[#F9FAFB] opacity-60"}`}>
               <div className="mb-3">
                 <div className="text-sm font-bold text-[#101828]">AI Permission Settings</div>
-                <div className="mt-1 text-xs text-[#667085]">AI widget enable থাকলে নিচের resource access গুলো কার্যকর হবে।</div>
+                <div className="mt-1 text-xs text-[#667085]">AI widget enable à¦¥à¦¾à¦•à¦²à§‡ à¦¨à¦¿à¦šà§‡à¦° resource access à¦—à§à¦²à§‹ à¦•à¦¾à¦°à§à¦¯à¦•à¦° à¦¹à¦¬à§‡à¥¤</div>
               </div>
 
               <div className="grid gap-3 sm:grid-cols-2">
@@ -465,11 +465,11 @@ function AISetupSection({ onBack, onLoggedOut }) {
               >
                 {saving ? "Saving..." : "Save AI Setup"}
               </button>
-              {saved && !saving && <span className="text-xs font-semibold text-[#027A48]">✓ Saved</span>}
+              {saved && !saving && <span className="text-xs font-semibold text-[#027A48]">âœ“ Saved</span>}
             </div>
 
             <div className="rounded-xl border border-dashed border-[#D0D5DD] bg-[#FAFBFD] px-4 py-3 text-xs text-[#667085]">
-              User-specific AI chat widget access `Users & Access Control` section থেকে manage করবেন।
+              User-specific AI chat widget access `Users & Access Control` section à¦¥à§‡à¦•à§‡ manage à¦•à¦°à¦¬à§‡à¦¨à¥¤
             </div>
           </div>
         )}
@@ -509,7 +509,7 @@ function MyAccountSection({ onBack, currentUser }) {
     const file = event.target.files?.[0];
     if (!file) return;
     if (file.size > 5 * 1024 * 1024) {
-      setProfileMessage({ type: "error", text: "Profile image সর্বোচ্চ 5 MB হতে পারবে।" });
+      setProfileMessage({ type: "error", text: "Profile image à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š 5 MB à¦¹à¦¤à§‡ à¦ªà¦¾à¦°à¦¬à§‡à¥¤" });
       return;
     }
     setImageFile(file);
@@ -534,9 +534,9 @@ function MyAccountSection({ onBack, currentUser }) {
           ? `${response.data.profile_image_url.startsWith("http") ? "" : API_BASE}${response.data.profile_image_url}`
           : ""
       );
-      setProfileMessage({ type: "success", text: "✓ Profile সফলভাবে update হয়েছে।" });
+      setProfileMessage({ type: "success", text: "âœ“ Profile à¦¸à¦«à¦²à¦­à¦¾à¦¬à§‡ update à¦¹à¦¯à¦¼à§‡à¦›à§‡à¥¤" });
     } catch (requestError) {
-      setProfileMessage({ type: "error", text: requestError.response?.data?.detail || "Profile update করা যায়নি।" });
+      setProfileMessage({ type: "error", text: requestError.response?.data?.detail || "Profile update à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤" });
     } finally {
       setProfileBusy(false);
     }
@@ -547,15 +547,15 @@ function MyAccountSection({ onBack, currentUser }) {
     setMessage(null);
 
     if (!currentPassword) {
-      setMessage({ type: "error", text: "Current password লিখুন।" });
+      setMessage({ type: "error", text: "Current password à¦²à¦¿à¦–à§à¦¨à¥¤" });
       return;
     }
     if (newPassword.length < 10 || !/[A-Za-z]/.test(newPassword) || !/\d/.test(newPassword)) {
-      setMessage({ type: "error", text: "নতুন password কমপক্ষে ১০ অক্ষরের হতে হবে।" });
+      setMessage({ type: "error", text: "à¦¨à¦¤à§à¦¨ password à¦•à¦®à¦ªà¦•à§à¦·à§‡ à§§à§¦ à¦…à¦•à§à¦·à¦°à§‡à¦° à¦¹à¦¤à§‡ à¦¹à¦¬à§‡à¥¤" });
       return;
     }
     if (newPassword !== confirmPassword) {
-      setMessage({ type: "error", text: "New password এবং confirm password মিলছে না।" });
+      setMessage({ type: "error", text: "New password à¦à¦¬à¦‚ confirm password à¦®à¦¿à¦²à¦›à§‡ à¦¨à¦¾à¥¤" });
       return;
     }
 
@@ -565,9 +565,9 @@ function MyAccountSection({ onBack, currentUser }) {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-      setMessage({ type: "success", text: "✓ Password পরিবর্তন হয়েছে।" });
+      setMessage({ type: "success", text: "âœ“ Password à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¨ à¦¹à¦¯à¦¼à§‡à¦›à§‡à¥¤" });
     } catch (requestError) {
-      setMessage({ type: "error", text: requestError.response?.data?.detail || "Password পরিবর্তন করা যায়নি।" });
+      setMessage({ type: "error", text: requestError.response?.data?.detail || "Password à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¨ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤" });
     } finally {
       setBusy(false);
     }
@@ -576,12 +576,12 @@ function MyAccountSection({ onBack, currentUser }) {
   return (
     <main className="mx-auto max-w-3xl px-3 py-3">
       <button onClick={onBack} className="back-button mb-4">
-        ← Back to Settings
+        â† Back to Settings
       </button>
 
       <section className="mb-4 rounded-xl border border-[#E4E7EC] bg-white p-5">
         <h2 className="text-base font-bold text-[#101828]">My Account Profile</h2>
-        <p className="mb-5 mt-1 text-[12px] text-[#667085]">নিজের account information ও profile image পরিবর্তন করুন।</p>
+        <p className="mb-5 mt-1 text-[12px] text-[#667085]">à¦¨à¦¿à¦œà§‡à¦° account information à¦“ profile image à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¨ à¦•à¦°à§à¦¨à¥¤</p>
 
         <form onSubmit={handleProfileSubmit}>
           <div className="mb-5 flex flex-wrap items-center gap-4 rounded-xl bg-[#F8FAFC] p-4">
@@ -597,7 +597,7 @@ function MyAccountSection({ onBack, currentUser }) {
                 Choose Profile Image
                 <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" onChange={handleImageChange} />
               </label>
-              <div className="mt-1.5 text-[11px] text-[#667085]">JPG, PNG, WEBP বা GIF · সর্বোচ্চ 5 MB</div>
+              <div className="mt-1.5 text-[11px] text-[#667085]">JPG, PNG, WEBP à¦¬à¦¾ GIF Â· à¦¸à¦°à§à¦¬à§‹à¦šà§à¦š 5 MB</div>
             </div>
           </div>
 
@@ -611,7 +611,7 @@ function MyAccountSection({ onBack, currentUser }) {
             <Field label="Email">
               <input type="email" required className="input" value={profile.email} onChange={(e) => setProfile((old) => ({ ...old, email: e.target.value }))} />
             </Field>
-            <Field label="পদবী">
+            <Field label="à¦ªà¦¦à¦¬à§€">
               <input className="input" value={profile.designation} onChange={(e) => setProfile((old) => ({ ...old, designation: e.target.value }))} />
             </Field>
             <Field label="Center">
@@ -633,7 +633,7 @@ function MyAccountSection({ onBack, currentUser }) {
 
       <section className="rounded-xl border border-[#E4E7EC] bg-white p-5">
         <h2 className="text-sm font-bold text-[#101828]">Change Password</h2>
-        <p className="mb-4 mt-1 text-[12px] text-[#667085]">নিজের account password পরিবর্তন করুন।</p>
+        <p className="mb-4 mt-1 text-[12px] text-[#667085]">à¦¨à¦¿à¦œà§‡à¦° account password à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¨ à¦•à¦°à§à¦¨à¥¤</p>
 
         <form onSubmit={handleSubmit} className="flex max-w-md flex-col gap-4">
           <Field label="Current Password">
@@ -695,7 +695,7 @@ function CredentialFieldsSection({ title, category, fields, onBack, onLoggedOut 
           if (onLoggedOut) onLoggedOut();
           return;
         }
-        setError("Settings লোড করা যায়নি।");
+        setError("Settings à¦²à§‹à¦¡ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
       })
       .finally(() => setLoading(false));
   }, [category, fields, onLoggedOut]);
@@ -737,7 +737,7 @@ function CredentialFieldsSection({ title, category, fields, onBack, onLoggedOut 
       setValues(nextValues);
       return nextValues;
     } catch (requestError) {
-      throw new Error(requestError.response?.data?.detail || "Settings save করা যায়নি।"); // Throw error for useAutosave to catch
+      throw new Error(requestError.response?.data?.detail || "Settings save à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤"); // Throw error for useAutosave to catch
     }
   }, [category, fields]);
 
@@ -750,7 +750,7 @@ function CredentialFieldsSection({ title, category, fields, onBack, onLoggedOut 
 
   async function handleTestEmail() {
     if (!testEmail.trim()) {
-      setTestMessage({ type: "error", text: "যে email-এ test পাঠাবেন সেটি লিখুন।" });
+      setTestMessage({ type: "error", text: "à¦¯à§‡ email-à¦ test à¦ªà¦¾à¦ à¦¾à¦¬à§‡à¦¨ à¦¸à§‡à¦Ÿà¦¿ à¦²à¦¿à¦–à§à¦¨à¥¤" });
       return;
     }
     setTesting(true);
@@ -758,11 +758,11 @@ function CredentialFieldsSection({ title, category, fields, onBack, onLoggedOut 
     try {
       await triggerSave();
       const response = await sendTestEmail(testEmail.trim());
-      setTestMessage({ type: "success", text: `✓ ${response.data.message}` });
+      setTestMessage({ type: "success", text: `âœ“ ${response.data.message}` });
     } catch (requestError) {
       setTestMessage({
         type: "error",
-        text: requestError.response?.data?.detail || requestError.message || "Test email পাঠানো যায়নি।",
+        text: requestError.response?.data?.detail || requestError.message || "Test email à¦ªà¦¾à¦ à¦¾à¦¨à§‹ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤",
       });
     } finally {
       setTesting(false);
@@ -772,14 +772,14 @@ function CredentialFieldsSection({ title, category, fields, onBack, onLoggedOut 
   return (
     <main className="mx-auto max-w-3xl px-3 py-3">
       <button onClick={onBack} className="back-button mb-4">
-        ← Back to Settings
+        â† Back to Settings
       </button>
 
       <section className="rounded-xl border border-[#E4E7EC] bg-white p-5">
         <h2 className="text-sm font-bold text-[#101828]">{title}</h2>
 
         {loading ? (
-          <div className="py-6 text-center text-xs text-[#98A2B3]">লোড হচ্ছে…</div>
+          <div className="py-6 text-center text-xs text-[#98A2B3]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>
         ) : (
           <div className="mt-4 flex max-w-md flex-col gap-4">
             {fields.map((f) => (
@@ -787,7 +787,7 @@ function CredentialFieldsSection({ title, category, fields, onBack, onLoggedOut 
                 <input
                   type={f.is_secret ? "password" : "text"}
                   className="input"
-                  placeholder={f.is_secret && hasValue[f.key] ? "•••••••• (set — খালি রাখলে আগের value থাকবে)" : ""}
+                  placeholder={f.is_secret && hasValue[f.key] ? "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ (set â€” à¦–à¦¾à¦²à¦¿ à¦°à¦¾à¦–à¦²à§‡ à¦†à¦—à§‡à¦° value à¦¥à¦¾à¦•à¦¬à§‡)" : ""}
                   value={values[f.key] || ""}
                   onChange={(e) => setFieldValue(f.key, e.target.value)}
                 />
@@ -797,38 +797,38 @@ function CredentialFieldsSection({ title, category, fields, onBack, onLoggedOut 
             {category === "call" && (
               <div className="space-y-3 rounded-xl border border-[#B2CCFF] bg-[#F5F8FF] p-4 text-xs leading-5 text-[#475467]">
                 <div>
-                  <div className="text-sm font-black text-[#1849A9]">Zoiper Setup — ধাপে ধাপে</div>
-                  <p className="mt-1">Zoiper নিজে phone service দেয় না। আগে আপনার PBX/VoIP provider থেকে <b>SIP Username, SIP Password এবং SIP Domain/Host</b> সংগ্রহ করুন।</p>
+                  <div className="text-sm font-black text-[#1849A9]">Zoiper Setup â€” à¦§à¦¾à¦ªà§‡ à¦§à¦¾à¦ªà§‡</div>
+                  <p className="mt-1">Zoiper à¦¨à¦¿à¦œà§‡ phone service à¦¦à§‡à§Ÿ à¦¨à¦¾à¥¤ à¦†à¦—à§‡ à¦†à¦ªà¦¨à¦¾à¦° PBX/VoIP provider à¦¥à§‡à¦•à§‡ <b>SIP Username, SIP Password à¦à¦¬à¦‚ SIP Domain/Host</b> à¦¸à¦‚à¦—à§à¦°à¦¹ à¦•à¦°à§à¦¨à¥¤</p>
                 </div>
 
                 <ol className="list-decimal space-y-2 pl-4">
-                  <li><b>প্রতিটি communicator-এর device-এ Zoiper install করুন।</b> Android/iPhone/Desktop—যে device থেকে call করবে সেখানে install করতে হবে।</li>
-                  <li><b>Zoiper → Add Account → SIP Account</b> খুলে provider-এর Username, Password ও Domain/Host দিন। Account status <b className="text-emerald-700">Registered</b> হওয়া পর্যন্ত অপেক্ষা করুন।</li>
-                  <li>Zoiper থেকে একটি test number dial করে incoming/outgoing call কাজ করছে কি না নিশ্চিত করুন।</li>
-                  <li>Browser-এ প্রথমবার Call button চাপলে কোন app দিয়ে link খুলবে জিজ্ঞেস করলে <b>Zoiper</b> নির্বাচন করে “Always allow/Remember” দিন।</li>
+                  <li><b>à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ communicator-à¦à¦° device-à¦ Zoiper install à¦•à¦°à§à¦¨à¥¤</b> Android/iPhone/Desktopâ€”à¦¯à§‡ device à¦¥à§‡à¦•à§‡ call à¦•à¦°à¦¬à§‡ à¦¸à§‡à¦–à¦¾à¦¨à§‡ install à¦•à¦°à¦¤à§‡ à¦¹à¦¬à§‡à¥¤</li>
+                  <li><b>Zoiper â†’ Add Account â†’ SIP Account</b> à¦–à§à¦²à§‡ provider-à¦à¦° Username, Password à¦“ Domain/Host à¦¦à¦¿à¦¨à¥¤ Account status <b className="text-emerald-700">Registered</b> à¦¹à¦“à§Ÿà¦¾ à¦ªà¦°à§à¦¯à¦¨à§à¦¤ à¦…à¦ªà§‡à¦•à§à¦·à¦¾ à¦•à¦°à§à¦¨à¥¤</li>
+                  <li>Zoiper à¦¥à§‡à¦•à§‡ à¦à¦•à¦Ÿà¦¿ test number dial à¦•à¦°à§‡ incoming/outgoing call à¦•à¦¾à¦œ à¦•à¦°à¦›à§‡ à¦•à¦¿ à¦¨à¦¾ à¦¨à¦¿à¦¶à§à¦šà¦¿à¦¤ à¦•à¦°à§à¦¨à¥¤</li>
+                  <li>Browser-à¦ à¦ªà§à¦°à¦¥à¦®à¦¬à¦¾à¦° Call button à¦šà¦¾à¦ªà¦²à§‡ à¦•à§‹à¦¨ app à¦¦à¦¿à§Ÿà§‡ link à¦–à§à¦²à¦¬à§‡ à¦œà¦¿à¦œà§à¦žà§‡à¦¸ à¦•à¦°à¦²à§‡ <b>Zoiper</b> à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à§‡ â€œAlways allow/Rememberâ€ à¦¦à¦¿à¦¨à¥¤</li>
                 </ol>
 
                 <div className="rounded-lg border border-blue-100 bg-white p-3">
-                  <div className="mb-2 font-black text-[#1849A9]">এই form-এ কী লিখবেন</div>
+                  <div className="mb-2 font-black text-[#1849A9]">à¦à¦‡ form-à¦ à¦•à§€ à¦²à¦¿à¦–à¦¬à§‡à¦¨</div>
                   <div className="grid gap-2 sm:grid-cols-2">
                     <div><b>Provider Name</b><br/><code>Zoiper</code></div>
                     <div><b>Country Code</b><br/><code>+880</code></div>
-                    <div className="sm:col-span-2"><b>সহজ/default setup</b><br/><code>tel:{"{phone}"}</code><br/><span className="text-[10px]">Device-এর default dialer/Zoiper link handler ব্যবহার করবে।</span></div>
-                    <div className="sm:col-span-2"><b>Direct SIP setup</b><br/><code>sip:{"{phone}"}@pbx.example.com</code><br/><span className="text-[10px]"><code>pbx.example.com</code>-এর জায়গায় আপনার SIP domain লিখুন।</span></div>
+                    <div className="sm:col-span-2"><b>à¦¸à¦¹à¦œ/default setup</b><br/><code>tel:{"{phone}"}</code><br/><span className="text-[10px]">Device-à¦à¦° default dialer/Zoiper link handler à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦° à¦•à¦°à¦¬à§‡à¥¤</span></div>
+                    <div className="sm:col-span-2"><b>Direct SIP setup</b><br/><code>sip:{"{phone}"}@pbx.example.com</code><br/><span className="text-[10px]"><code>pbx.example.com</code>-à¦à¦° à¦œà¦¾à§Ÿà¦—à¦¾à§Ÿ à¦†à¦ªà¦¨à¦¾à¦° SIP domain à¦²à¦¿à¦–à§à¦¨à¥¤</span></div>
                   </div>
-                  <p className="mt-2 text-[10px] text-slate-500"><b>{"{phone}"}</b> পরিবর্তন করবেন না—software সেখানে guest-এর number বসাবে। Zoiper-only setup-এ Account SID, Auth Token ও API Key প্রয়োজন নেই; সেগুলো খালি রাখুন।</p>
+                  <p className="mt-2 text-[10px] text-slate-500"><b>{"{phone}"}</b> à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¨ à¦•à¦°à¦¬à§‡à¦¨ à¦¨à¦¾â€”software à¦¸à§‡à¦–à¦¾à¦¨à§‡ guest-à¦à¦° number à¦¬à¦¸à¦¾à¦¬à§‡à¥¤ Zoiper-only setup-à¦ Account SID, Auth Token à¦“ API Key à¦ªà§à¦°à§Ÿà§‹à¦œà¦¨ à¦¨à§‡à¦‡; à¦¸à§‡à¦—à§à¦²à§‹ à¦–à¦¾à¦²à¦¿ à¦°à¦¾à¦–à§à¦¨à¥¤</p>
                 </div>
 
                 <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2">
-                  <b className="text-amber-800">Test করার নিয়ম:</b> Settings save হওয়ার পর Tasks → Pending/Follow-ups → lead খুলুন → <b>Call via Zoiper</b> চাপুন। ভুল app খুললে device-এর default link/dialer setting থেকে Zoiper নির্বাচন করুন।
+                  <b className="text-amber-800">Test à¦•à¦°à¦¾à¦° à¦¨à¦¿à§Ÿà¦®:</b> Settings save à¦¹à¦“à§Ÿà¦¾à¦° à¦ªà¦° Tasks â†’ Pending/Follow-ups â†’ lead à¦–à§à¦²à§à¦¨ â†’ <b>Call via Zoiper</b> à¦šà¦¾à¦ªà§à¦¨à¥¤ à¦­à§à¦² app à¦–à§à¦²à¦²à§‡ device-à¦à¦° default link/dialer setting à¦¥à§‡à¦•à§‡ Zoiper à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à§à¦¨à¥¤
                 </div>
 
                 <div className="rounded-lg bg-white px-3 py-2 font-semibold text-[#344054]">
-                  Call শেষ হওয়ার event browser সরাসরি জানতে পারে না। তাই call শেষে task form-এ Received/Not Received, duration ও note দিয়ে <b>Save Call Log</b> চাপুন।
+                  Call à¦¶à§‡à¦· à¦¹à¦“à§Ÿà¦¾à¦° event browser à¦¸à¦°à¦¾à¦¸à¦°à¦¿ à¦œà¦¾à¦¨à¦¤à§‡ à¦ªà¦¾à¦°à§‡ à¦¨à¦¾à¥¤ à¦¤à¦¾à¦‡ call à¦¶à§‡à¦·à§‡ task form-à¦ Received/Not Received, duration à¦“ note à¦¦à¦¿à§Ÿà§‡ <b>Save Call Log</b> à¦šà¦¾à¦ªà§à¦¨à¥¤
                 </div>
 
                 <div className="text-[10px] text-slate-500">
-                  অন্য softphone ব্যবহার করতে চাইলে তার supported URI scheme—যেমন <code>sip:</code>, <code>sips:</code>, <code>tel:</code>, <code>callto:</code> বা <code>zoiper:</code>—দিয়ে template লিখতে পারবেন।
+                  à¦…à¦¨à§à¦¯ softphone à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦° à¦•à¦°à¦¤à§‡ à¦šà¦¾à¦‡à¦²à§‡ à¦¤à¦¾à¦° supported URI schemeâ€”à¦¯à§‡à¦®à¦¨ <code>sip:</code>, <code>sips:</code>, <code>tel:</code>, <code>callto:</code> à¦¬à¦¾ <code>zoiper:</code>â€”à¦¦à¦¿à§Ÿà§‡ template à¦²à¦¿à¦–à¦¤à§‡ à¦ªà¦¾à¦°à¦¬à§‡à¦¨à¥¤
                 </div>
               </div>
             )}
@@ -841,9 +841,9 @@ function CredentialFieldsSection({ title, category, fields, onBack, onLoggedOut 
 
             {category === "email" && (
               <div className="rounded-xl border border-[#B2CCFF] bg-[#F5F8FF] p-4">
-                <div className="text-sm font-bold text-[#1849A9]">SMTP পরীক্ষা করুন</div>
+                <div className="text-sm font-bold text-[#1849A9]">SMTP à¦ªà¦°à§€à¦•à§à¦·à¦¾ à¦•à¦°à§à¦¨</div>
                 <p className="mt-1 text-xs leading-5 text-[#475467]">
-                  Gmail হলে Host <b>smtp.gmail.com</b>, Port <b>587</b> এবং সাধারণ password-এর বদলে Google App Password দিন।
+                  Gmail à¦¹à¦²à§‡ Host <b>smtp.gmail.com</b>, Port <b>587</b> à¦à¦¬à¦‚ à¦¸à¦¾à¦§à¦¾à¦°à¦£ password-à¦à¦° à¦¬à¦¦à¦²à§‡ Google App Password à¦¦à¦¿à¦¨à¥¤
                 </p>
                 <div className="mt-3 flex flex-col gap-2 sm:flex-row">
                   <input
@@ -882,7 +882,7 @@ function CredentialFieldsSection({ title, category, fields, onBack, onLoggedOut 
                 {isSaving ? "Saving..." : "Save"}
               </button>
               {isSaving && <span className="text-xs font-semibold text-[#2554C7]">Saving changes...</span>}
-              {!isSaving && isSaved && <span className="text-xs font-semibold text-[#027A48]">✓ Saved</span>}
+              {!isSaving && isSaved && <span className="text-xs font-semibold text-[#027A48]">âœ“ Saved</span>}
             </div>
           </div>
         )}

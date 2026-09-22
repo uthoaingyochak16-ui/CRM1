@@ -4,7 +4,7 @@ import useProjectRef, { withProjectParam } from "../hooks/useProjectRef.js";
 import { getPublicConfig } from "../api/guest.js";
 import Countdown from "../components/Countdown.jsx";
 import InstructionBox from "../components/InstructionBox.jsx";
-import { useRealtimeRefresh } from "../realtime/RealtimeContext.jsx";
+import { useRealtimeRefresh } from "../realtime/realtimeHooks.js";
 
 const DESKTOP_BREAKPOINT = 1024;
 
@@ -95,7 +95,7 @@ export default function Landing() {
     if (!projectRef) return;
     getPublicConfig(projectRef)
       .then((res) => setConfig(res.data))
-      .catch(() => setError("এই ইভেন্টের তথ্য খুঁজে পাওয়া যায়নি।"));
+      .catch(() => setError("à¦à¦‡ à¦‡à¦­à§‡à¦¨à§à¦Ÿà§‡à¦° à¦¤à¦¥à§à¦¯ à¦–à§à¦à¦œà§‡ à¦ªà¦¾à¦“à¦¯à¦¼à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤"));
   };
 
   useEffect(loadConfig, [projectRef]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -107,9 +107,9 @@ export default function Landing() {
         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent-soft text-accent">
           <Icon.Building className="h-7 w-7" />
         </div>
-        <h1 className="font-display text-xl font-bold text-ink">কোনো ইভেন্ট নির্বাচন করা হয়নি</h1>
+        <h1 className="font-display text-xl font-bold text-ink">à¦•à§‹à¦¨à§‹ à¦‡à¦­à§‡à¦¨à§à¦Ÿ à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à¦¾ à¦¹à¦¯à¦¼à¦¨à¦¿</h1>
         <p className="mx-auto mt-2 max-w-sm text-sm text-muted">
-          লিংকের সাথে সঠিক event query token যোগ করুন, অথবা অ্যাডমিন প্যানেল থেকে একটি event তৈরি করুন।
+          à¦²à¦¿à¦‚à¦•à§‡à¦° à¦¸à¦¾à¦¥à§‡ à¦¸à¦ à¦¿à¦• event query token à¦¯à§‹à¦— à¦•à¦°à§à¦¨, à¦…à¦¥à¦¬à¦¾ à¦…à§à¦¯à¦¾à¦¡à¦®à¦¿à¦¨ à¦ªà§à¦¯à¦¾à¦¨à§‡à¦² à¦¥à§‡à¦•à§‡ à¦à¦•à¦Ÿà¦¿ event à¦¤à§ˆà¦°à¦¿ à¦•à¦°à§à¦¨à¥¤
         </p>
         <Link to="/admin" className="mt-5 inline-block rounded-xl bg-accent px-6 py-2.5 text-sm font-bold text-white hover:bg-accent-hover">
           Admin Panel
@@ -129,7 +129,7 @@ export default function Landing() {
   if (!config) {
     return (
       <StatusScreen>
-        <p className="text-sm text-muted">লোড হচ্ছে…</p>
+        <p className="text-sm text-muted">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</p>
       </StatusScreen>
     );
   }
@@ -161,7 +161,7 @@ export default function Landing() {
   return isDesktop ? <DesktopCard {...shared} /> : <MobileCard {...shared} />;
 }
 
-/* ================= DESKTOP — split screen, light hero + all copy on the white side ================= */
+/* ================= DESKTOP â€” split screen, light hero + all copy on the white side ================= */
 
 function DesktopCard({ config, date, time, seatsFull, canRegister, expired, regLink, seatsRemaining, seatPercent, onExpire }) {
   const hasInstruction = Boolean(
@@ -174,7 +174,7 @@ function DesktopCard({ config, date, time, seatsFull, canRegister, expired, regL
   return (
     <div className="landing-scroll-hidden flex min-h-screen items-center justify-center overflow-y-auto bg-bg2 px-6 py-6">
       <div className="grid aspect-[8/5] w-full max-w-3xl grid-cols-2 items-stretch overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
-        {/* hero — full-bleed photo, minimal scrim only where the badge sits */}
+        {/* hero â€” full-bleed photo, minimal scrim only where the badge sits */}
         <div className="relative flex aspect-[4/5] h-full flex-col justify-start overflow-hidden border-r border-border bg-white">
           {config.ecard_image_url ? (
             <img
@@ -193,7 +193,7 @@ function DesktopCard({ config, date, time, seatsFull, canRegister, expired, regL
           </div>
         </div>
 
-        {/* white panel — subtle dot-grid texture so it isn't a flat block, title/place/copy live here */}
+        {/* white panel â€” subtle dot-grid texture so it isn't a flat block, title/place/copy live here */}
         <div
           className={`landing-scroll-hidden flex min-h-0 flex-col justify-start overflow-y-auto ${hasInstruction ? "px-6 py-4" : "px-8 py-7"}`}
           style={{
@@ -206,17 +206,17 @@ function DesktopCard({ config, date, time, seatsFull, canRegister, expired, regL
           </h1>
 
           <div className={`${hasInstruction ? "mt-2.5 space-y-1.5" : "mt-4 space-y-2"}`}>
-            {config.place && <FieldTile icon={Icon.Pin} label="স্থান" value={config.place} large compact={hasInstruction} />}
+            {config.place && <FieldTile icon={Icon.Pin} label="à¦¸à§à¦¥à¦¾à¦¨" value={config.place} large compact={hasInstruction} />}
             <div className="grid grid-cols-2 gap-2">
-              <FieldTile icon={Icon.Calendar} label="তারিখ" value={date || "শীঘ্রই জানানো হবে"} compact={hasInstruction} />
-              <FieldTile icon={Icon.Clock} label="সময়" value={time || "—"} compact={hasInstruction} />
+              <FieldTile icon={Icon.Calendar} label="à¦¤à¦¾à¦°à¦¿à¦–" value={date || "à¦¶à§€à¦˜à§à¦°à¦‡ à¦œà¦¾à¦¨à¦¾à¦¨à§‹ à¦¹à¦¬à§‡"} compact={hasInstruction} />
+              <FieldTile icon={Icon.Clock} label="à¦¸à¦®à¦¯à¦¼" value={time || "â€”"} compact={hasInstruction} />
             </div>
           </div>
 
           {config.event_date && (
             <div className={hasInstruction ? "mt-2" : "mt-3"}>
               <div className={`${hasInstruction ? "mb-1 text-[9px]" : "mb-1.5 text-[10px]"} font-bold uppercase tracking-wide text-ink-soft`}>
-                রেজিস্ট্রেশন বন্ধ হতে বাকি
+                à¦°à§‡à¦œà¦¿à¦¸à§à¦Ÿà§à¦°à§‡à¦¶à¦¨ à¦¬à¦¨à§à¦§ à¦¹à¦¤à§‡ à¦¬à¦¾à¦•à¦¿
               </div>
               <div className={`rounded-xl border border-border bg-white ${hasInstruction ? "px-3 py-1.5" : "px-4 py-2.5"}`}>
                 <Countdown eventDate={config.event_date} onExpire={onExpire} />
@@ -243,7 +243,7 @@ function DesktopCard({ config, date, time, seatsFull, canRegister, expired, regL
   );
 }
 
-/* ================= MOBILE — stacked version of the same idea ================= */
+/* ================= MOBILE â€” stacked version of the same idea ================= */
 
 function MobileCard({ config, date, time, seatsFull, canRegister, expired, regLink, seatsRemaining, seatPercent, onExpire }) {
   return (
@@ -272,17 +272,17 @@ function MobileCard({ config, date, time, seatsFull, canRegister, expired, regLi
         </h1>
 
         <div className="mt-2.5 space-y-2">
-          {config.place && <FieldTile icon={Icon.Pin} label="স্থান" value={config.place} large compact />}
+          {config.place && <FieldTile icon={Icon.Pin} label="à¦¸à§à¦¥à¦¾à¦¨" value={config.place} large compact />}
           <div className="grid grid-cols-2 gap-2">
-            <FieldTile icon={Icon.Calendar} label="তারিখ" value={date || "শীঘ্রই জানানো হবে"} />
-            <FieldTile icon={Icon.Clock} label="সময়" value={time || "—"} />
+            <FieldTile icon={Icon.Calendar} label="à¦¤à¦¾à¦°à¦¿à¦–" value={date || "à¦¶à§€à¦˜à§à¦°à¦‡ à¦œà¦¾à¦¨à¦¾à¦¨à§‹ à¦¹à¦¬à§‡"} />
+            <FieldTile icon={Icon.Clock} label="à¦¸à¦®à¦¯à¦¼" value={time || "â€”"} />
           </div>
         </div>
 
         {config.event_date && (
           <div className="mt-2.5">
             <div className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-ink-soft">
-              রেজিস্ট্রেশন বন্ধ হতে বাকি
+              à¦°à§‡à¦œà¦¿à¦¸à§à¦Ÿà§à¦°à§‡à¦¶à¦¨ à¦¬à¦¨à§à¦§ à¦¹à¦¤à§‡ à¦¬à¦¾à¦•à¦¿
             </div>
             <div className="rounded-xl border border-border bg-white px-4 py-2.5">
               <Countdown eventDate={config.event_date} onExpire={onExpire} />
@@ -340,7 +340,7 @@ function SeatBar({ remaining, total, percent, className = "" }) {
       <div className="mb-1.5 flex items-center justify-between text-[11px] font-semibold text-ink-soft">
         <span className="inline-flex items-center gap-1.5">
           <Icon.Seats className="h-3.5 w-3.5 text-accent" />
-          আসন বাকি
+          à¦†à¦¸à¦¨ à¦¬à¦¾à¦•à¦¿
         </span>
         <span className="text-ink">
           {remaining} / {total}
@@ -360,7 +360,7 @@ function CTA({ canRegister, seatsFull, expired, regLink, compact = false }) {
         to={regLink}
         className={`group flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-6 text-sm font-bold text-white transition-colors hover:bg-accent-hover ${compact ? "py-2.5" : "py-3.5"}`}
       >
-        রেজিস্ট্রেশন করুন
+        à¦°à§‡à¦œà¦¿à¦¸à§à¦Ÿà§à¦°à§‡à¦¶à¦¨ à¦•à¦°à§à¦¨
         <Icon.Arrow className="h-4 w-4 transition-transform group-hover:translate-x-1" />
       </Link>
     );
@@ -372,14 +372,14 @@ function CTA({ canRegister, seatsFull, expired, regLink, compact = false }) {
     >
       {seatsFull ? (
         <>
-          <Icon.Ticket className="h-4 w-4" /> আসন পূর্ণ হয়ে গেছে
+          <Icon.Ticket className="h-4 w-4" /> à¦†à¦¸à¦¨ à¦ªà§‚à¦°à§à¦£ à¦¹à¦¯à¦¼à§‡ à¦—à§‡à¦›à§‡
         </>
       ) : expired ? (
         <>
           <Icon.Lock className="h-4 w-4" /> Registration Closed
         </>
       ) : (
-        "রেজিস্ট্রেশন এখনো খোলা হয়নি"
+        "à¦°à§‡à¦œà¦¿à¦¸à§à¦Ÿà§à¦°à§‡à¦¶à¦¨ à¦à¦–à¦¨à§‹ à¦–à§‹à¦²à¦¾ à¦¹à¦¯à¦¼à¦¨à¦¿"
       )}
     </button>
   );
@@ -399,7 +399,7 @@ function StatusScreen({ children }) {
  * Fixed-width "design" card (26rem) scaled via CSS transform to fit any
  * viewport (ResizeObserver + visualViewport). Because the scale factor is
  * derived from the SAME design width/height on every device, the card's
- * on-screen aspect ratio never changes — only its overall size does. This
+ * on-screen aspect ratio never changes â€” only its overall size does. This
  * is what keeps the mobile card visually identical (same proportions) on a
  * small phone and a large tablet.
  */

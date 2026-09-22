@@ -1,8 +1,7 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient as useQueryGuest } from "@tanstack/react-query";
 import { API_BASE } from "../api/guest.js";
-
-const RealtimeContext = createContext(null);
+import RealtimeContext from "./realtimeStore.js";
 
 function websocketUrl(token) {
   const url = new URL(API_BASE, window.location.origin);
@@ -13,7 +12,6 @@ function websocketUrl(token) {
     : "?public=true";
   return url.toString();
 }
-
 export function RealtimeProvider({ children }) {
   const queryGuest = useQueryGuest();
   const socketRef = useRef(null);
@@ -153,23 +151,3 @@ export function RealtimeProvider({ children }) {
   return <RealtimeContext.Provider value={value}>{children}</RealtimeContext.Provider>;
 }
 
-export function useRealtime() {
-  const context = useContext(RealtimeContext);
-  if (!context) throw new Error("useRealtime must be used inside RealtimeProvider");
-  return context;
-}
-
-export function useRealtimeRefresh(resources, callback) {
-  const callbackRef = useRef(callback);
-  callbackRef.current = callback;
-  const resourceKey = Array.isArray(resources) ? resources.join(",") : resources;
-
-  useEffect(() => {
-    const accepted = new Set(resourceKey.split(",").filter(Boolean));
-    const handleDataUpdate = (event) => {
-      if (accepted.has(event.detail?.resource)) callbackRef.current(event.detail);
-    };
-    window.addEventListener("qf:data-update", handleDataUpdate);
-    return () => window.removeEventListener("qf:data-update", handleDataUpdate);
-  }, [resourceKey]);
-}

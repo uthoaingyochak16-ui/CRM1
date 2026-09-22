@@ -6,7 +6,7 @@ import FieldsTab from "./tabs/FieldsTab.jsx";
 import RegistrationsTab from "./tabs/RegistrationsTab.jsx";
 import SettingsTab from "./tabs/SettingsTab.jsx";
 import { consumeReloadState } from "../../utils/reload.js";
-import { useRealtimeRefresh } from "../../realtime/RealtimeContext.jsx";
+import { useRealtimeRefresh } from "../../realtime/realtimeHooks.js";
 
 const TABS = [
   { id: "event", label: "Event" },
@@ -48,7 +48,7 @@ export default function ProjectEditor({ onLoggedOut }) {
       const res = await togglePublish(id);
       setProject(res.data);
     } catch (err) {
-      setPublishError(err.response?.data?.detail || "Publish করা যায়নি।");
+      setPublishError(err.response?.data?.detail || "Publish à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
     } finally {
       setPublishBusy(false);
     }
@@ -70,7 +70,7 @@ export default function ProjectEditor({ onLoggedOut }) {
   }, [urlCopied]);
 
   if (!project) {
-    return <div className="px-6 py-14 text-center text-sm text-[#667085]">লোড হচ্ছে…</div>;
+    return <div className="px-6 py-14 text-center text-sm text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>;
   }
  
   const shareUrl = `${window.location.origin}/?${encodeURIComponent(project.id)}`;
@@ -79,7 +79,7 @@ export default function ProjectEditor({ onLoggedOut }) {
   return (
     <div className="w-full max-w-none px-1 py-3 sm:px-2"> 
       <button onClick={() => navigate("/admin/events")} className="back-button mb-4">
-        ← সব প্রজেক্ট
+        â† à¦¸à¦¬ à¦ªà§à¦°à¦œà§‡à¦•à§à¦Ÿ
       </button>
 
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#E4E7EC] bg-white p-4">

@@ -4,7 +4,7 @@ import {
   listFeed,
   listFeedAds,
 } from "../../api/guest.js";
-import { useRealtimeRefresh } from "../../realtime/RealtimeContext.jsx";
+import { useRealtimeRefresh } from "../../realtime/realtimeHooks.js";
 import AdComposer from "../../components/AdComposer.jsx";
 import FeedList from "../../components/FeedList.jsx";
 
@@ -67,7 +67,7 @@ export default function FeedPage({ currentUser, onLoggedOut }) {
         } else {
           const status = feedResult.reason?.response?.status;
           if (status === 401) onLoggedOut?.();
-          else setError("ফিড লোড করা যায়নি।");
+          else setError("à¦«à¦¿à¦¡ à¦²à§‹à¦¡ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
           setPosts([]);
         }
 
@@ -90,7 +90,7 @@ export default function FeedPage({ currentUser, onLoggedOut }) {
   const feedAds = useMemo(() => ads.filter((ad) => ad.placement !== "banner"), [ads]);
 
   if (error) return <div className="mx-auto max-w-2xl px-5 py-14 text-center text-sm text-[#D92D20]">{error}</div>;
-  if (posts === null) return <div className="mx-auto max-w-2xl px-5 py-14 text-center text-sm text-[#667085]">লোড হচ্ছে…</div>;
+  if (posts === null) return <div className="mx-auto max-w-2xl px-5 py-14 text-center text-sm text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>;
 
   return (
     <div className="mx-auto w-full max-w-2xl px-3 py-4">
@@ -105,9 +105,9 @@ export default function FeedPage({ currentUser, onLoggedOut }) {
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#EEF4FF] text-[#2554C7] transition-transform group-hover:scale-105">
                 <PencilIcon className="h-4 w-4" />
               </span>
-              নতুন পোস্ট লিখুন
+              à¦¨à¦¤à§à¦¨ à¦ªà§‹à¦¸à§à¦Ÿ à¦²à¦¿à¦–à§à¦¨
             </span>
-            <span className="rounded-full bg-[#EEF4FF] px-2.5 py-1 text-xs font-bold text-[#2554C7]">+ নতুন</span>
+            <span className="rounded-full bg-[#EEF4FF] px-2.5 py-1 text-xs font-bold text-[#2554C7]">+ à¦¨à¦¤à§à¦¨</span>
           </button>
         )}
 
@@ -121,9 +121,9 @@ export default function FeedPage({ currentUser, onLoggedOut }) {
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-50 text-amber-600 transition-transform group-hover:scale-105">
                 <MegaphoneIcon className="h-4 w-4" />
               </span>
-              নতুন বিজ্ঞাপন
+              à¦¨à¦¤à§à¦¨ à¦¬à¦¿à¦œà§à¦žà¦¾à¦ªà¦¨
             </span>
-            <span className="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700">+ নতুন</span>
+            <span className="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700">+ à¦¨à¦¤à§à¦¨</span>
           </button>
         )}
       </div>
@@ -139,14 +139,14 @@ export default function FeedPage({ currentUser, onLoggedOut }) {
           <div className="w-full max-w-xl rounded-2xl border border-[#E4E7EC] bg-white p-4 shadow-2xl">
             <div className="mb-3 flex items-center justify-between">
               <div>
-                <h2 className="text-sm font-black text-[#101828]">নতুন পোস্ট</h2>
-                <p className="text-xs text-[#667085]">আপনার আপডেট শেয়ার করুন</p>
+                <h2 className="text-sm font-black text-[#101828]">à¦¨à¦¤à§à¦¨ à¦ªà§‹à¦¸à§à¦Ÿ</h2>
+                <p className="text-xs text-[#667085]">à¦†à¦ªà¦¨à¦¾à¦° à¦†à¦ªà¦¡à§‡à¦Ÿ à¦¶à§‡à¦¯à¦¼à¦¾à¦° à¦•à¦°à§à¦¨</p>
               </div>
               <button
                 type="button"
                 onClick={() => setIsComposerOpen(false)}
                 className="rounded-lg p-2 text-[#667085] hover:bg-[#F9FAFB]"
-                aria-label="বন্ধ করুন"
+                aria-label="à¦¬à¦¨à§à¦§ à¦•à¦°à§à¦¨"
               >
                 <CloseIcon className="h-4 w-4" />
               </button>
@@ -165,7 +165,7 @@ export default function FeedPage({ currentUser, onLoggedOut }) {
 
       {posts.length === 0 && feedAds.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-[#E4E7EC] bg-white py-14 text-center text-sm text-[#98A2B3]">
-          এখনো কোনো পোস্ট বা বিজ্ঞাপন নেই।
+          à¦à¦–à¦¨à§‹ à¦•à§‹à¦¨à§‹ à¦ªà§‹à¦¸à§à¦Ÿ à¦¬à¦¾ à¦¬à¦¿à¦œà§à¦žà¦¾à¦ªà¦¨ à¦¨à§‡à¦‡à¥¤
         </div>
       ) : (
         <FeedList posts={posts} ads={feedAds} currentUser={currentUser} onPostChanged={load} onAdDeleted={load} />
@@ -175,11 +175,11 @@ export default function FeedPage({ currentUser, onLoggedOut }) {
 }
 
 /**
- * একাধিক banner ad নিয়ে auto-sliding carousel।
- * প্রতিটা ad object-এ নিচের যেকোনো matching ফিল্ড থাকলেই কাজ করবে:
- *  - ছবি:      banner_image_url / ad_image_url / image_url
- *  - লিংক:      website_url / ad_website_url / link_url
- *  - শিরোনাম:   title
+ * à¦à¦•à¦¾à¦§à¦¿à¦• banner ad à¦¨à¦¿à¦¯à¦¼à§‡ auto-sliding carouselà¥¤
+ * à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¾ ad object-à¦ à¦¨à¦¿à¦šà§‡à¦° à¦¯à§‡à¦•à§‹à¦¨à§‹ matching à¦«à¦¿à¦²à§à¦¡ à¦¥à¦¾à¦•à¦²à§‡à¦‡ à¦•à¦¾à¦œ à¦•à¦°à¦¬à§‡:
+ *  - à¦›à¦¬à¦¿:      banner_image_url / ad_image_url / image_url
+ *  - à¦²à¦¿à¦‚à¦•:      website_url / ad_website_url / link_url
+ *  - à¦¶à¦¿à¦°à§‹à¦¨à¦¾à¦®:   title
  */
 function AdsBannerCarousel({ ads }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -227,7 +227,7 @@ function AdsBannerCarousel({ ads }) {
       onMouseLeave={() => setIsPaused(false)}
     >
       <div className="absolute left-3 top-3 z-10 rounded-full bg-black/50 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-white backdrop-blur-sm">
-        স্পনসরড
+        à¦¸à§à¦ªà¦¨à¦¸à¦°à¦¡
       </div>
 
       <div
@@ -247,7 +247,7 @@ function AdsBannerCarousel({ ads }) {
                 {slide.imageUrl && (
                   <img
                     src={slide.imageUrl}
-                    alt={slide.title || "বিজ্ঞাপন"}
+                    alt={slide.title || "à¦¬à¦¿à¦œà§à¦žà¦¾à¦ªà¦¨"}
                     className="h-full w-full object-cover"
                     loading="lazy"
                   />
@@ -269,17 +269,17 @@ function AdsBannerCarousel({ ads }) {
             type="button"
             onClick={() => goTo(activeIndex - 1)}
             className="absolute left-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white transition hover:bg-black/60"
-            aria-label="আগের বিজ্ঞাপন"
+            aria-label="à¦†à¦—à§‡à¦° à¦¬à¦¿à¦œà§à¦žà¦¾à¦ªà¦¨"
           >
-            ‹
+            â€¹
           </button>
           <button
             type="button"
             onClick={() => goTo(activeIndex + 1)}
             className="absolute right-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white transition hover:bg-black/60"
-            aria-label="পরের বিজ্ঞাপন"
+            aria-label="à¦ªà¦°à§‡à¦° à¦¬à¦¿à¦œà§à¦žà¦¾à¦ªà¦¨"
           >
-            ›
+            â€º
           </button>
 
           <div className="absolute inset-x-0 bottom-2 z-10 flex items-center justify-center gap-1.5">
@@ -288,7 +288,7 @@ function AdsBannerCarousel({ ads }) {
                 key={slide.id}
                 type="button"
                 onClick={() => goTo(index)}
-                aria-label={`স্লাইড ${index + 1}`}
+                aria-label={`à¦¸à§à¦²à¦¾à¦‡à¦¡ ${index + 1}`}
                 className={`h-1.5 rounded-full transition-all ${
                   index === activeIndex ? "w-5 bg-white" : "w-1.5 bg-white/50"
                 }`}
@@ -319,24 +319,24 @@ function PostComposer({ onPosted, onClose }) {
 
     if (postType === "link") {
       if (!trimmedTitle && !trimmedContent) {
-        setErr("লিংক পোস্টের জন্য title বা description দিন");
+        setErr("à¦²à¦¿à¦‚à¦• à¦ªà§‹à¦¸à§à¦Ÿà§‡à¦° à¦œà¦¨à§à¦¯ title à¦¬à¦¾ description à¦¦à¦¿à¦¨");
         return;
       }
       if (!trimmedLinkUrl) {
-        setErr("লিংক URL দিন");
+        setErr("à¦²à¦¿à¦‚à¦• URL à¦¦à¦¿à¦¨");
         return;
       }
     } else if (postType === "poll") {
       if (!trimmedContent) {
-        setErr("পোলের জন্য কিছু লেখা দিন");
+        setErr("à¦ªà§‹à¦²à§‡à¦° à¦œà¦¨à§à¦¯ à¦•à¦¿à¦›à§ à¦²à§‡à¦–à¦¾ à¦¦à¦¿à¦¨");
         return;
       }
       if (trimmedPollOptions.length < 2) {
-        setErr("Poll-এ কমপক্ষে দুটি option দিন");
+        setErr("Poll-à¦ à¦•à¦®à¦ªà¦•à§à¦·à§‡ à¦¦à§à¦Ÿà¦¿ option à¦¦à¦¿à¦¨");
         return;
       }
     } else if (!trimmedContent) {
-      setErr("পোস্টের লেখা খালি রাখা যাবে না");
+      setErr("à¦ªà§‹à¦¸à§à¦Ÿà§‡à¦° à¦²à§‡à¦–à¦¾ à¦–à¦¾à¦²à¦¿ à¦°à¦¾à¦–à¦¾ à¦¯à¦¾à¦¬à§‡ à¦¨à¦¾");
       return;
     }
 
@@ -361,7 +361,7 @@ function PostComposer({ onPosted, onClose }) {
       onClose?.();
     } catch (err) {
       console.error(err);
-      setErr("পোস্ট করা যায়নি।");
+      setErr("à¦ªà§‹à¦¸à§à¦Ÿ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
     } finally {
       setBusy(false);
     }
@@ -370,7 +370,7 @@ function PostComposer({ onPosted, onClose }) {
   return (
     <div className="mb-4 rounded-xl border border-[#E4E7EC] bg-white p-4">
       <div className="mb-3 flex gap-2">
-        {[["text", "লেখা"], ["link", "লিংক"], ["poll", "পোল"]].map(([value, label]) => (
+        {[["text", "à¦²à§‡à¦–à¦¾"], ["link", "à¦²à¦¿à¦‚à¦•"], ["poll", "à¦ªà§‹à¦²"]].map(([value, label]) => (
           <button
             key={value}
             type="button"
@@ -386,13 +386,13 @@ function PostComposer({ onPosted, onClose }) {
           <input
             value={linkTitle}
             onChange={(e) => setLinkTitle(e.target.value)}
-            placeholder="Title (ঐচ্ছিক)"
+            placeholder="Title (à¦à¦šà§à¦›à¦¿à¦•)"
             className="w-full rounded-lg border border-[#E4E7EC] px-3 py-2 text-sm outline-none focus:border-[#2554C7]"
           />
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Description / caption লিখুন..."
+            placeholder="Description / caption à¦²à¦¿à¦–à§à¦¨..."
             rows={3}
             className="w-full resize-none rounded-lg border border-[#E4E7EC] px-3 py-2 text-sm outline-none focus:border-[#2554C7]"
           />
@@ -412,7 +412,7 @@ function PostComposer({ onPosted, onClose }) {
             type="url"
             value={linkUrl}
             onChange={(e) => setLinkUrl(e.target.value)}
-            placeholder="https://example.com বা image/audio/video URL"
+            placeholder="https://example.com à¦¬à¦¾ image/audio/video URL"
             className="w-full rounded-lg border border-[#E4E7EC] px-3 py-2 text-sm outline-none focus:border-[#2554C7]"
           />
         </div>
@@ -420,7 +420,7 @@ function PostComposer({ onPosted, onClose }) {
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="নতুন পোস্ট লিখুন..."
+          placeholder="à¦¨à¦¤à§à¦¨ à¦ªà§‹à¦¸à§à¦Ÿ à¦²à¦¿à¦–à§à¦¨..."
           rows={3}
           className="w-full resize-none rounded-lg border border-[#E4E7EC] px-3 py-2 text-sm outline-none focus:border-[#2554C7]"
         />
@@ -438,7 +438,7 @@ function PostComposer({ onPosted, onClose }) {
           ))}
           {pollOptions.length < 6 && (
             <button type="button" onClick={() => setPollOptions((items) => [...items, ""])} className="text-xs font-bold text-[#2554C7]">
-              + Option যোগ করুন
+              + Option à¦¯à§‹à¦— à¦•à¦°à§à¦¨
             </button>
           )}
         </div>
@@ -450,7 +450,7 @@ function PostComposer({ onPosted, onClose }) {
           disabled={busy || (postType === "link" ? (!content.trim() && !linkTitle.trim()) || !linkUrl.trim() : !content.trim()) || (postType === "poll" && pollOptions.filter((item) => item.trim()).length < 2)}
           className="rounded-lg bg-[#2554C7] px-4 py-2 text-xs font-bold text-white disabled:opacity-50"
         >
-          {busy ? "পোস্ট হচ্ছে…" : "পোস্ট করুন"}
+          {busy ? "à¦ªà§‹à¦¸à§à¦Ÿ à¦¹à¦šà§à¦›à§‡â€¦" : "à¦ªà§‹à¦¸à§à¦Ÿ à¦•à¦°à§à¦¨"}
         </button>
       </div>
     </div>

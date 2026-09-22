@@ -7,7 +7,7 @@ import LimitReachedModal from "../../components/LimitReachedModal.jsx";
 import SortDropdown from "../../components/SortDropdown.jsx";
 import { sortItems } from "../../utils/sort.js";
 import { SearchIcon, PhoneIcon, ClipboardIcon, ArrowRightIcon } from "../../components/Icons.jsx";
-import { useRealtimeRefresh } from "../../realtime/RealtimeContext.jsx";
+import { useRealtimeRefresh } from "../../realtime/realtimeHooks.js";
 import ProfileAvatar from "../../components/ProfileAvatar.jsx";
 import ListScrollArea from "../../components/ListScrollArea.jsx";
 
@@ -25,13 +25,6 @@ const STAGE_COLORS = {
   Organier: "bg-cyan-50 text-cyan-700 ring-cyan-200",
   Foreigner: "bg-lime-50 text-lime-700 ring-lime-200",
 };
-const STAGE_ROW_COLORS = {
-  Interested: "bg-sky-50/70", Dropped: "bg-rose-50/70", Counselling: "bg-amber-50/70",
-  Associate: "bg-violet-50/70", "Course Acc": "bg-indigo-50/70", "Potential Batch": "bg-teal-50/70",
-  QG: "bg-emerald-50/70", Quantier: "bg-green-50/70", QPM: "bg-fuchsia-50/70",
-  Ardentiar: "bg-orange-50/70", Organier: "bg-cyan-50/70", Foreigner: "bg-lime-50/70",
-};
-
 function formatAssignmentDate(value) {
   if (!value) return "";
   const date = new Date(value);
@@ -72,7 +65,7 @@ export default function CustomersPage() {
       setCustomers(customersRes.data || []);
     } catch (err) {
       const detail = err.response?.data?.detail || err.message;
-      if (/limit|পূর্ণ হয়েছে/i.test(detail)) setLimitNotice(detail);
+      if (/limit|à¦ªà§‚à¦°à§à¦£ à¦¹à¦¯à¦¼à§‡à¦›à§‡/i.test(detail)) setLimitNotice(detail);
       else setError(detail);
     } finally {
       setLoading(false);
@@ -150,7 +143,7 @@ export default function CustomersPage() {
     doc.save("guest-profiles.pdf");
   };
 
-  if (!hasLoaded) return <div className="p-6 text-center text-sm text-slate-500">লোডিং...</div>;
+  if (!hasLoaded) return <div className="p-6 text-center text-sm text-slate-500">à¦²à§‹à¦¡à¦¿à¦‚...</div>;
 
   return (
     <div className="w-full max-w-none space-y-3 px-1 py-2 md:px-2">
@@ -177,7 +170,7 @@ export default function CustomersPage() {
           <SearchIcon className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder="নাম, ফোন, profession, remarks বা profile-এর যেকোনো data খুঁজুন..."
+            placeholder="à¦¨à¦¾à¦®, à¦«à§‹à¦¨, profession, remarks à¦¬à¦¾ profile-à¦à¦° à¦¯à§‡à¦•à§‹à¦¨à§‹ data à¦–à§à¦à¦œà§à¦¨..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full rounded-lg border border-slate-200 bg-slate-50 py-2 pl-9 pr-3 text-sm outline-none focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-50"
@@ -207,11 +200,11 @@ export default function CustomersPage() {
 
       {sortedCustomers.length === 0 ? (
         <div className="rounded-xl border border-dashed border-slate-300 bg-white py-16 text-center text-sm text-slate-400">
-          কোন অতিথি পাওয়া যায়নি।
+          à¦•à§‹à¦¨ à¦…à¦¤à¦¿à¦¥à¦¿ à¦ªà¦¾à¦“à¦¯à¦¼à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤
         </div>
       ) : (
         <>
-          {/* Mobile card list: name, phone, profession, age, stage — whole card is the click target */}
+          {/* Mobile card list: name, phone, profession, age, stage â€” whole card is the click target */}
           <div className="space-y-2 md:hidden">
             {sortedCustomers.map((c, idx) => {
               const stageClass = STAGE_COLORS[c.stage] || "bg-slate-50 text-slate-600 ring-slate-200";
@@ -225,7 +218,7 @@ export default function CustomersPage() {
                   <ProfileAvatar name={c.full_name} imageUrl={c.profile_image_url} />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="truncate text-sm font-bold text-slate-900">{c.full_name || "(নাম নেই)"}</span>
+                      <span className="truncate text-sm font-bold text-slate-900">{c.full_name || "(à¦¨à¦¾à¦® à¦¨à§‡à¦‡)"}</span>
                       {c.stage && (
                         <span className={`shrink-0 rounded-md px-1.5 py-0.5 text-[9px] font-bold ring-1 ring-inset ${stageClass}`}>
                           {c.stage}
@@ -235,8 +228,8 @@ export default function CustomersPage() {
                     <div className="mt-1 flex flex-col items-start gap-1 text-[11px] font-medium text-slate-500">
                       {(c.last_assigned_comm_name || c.last_assigned_at) && (
                         <div className="text-[10px] font-semibold text-indigo-600">
-                          Assigned to {c.last_assigned_comm_name || "—"}
-                          {c.last_assigned_at ? ` • ${formatAssignmentDate(c.last_assigned_at)}` : ""}
+                          Assigned to {c.last_assigned_comm_name || "â€”"}
+                          {c.last_assigned_at ? ` â€¢ ${formatAssignmentDate(c.last_assigned_at)}` : ""}
                         </div>
                       )}
                       {c.mobile && (
@@ -290,32 +283,32 @@ export default function CustomersPage() {
                           <div className="flex items-center gap-2.5">
                             <ProfileAvatar name={c.full_name} imageUrl={c.profile_image_url} />
                             <div className="min-w-0">
-                              <div className="truncate text-sm font-bold text-slate-900">{c.full_name || "(নাম নেই)"}</div>
+                              <div className="truncate text-sm font-bold text-slate-900">{c.full_name || "(à¦¨à¦¾à¦® à¦¨à§‡à¦‡)"}</div>
                             </div>
                           </div>
                         </td>
                         <td className="px-4 py-2.5 align-middle text-xs font-medium text-slate-600">
                           {c.mobile ? (
                             <span className="flex items-center gap-1"><PhoneIcon className="h-3 w-3 text-slate-400" /> {c.mobile}</span>
-                          ) : <span className="text-slate-300">—</span>}
+                          ) : <span className="text-slate-300">â€”</span>}
                         </td>
                         <td className="px-4 py-2.5 align-middle text-xs font-medium text-slate-600">
                           {c.profession ? (
                             <span className="truncate">{c.profession}</span>
-                          ) : <span className="text-slate-300">—</span>}
+                          ) : <span className="text-slate-300">â€”</span>}
                         </td>
                         <td className="px-4 py-2.5 align-middle text-xs font-medium text-slate-600">
-                          {c.age != null ? c.age : <span className="text-slate-300">—</span>}
+                          {c.age != null ? c.age : <span className="text-slate-300">â€”</span>}
                         </td>
                         <td className="px-4 py-2.5 align-middle">
                           <div className="flex flex-col items-start gap-1">
                             {c.stage ? (
                               <span className={`inline-flex rounded-md px-2 py-1 text-[10px] font-bold ring-1 ring-inset ${stageClass}`}>{c.stage}</span>
-                            ) : <span className="text-xs text-slate-300">—</span>}
+                            ) : <span className="text-xs text-slate-300">â€”</span>}
                             {(c.last_assigned_comm_name || c.last_assigned_at) && (
                               <div className="text-[10px] font-semibold text-indigo-600">
-                                {c.last_assigned_comm_name || "—"}
-                                {c.last_assigned_at ? ` • ${formatAssignmentDate(c.last_assigned_at)}` : ""}
+                                {c.last_assigned_comm_name || "â€”"}
+                                {c.last_assigned_at ? ` â€¢ ${formatAssignmentDate(c.last_assigned_at)}` : ""}
                               </div>
                             )}
                           </div>

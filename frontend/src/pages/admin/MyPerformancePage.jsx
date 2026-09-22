@@ -1,10 +1,11 @@
-// frontend/src/pages/admin/MyPerformancePage.jsx — new file (executive self-view)
+// frontend/src/pages/admin/MyPerformancePage.jsx â€” new file (executive self-view)
 import { useEffect, useState } from "react";
 import { getPerfSummary, getPerfTrend, getStageBreakdown } from "../../api/guest.js";
 import PerformanceDocumentationModal from "../../components/PerformanceDocumentationModal.jsx";
 import PerformanceCharts from "../../components/PerformanceCharts.jsx";
-import PerformancePeriodFilter, { defaultAnchor, performanceRangeParams } from "../../components/PerformancePeriodFilter.jsx";
-import { useRealtimeRefresh } from "../../realtime/RealtimeContext.jsx";
+import PerformancePeriodFilter from "../../components/PerformancePeriodFilter.jsx";
+import { defaultAnchor, performanceRangeParams } from "../../components/performancePeriodUtils.js";
+import { useRealtimeRefresh } from "../../realtime/realtimeHooks.js";
 import StagePerformanceChart from "../../components/StagePerformanceChart.jsx";
 
 export default function MyPerformancePage({ onLoggedOut }) {
@@ -31,7 +32,7 @@ export default function MyPerformancePage({ onLoggedOut }) {
     },
   );
 
-  if (!summary) return <div className="p-10 text-center text-sm text-[#667085]">লোড হচ্ছে…</div>;
+  if (!summary) return <div className="p-10 text-center text-sm text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>;
 
   return (
     <div className="mx-auto max-w-6xl px-3 py-3">
@@ -68,7 +69,7 @@ export default function MyPerformancePage({ onLoggedOut }) {
       </div>
 
       <div className="rounded-xl border border-[#E4E7EC] bg-white p-5 text-xs text-[#667085]">
-        নিজের performance-এর বিস্তারিত history দেখতে admin-এর সাথে যোগাযোগ করুন। শুধু নিজের data এখানে দেখা যায় — অন্য কোনো communicator-এর তথ্য এখানে অ্যাকসেস করা যায় না।
+        à¦¨à¦¿à¦œà§‡à¦° performance-à¦à¦° à¦¬à¦¿à¦¸à§à¦¤à¦¾à¦°à¦¿à¦¤ history à¦¦à§‡à¦–à¦¤à§‡ admin-à¦à¦° à¦¸à¦¾à¦¥à§‡ à¦¯à§‹à¦—à¦¾à¦¯à§‹à¦— à¦•à¦°à§à¦¨à¥¤ à¦¶à§à¦§à§ à¦¨à¦¿à¦œà§‡à¦° data à¦à¦–à¦¾à¦¨à§‡ à¦¦à§‡à¦–à¦¾ à¦¯à¦¾à¦¯à¦¼ â€” à¦…à¦¨à§à¦¯ à¦•à§‹à¦¨à§‹ communicator-à¦à¦° à¦¤à¦¥à§à¦¯ à¦à¦–à¦¾à¦¨à§‡ à¦…à§à¦¯à¦¾à¦•à¦¸à§‡à¦¸ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼ à¦¨à¦¾à¥¤
       </div>
 
       <PerformanceDocumentationModal open={showDocumentation} onClose={() => setShowDocumentation(false)} />
@@ -80,7 +81,7 @@ function Stat({ label, value, sub }) {
   return (
     <div className="rounded-lg border border-[#E4E7EC] bg-white px-3 py-2.5">
       <div className="font-display text-lg font-black text-[#2554C7]">{value}</div>
-      <div className="mt-1 text-[11px] font-semibold text-[#667085]">{label}{sub ? ` · ${sub}` : ""}</div>
+      <div className="mt-1 text-[11px] font-semibold text-[#667085]">{label}{sub ? ` Â· ${sub}` : ""}</div>
     </div>
   );
 }

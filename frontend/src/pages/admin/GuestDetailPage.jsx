@@ -6,7 +6,7 @@ import {
 } from "../../api/guest.js";
 import ProfileAvatar from "../../components/ProfileAvatar.jsx";
 import { useAutosave } from "../../hooks/useAutosave.js"; // Import the new hook
-import { useRealtimeRefresh } from "../../realtime/RealtimeContext.jsx";
+import { useRealtimeRefresh } from "../../realtime/realtimeHooks.js";
 import LimitReachedModal from "../../components/LimitReachedModal.jsx";
 import { arrangeDataEntries } from "../../utils/dataArrangement.js";
 import {
@@ -117,7 +117,7 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
   async function handleFollowupSave(event) {
     event.preventDefault();
     if (!crmForm.scheduled_at || !crmForm.stage) {
-      setFollowupError("Follow-up date/time এবং stage নির্বাচন করুন।");
+      setFollowupError("Follow-up date/time à¦à¦¬à¦‚ stage à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à§à¦¨à¥¤");
       return;
     }
     setFollowupSaving(true);
@@ -132,8 +132,8 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
       setCrmForm({ scheduled_at: "", note: "", result: "", stage: "", assigned_to: "" });
       setShowFollowupForm(false);
     } catch (requestError) {
-      const detail = requestError.response?.data?.detail || "Follow-up save করা যায়নি।";
-      if (/limit|পূর্ণ হয়েছে/i.test(detail)) setLimitNotice(detail);
+      const detail = requestError.response?.data?.detail || "Follow-up save à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤";
+      if (/limit|à¦ªà§‚à¦°à§à¦£ à¦¹à¦¯à¦¼à§‡à¦›à§‡/i.test(detail)) setLimitNotice(detail);
       else setFollowupError(detail);
     } finally {
       setFollowupSaving(false);
@@ -145,14 +145,14 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
       const response = await updateCustomerFollowup(id, followupId, data);
       setFollowups((items) => items.map((item) => item.id === followupId ? response.data : item));
     } catch (requestError) {
-      const detail = requestError.response?.data?.detail || "Follow-up update করা যায়নি।";
-      if (/limit|পূর্ণ হয়েছে/i.test(detail)) setLimitNotice(detail);
+      const detail = requestError.response?.data?.detail || "Follow-up update à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤";
+      if (/limit|à¦ªà§‚à¦°à§à¦£ à¦¹à¦¯à¦¼à§‡à¦›à§‡/i.test(detail)) setLimitNotice(detail);
       else setFollowupError(detail);
     }
   }
 
   async function handleDelete() {
-    if (!confirm(`"${customer.full_name || "এই"}" profile মুছে ফেলবেন?`)) return;
+    if (!confirm(`"${customer.full_name || "à¦à¦‡"}" profile à¦®à§à¦›à§‡ à¦«à§‡à¦²à¦¬à§‡à¦¨?`)) return;
     await deleteCustomer(id);
     navigate("/admin/customers");
   }
@@ -167,7 +167,7 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
       setFieldSchema(res.data);
       setNewFieldLabel(""); setNewFieldType("text"); setAddingField(false);
     } catch {
-      alert("Field যোগ করা যায়নি।");
+      alert("Field à¦¯à§‹à¦— à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
     }
   }
 
@@ -175,7 +175,7 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="flex items-center gap-2 text-sm font-semibold text-slate-500">
-          <LoaderIcon className="h-4 w-4 animate-spin text-indigo-500" /> লোড হচ্ছে…
+          <LoaderIcon className="h-4 w-4 animate-spin text-indigo-500" /> à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦
         </div>
       </div>
     );
@@ -192,10 +192,10 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
       <button onClick={() => navigate("/admin/customers")} className="back-button mb-4">
-        <ArrowLeftIcon className="h-3.5 w-3.5" /> সব Guest
+        <ArrowLeftIcon className="h-3.5 w-3.5" /> à¦¸à¦¬ Guest
       </button>
 
-      {/* ── Modern, responsive profile header (no photo — initials avatar) ── */}
+      {/* â”€â”€ Modern, responsive profile header (no photo â€” initials avatar) â”€â”€ */}
       <div className="mb-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_1px_3px_rgba(15,23,42,0.04)] sm:p-6">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           {/* Identity block */}
@@ -212,7 +212,7 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
 
             <div>
               <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-                <h1 className="text-lg font-black text-slate-900 sm:text-xl">{form.full_name || "নাম নেই"}</h1>
+                <h1 className="text-lg font-black text-slate-900 sm:text-xl">{form.full_name || "à¦¨à¦¾à¦® à¦¨à§‡à¦‡"}</h1>
                 {form.stage && (
                   <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${STAGE_COLORS[form.stage] || "bg-slate-100 text-slate-700"}`}>
                     {form.stage}
@@ -237,12 +237,12 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
                   <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-50 text-emerald-500"><ClipboardIcon className="h-3 w-3" /></span>
                   {customer.programs_count} programs
                 </span>
-                {form.location && <span>· {form.location}</span>}
+                {form.location && <span>Â· {form.location}</span>}
               </div>
               {(customer.last_assigned_comm_name || assignmentDateLabel) && (
                 <div className="mt-2 rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1 text-[11px] font-semibold text-indigo-700 sm:text-xs">
-                  Last assigned to {customer.last_assigned_comm_name || "—"}
-                  {assignmentDateLabel ? ` • ${assignmentDateLabel}` : ""}
+                  Last assigned to {customer.last_assigned_comm_name || "â€”"}
+                  {assignmentDateLabel ? ` â€¢ ${assignmentDateLabel}` : ""}
                 </div>
               )}
             </div>
@@ -307,13 +307,13 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
 
       {activeTab === "info" && (
         <fieldset disabled={isDataUser} className="grid grid-cols-1 items-start gap-5 disabled:opacity-90 xl:grid-cols-5">
-          {/* Basic Information — styled as a compact "profile facts" list */}
+          {/* Basic Information â€” styled as a compact "profile facts" list */}
           <div className="xl:col-span-2">
             <Card title="Profile">
               <div className="divide-y divide-slate-100">
-                <ProfileRow label="নাম"><input className="uinput" value={form.full_name} onChange={(e) => set("full_name", e.target.value)} /></ProfileRow>
-                <ProfileRow label="মোবাইল *"><input required type="tel" className="uinput" value={form.mobile} onChange={(e) => set("mobile", e.target.value)} /></ProfileRow>
-                <ProfileRow label="ইমেইল"><input className="uinput" value={form.email} onChange={(e) => set("email", e.target.value)} /></ProfileRow>
+                <ProfileRow label="à¦¨à¦¾à¦®"><input className="uinput" value={form.full_name} onChange={(e) => set("full_name", e.target.value)} /></ProfileRow>
+                <ProfileRow label="à¦®à§‹à¦¬à¦¾à¦‡à¦² *"><input required type="tel" className="uinput" value={form.mobile} onChange={(e) => set("mobile", e.target.value)} /></ProfileRow>
+                <ProfileRow label="à¦‡à¦®à§‡à¦‡à¦²"><input className="uinput" value={form.email} onChange={(e) => set("email", e.target.value)} /></ProfileRow>
                 <ProfileRow label="Location"><input className="uinput" value={form.location} onChange={(e) => set("location", e.target.value)} /></ProfileRow>
                 <ProfileRow label="Profession"><input className="uinput" value={form.profession} onChange={(e) => set("profession", e.target.value)} /></ProfileRow>
                 <ProfileRow label="Age"><input type="number" className="uinput" value={form.age} onChange={(e) => set("age", e.target.value)} /></ProfileRow>
@@ -351,10 +351,10 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
             </Card>
           </div>
 
-          {/* Follow-up history — styled as an "activity stream" timeline */}
+          {/* Follow-up history â€” styled as an "activity stream" timeline */}
           <div className="xl:col-span-3">
             <Card
-              title={`Activity Stream · Follow-ups (${followups.length})`}
+              title={`Activity Stream Â· Follow-ups (${followups.length})`}
               action={!isDataUser && (
                 <button type="button" onClick={() => setShowFollowupForm(true)} className="flex items-center gap-1 rounded-full bg-gradient-to-r from-violet-500 to-violet-400 px-3 py-1.5 text-[11px] font-bold text-white shadow-sm">
                   <PlusIcon className="h-3.5 w-3.5" /> New Follow-up
@@ -382,14 +382,14 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
             <div className="space-y-2.5">
               <input
                 className="input"
-                placeholder="Registration, stage, remarks, communicator বা follow-up খুঁজুন..."
+                placeholder="Registration, stage, remarks, communicator à¦¬à¦¾ follow-up à¦–à§à¦à¦œà§à¦¨..."
                 value={historySearch}
                 onChange={(event) => setHistorySearch(event.target.value)}
               />
               <RegistrationHistoryList registrations={(customer.registrations || []).filter((item) => !historySearch.trim() || JSON.stringify(item).toLowerCase().includes(historySearch.trim().toLowerCase()))} />
               <StandaloneLeadHistoryList entries={(customer.lead_history || []).filter((item) => !historySearch.trim() || JSON.stringify(item).toLowerCase().includes(historySearch.trim().toLowerCase()))} />
               {!customer.registrations?.length && !customer.lead_history?.length && (
-                <div className="py-8 text-center text-xs text-slate-400">কোনো registration বা lead history নেই।</div>
+                <div className="py-8 text-center text-xs text-slate-400">à¦•à§‹à¦¨à§‹ registration à¦¬à¦¾ lead history à¦¨à§‡à¦‡à¥¤</div>
               )}
             </div>
           </Card>
@@ -400,7 +400,7 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
         <div className="mx-auto max-w-3xl">
           <Card title={`Call Logs (${callLogs.length})`}>
             {callLogs.length === 0 ? (
-              <div className="py-8 text-center text-xs text-slate-400">কোনো call log নেই।</div>
+              <div className="py-8 text-center text-xs text-slate-400">à¦•à§‹à¦¨à§‹ call log à¦¨à§‡à¦‡à¥¤</div>
             ) : (
               <div className="flex flex-col gap-2.5">
                 {callLogs.map((c) => {
@@ -416,7 +416,7 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
                         <span className="text-[10px] text-slate-400">{new Date(c.created_at).toLocaleDateString("en-GB")}</span>
                       </div>
                       <div className="mt-1.5 flex items-center justify-between text-[11px] text-slate-500">
-                        <span>{c.executive_name || "—"} · {c.provider || "Dialer"}</span>
+                        <span>{c.executive_name || "â€”"} Â· {c.provider || "Dialer"}</span>
                         {c.duration_seconds > 0 && <span>{Math.round(c.duration_seconds / 60)} min</span>}
                       </div>
                       {c.notes && <div className="mt-1.5 text-[11px] text-slate-600">{c.notes}</div>}
@@ -439,21 +439,21 @@ export default function CustomerDetailPage({ currentUser, onLoggedOut }) {
             <div className="grid gap-3 sm:grid-cols-2">
               <CompactField label="Stage" span2={!isAdmin}>
                 <select className="input" value={crmForm.stage} onChange={(e) => setCrmForm((current) => ({ ...current, stage: e.target.value }))}>
-                  <option value="">নির্বাচন করুন</option>
-                  {STAGE_OPTIONS.map((s) => <option key={s} value={s} style={{ color: STAGE_HEX[s], fontWeight: 700 }}>● {s}</option>)}
+                  <option value="">à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à§à¦¨</option>
+                  {STAGE_OPTIONS.map((s) => <option key={s} value={s} style={{ color: STAGE_HEX[s], fontWeight: 700 }}>â— {s}</option>)}
                 </select>
               </CompactField>
               {isAdmin && <CompactField label="Communicator">
                 <select className="input" value={crmForm.assigned_to} onChange={(e) => setCrmForm((current) => ({ ...current, assigned_to: e.target.value }))}>
-                  <option value="">Communicator নির্বাচন করুন</option>
+                  <option value="">Communicator à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à§à¦¨</option>
                   {executives.map((user) => <option key={user.id} value={user.id}>{user.name}</option>)}
                 </select>
               </CompactField>}
               <CompactField label="Follow-up Date & Time">
                 <input type="datetime-local" className="input" value={crmForm.scheduled_at} onChange={(e) => setCrmForm((current) => ({ ...current, scheduled_at: e.target.value }))} />
               </CompactField>
-              <CompactField label="Follow-up কেন করবেন / Note"><textarea rows={3} className="input" value={crmForm.note} onChange={(e) => setCrmForm((current) => ({ ...current, note: e.target.value }))} /></CompactField>
-              <CompactField label="বর্তমান Follow-up Result" span2><textarea rows={2} className="input" value={crmForm.result} onChange={(e) => setCrmForm((current) => ({ ...current, result: e.target.value }))} /></CompactField>
+              <CompactField label="Follow-up à¦•à§‡à¦¨ à¦•à¦°à¦¬à§‡à¦¨ / Note"><textarea rows={3} className="input" value={crmForm.note} onChange={(e) => setCrmForm((current) => ({ ...current, note: e.target.value }))} /></CompactField>
+              <CompactField label="à¦¬à¦°à§à¦¤à¦®à¦¾à¦¨ Follow-up Result" span2><textarea rows={2} className="input" value={crmForm.result} onChange={(e) => setCrmForm((current) => ({ ...current, result: e.target.value }))} /></CompactField>
               {followupError && <div className="text-xs font-semibold text-rose-600 sm:col-span-2">{followupError}</div>}
               <button type="submit" disabled={followupSaving} className="rounded-full bg-gradient-to-r from-violet-500 to-violet-400 py-2.5 text-xs font-bold text-white shadow-sm disabled:opacity-50 sm:col-span-2">
                 {followupSaving ? "Saving..." : "Save Follow-up"}
@@ -508,7 +508,7 @@ function CompactField({ label, children, span2 }) {
 
 // Follow-ups rendered as a connected timeline (dot + line), like an activity stream
 function FollowupTimeline({ followups, readOnly, isAdmin, executives, onUpdate }) {
-  if (!followups.length) return <div className="py-8 text-center text-xs text-slate-400">কোনো follow-up history নেই।</div>;
+  if (!followups.length) return <div className="py-8 text-center text-xs text-slate-400">à¦•à§‹à¦¨à§‹ follow-up history à¦¨à§‡à¦‡à¥¤</div>;
   return (
     <div className="relative space-y-4 pl-5">
       <div className="absolute bottom-2 left-[5px] top-2 w-px bg-slate-200" />
@@ -551,7 +551,7 @@ function FollowupTimelineRow({ item, readOnly, isAdmin, executives, onUpdate }) 
             <div className="text-xs font-bold text-slate-700">{new Date(item.scheduled_at).toLocaleString("en-GB")}</div>
           <div className="mt-1 flex items-center justify-end gap-1.5 text-[10px] text-slate-400">
             {item.assignee_name && <ProfileAvatar name={item.assignee_name} imageUrl={item.assignee_image_url} className="h-5 w-5" fallbackClassName="bg-slate-500" />}
-            {item.assignee_name || "Unassigned"} · by {item.creator_name || "Unknown"}
+            {item.assignee_name || "Unassigned"} Â· by {item.creator_name || "Unknown"}
           </div>
             <div className="text-[10px] font-semibold text-blue-600">Set on: {new Date(item.created_at).toLocaleString("en-GB")}</div>
           </div>
@@ -561,11 +561,11 @@ function FollowupTimelineRow({ item, readOnly, isAdmin, executives, onUpdate }) 
           <div className="mt-3 grid gap-2 md:grid-cols-2">
             <input type="datetime-local" className="input" value={draft.scheduled_at} onChange={(event) => setDraft((current) => ({ ...current, scheduled_at: event.target.value }))} />
             <select className="input" value={draft.stage} onChange={(event) => setDraft((current) => ({ ...current, stage: event.target.value }))}>
-              {STAGE_OPTIONS.map((stage) => <option key={stage} value={stage} style={{ color: STAGE_HEX[stage], fontWeight: 700 }}>● {stage}</option>)}
+              {STAGE_OPTIONS.map((stage) => <option key={stage} value={stage} style={{ color: STAGE_HEX[stage], fontWeight: 700 }}>â— {stage}</option>)}
             </select>
             {isAdmin && (
               <select className="input md:col-span-2" value={draft.assigned_to} onChange={(event) => setDraft((current) => ({ ...current, assigned_to: event.target.value }))}>
-                <option value="">Communicator নির্বাচন করুন</option>
+                <option value="">Communicator à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à§à¦¨</option>
                 {executives.map((user) => <option key={user.id} value={user.id}>{user.name}</option>)}
               </select>
             )}
@@ -573,7 +573,7 @@ function FollowupTimelineRow({ item, readOnly, isAdmin, executives, onUpdate }) 
             <textarea className="input md:col-span-2" rows={2} placeholder="Follow-up result / data entry" value={draft.result} onChange={(event) => setDraft((current) => ({ ...current, result: event.target.value }))} />
             <label className="flex items-center gap-2 text-xs font-bold text-slate-700">
               <input type="checkbox" checked={draft.completed} onChange={(event) => setDraft((current) => ({ ...current, completed: event.target.checked }))} />
-              Follow-up সম্পন্ন হয়েছে
+              Follow-up à¦¸à¦®à§à¦ªà¦¨à§à¦¨ à¦¹à¦¯à¦¼à§‡à¦›à§‡
             </label>
             <div className="flex justify-end gap-2 md:col-span-2">
               <button onClick={() => setEditing(false)} className="rounded-full border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600">Cancel</button>
@@ -622,7 +622,7 @@ function StandaloneLeadHistoryList({ entries }) {
           <div className="flex items-center justify-between gap-3">
             <div>
               <div className="text-xs font-bold text-slate-900">{leadName}</div>
-              <div className="mt-0.5 text-[10px] font-semibold text-indigo-600">Manual/Standalone Lead · {history.length} task/follow-up</div>
+              <div className="mt-0.5 text-[10px] font-semibold text-indigo-600">Manual/Standalone Lead Â· {history.length} task/follow-up</div>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] text-slate-400">{initial?.created_at ? new Date(initial.created_at).toLocaleDateString("en-GB") : ""}</span>
@@ -718,7 +718,7 @@ function RegistrationDataGroup({ title, entries }) {
         {entries.map(([key, value]) => (
           <div key={key} className="rounded-lg bg-white px-2.5 py-2">
             <div className="text-[8px] font-semibold uppercase tracking-wide text-slate-400">{key.replace(/_/g, " ")}</div>
-            <div className="mt-0.5 break-words text-[11px] font-semibold text-slate-700">{typeof value === "object" ? JSON.stringify(value) : String(value || "—")}</div>
+            <div className="mt-0.5 break-words text-[11px] font-semibold text-slate-700">{typeof value === "object" ? JSON.stringify(value) : String(value || "â€”")}</div>
           </div>
         ))}
       </div>
@@ -747,7 +747,7 @@ function ReadOnlyTaskHistoryCard({ entry, includeLeadData = true }) {
           <span className="rounded-full bg-indigo-600 px-2 py-1 text-[9px] font-black text-white">{entry.kind}</span>
           <span className={`ml-2 rounded-full px-2 py-1 text-[9px] font-bold ${entry.status === "completed" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>{entry.status}</span>
           {entry.project_name && <span className="ml-2 text-[10px] font-bold text-indigo-700">{entry.project_name}</span>}
-          <div className="mt-1 text-[10px] font-bold text-slate-600">Communicator: {entry.consultant || "Unassigned"} · Created by: {entry.created_by_name || "Unknown"}</div>
+          <div className="mt-1 text-[10px] font-bold text-slate-600">Communicator: {entry.consultant || "Unassigned"} Â· Created by: {entry.created_by_name || "Unknown"}</div>
         </div>
         <span className="text-[9px] font-semibold text-slate-400">
           {entry.completed_at ? "Completed" : "Created"}: {new Date(entry.completed_at || entry.created_at).toLocaleString("en-GB")}

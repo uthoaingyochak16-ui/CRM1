@@ -1,4 +1,4 @@
-import { sanitizeInstructionHtml } from "./RichInstructionEditor.jsx";
+import { sanitizeInstructionHtml } from "./instructionHtml.js";
 
 export default function InstructionBox({ html, className = "", compact = false }) {
   const safeHtml = sanitizeInstructionHtml(html);

@@ -5,7 +5,7 @@ import useProjectRef, { withProjectParam } from "../hooks/useProjectRef.js";
 
 import { getPublicConfig, submitRegistration } from "../api/guest.js";
 import InstructionBox from "../components/InstructionBox.jsx";
-import { useRealtimeRefresh } from "../realtime/RealtimeContext.jsx";
+import { useRealtimeRefresh } from "../realtime/realtimeHooks.js";
 
 
 export default function Registration() {
@@ -67,7 +67,7 @@ export default function Registration() {
           return initial;
         });
       })
-      .catch(() => setLoadError("এই ইভেন্টের তথ্য খুঁজে পাওয়া যায়নি।"));
+      .catch(() => setLoadError("à¦à¦‡ à¦‡à¦­à§‡à¦¨à§à¦Ÿà§‡à¦° à¦¤à¦¥à§à¦¯ à¦–à§à¦à¦œà§‡ à¦ªà¦¾à¦“à¦¯à¦¼à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤"));
   };
 
   useEffect(() => loadConfig(false), [projectRef]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -86,7 +86,7 @@ export default function Registration() {
 
     for (const f of config.form_fields) {
       if ((f.required || f.type === "tel") && !String(values[f.key] || "").trim()) {
-        setFormError(`"${f.label}" ফিল্ডটি আবশ্যক।`);
+        setFormError(`"${f.label}" à¦«à¦¿à¦²à§à¦¡à¦Ÿà¦¿ à¦†à¦¬à¦¶à§à¦¯à¦•à¥¤`);
         return;
       }
     }
@@ -95,17 +95,17 @@ export default function Registration() {
   }
 
   if (!projectRef || loadError) {
-    return <Shell><Center text={loadError || "কোনো ইভেন্ট নির্বাচন করা হয়নি।"} /></Shell>;
+    return <Shell><Center text={loadError || "à¦•à§‹à¦¨à§‹ à¦‡à¦­à§‡à¦¨à§à¦Ÿ à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à¦¾ à¦¹à¦¯à¦¼à¦¨à¦¿à¥¤"} /></Shell>;
   }
   if (!config) {
-    return <Shell><Center text="লোড হচ্ছে…" /></Shell>;
+    return <Shell><Center text="à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦" /></Shell>;
   }
   if (!config.published) {
-    return <Shell><Center text="রেজিস্ট্রেশন এখনো খোলা হয়নি।" /></Shell>;
+    return <Shell><Center text="à¦°à§‡à¦œà¦¿à¦¸à§à¦Ÿà§à¦°à§‡à¦¶à¦¨ à¦à¦–à¦¨à§‹ à¦–à§‹à¦²à¦¾ à¦¹à¦¯à¦¼à¦¨à¦¿à¥¤" /></Shell>;
   }
   const seatsFull = Boolean(config.max_registrations) && config.registrations_count >= config.max_registrations;
   if (seatsFull) {
-    return <Shell><Center text="🎟️ দুঃখিত, রেজিস্ট্রেশনের নির্ধারিত আসন সংখ্যা পূর্ণ হয়ে গেছে।" /></Shell>;
+    return <Shell><Center text="ðŸŽŸï¸ à¦¦à§à¦ƒà¦–à¦¿à¦¤, à¦°à§‡à¦œà¦¿à¦¸à§à¦Ÿà§à¦°à§‡à¦¶à¦¨à§‡à¦° à¦¨à¦¿à¦°à§à¦§à¦¾à¦°à¦¿à¦¤ à¦†à¦¸à¦¨ à¦¸à¦‚à¦–à§à¦¯à¦¾ à¦ªà§‚à¦°à§à¦£ à¦¹à¦¯à¦¼à§‡ à¦—à§‡à¦›à§‡à¥¤" /></Shell>;
   }
 
   return (
@@ -134,7 +134,7 @@ export default function Registration() {
           disabled={submitting}
           className="mt-2 w-full rounded-full bg-accent px-6 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-accent-hover disabled:opacity-60"
         >
-          {submitting ? "জমা হচ্ছে…" : "রেজিস্ট্রেশন সম্পন্ন করুন"}
+          {submitting ? "à¦œà¦®à¦¾ à¦¹à¦šà§à¦›à§‡â€¦" : "à¦°à§‡à¦œà¦¿à¦¸à§à¦Ÿà§à¦°à§‡à¦¶à¦¨ à¦¸à¦®à§à¦ªà¦¨à§à¦¨ à¦•à¦°à§à¦¨"}
         </button>
       </form>
     </Shell>
@@ -148,8 +148,8 @@ function Field({ field, value, onChange }) {
   const isDropdown = field.type === "select" || field.type === "dropdown";
   const isRequired = field.required || field.type === "tel";
   const normalizedFieldName = `${field.key || ""} ${field.label || ""}`.toLowerCase();
-  const placeholder = /remarks?|comment|মন্তব্য/.test(normalizedFieldName)
-    ? "আপনার কোনো সমস্যা অথবা কোয়ান্টাম সম্পর্কে কোনো মন্তব্য থাকলে এখানে লিখুন।"
+  const placeholder = /remarks?|comment|à¦®à¦¨à§à¦¤à¦¬à§à¦¯/.test(normalizedFieldName)
+    ? "à¦†à¦ªà¦¨à¦¾à¦° à¦•à§‹à¦¨à§‹ à¦¸à¦®à¦¸à§à¦¯à¦¾ à¦…à¦¥à¦¬à¦¾ à¦•à§‹à¦¯à¦¼à¦¾à¦¨à§à¦Ÿà¦¾à¦® à¦¸à¦®à§à¦ªà¦°à§à¦•à§‡ à¦•à§‹à¦¨à§‹ à¦®à¦¨à§à¦¤à¦¬à§à¦¯ à¦¥à¦¾à¦•à¦²à§‡ à¦à¦–à¦¾à¦¨à§‡ à¦²à¦¿à¦–à§à¦¨à¥¤"
     : field.placeholder;
 
   return (
@@ -168,7 +168,7 @@ function Field({ field, value, onChange }) {
         />
       ) : isDropdown ? (
         <select required={isRequired} className={base} value={value} onChange={(e) => onChange(e.target.value)}>
-          <option value="">নির্বাচন করুন</option>
+          <option value="">à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à§à¦¨</option>
           {(field.options || []).map((opt) => (
             <option key={opt} value={opt}>
               {opt}

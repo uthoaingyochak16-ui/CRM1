@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { API_BASE } from "../../api/guest";
 
 const STAGE_OPTIONS = [
@@ -36,11 +36,6 @@ export default function TasksPageNew() {
     }
   }, []);
 
-  // Fetch tasks based on active tab
-  useEffect(() => {
-    fetchTasks();
-  }, [activeTab]);
-
   // Fetch executives for assignment modal
   useEffect(() => {
     if (assignModal) {
@@ -48,7 +43,7 @@ export default function TasksPageNew() {
     }
   }, [assignModal]);
 
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     setLoading(true);
     try {
       const token = sessionStorage.getItem("qf_admin_token");
@@ -74,7 +69,12 @@ export default function TasksPageNew() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeTab, currentUser?.id]);
+
+  // Fetch tasks based on active tab
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
 
   const fetchExecutives = async () => {
     try {

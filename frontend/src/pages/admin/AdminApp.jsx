@@ -12,7 +12,7 @@ import SettingsPage from "./SettingsPage.jsx";
 import SheetsPage from "./SheetsPage.jsx";
 import ReportsPage from "./ReportsPage.jsx";
 import AgentChatWidget from "../../components/AgentChatWidget.jsx";
-import Breadcrumb from "../../components/Breadcrumb.jsx"; // path আপনার ফোল্ডার স্ট্রাকচার অনুযায়ী adjust করুন
+import Breadcrumb from "../../components/Breadcrumb.jsx"; // path à¦†à¦ªà¦¨à¦¾à¦° à¦«à§‹à¦²à§à¦¡à¦¾à¦° à¦¸à§à¦Ÿà§à¦°à¦¾à¦•à¦šà¦¾à¦° à¦…à¦¨à§à¦¯à¦¾à¦¯à¦¼à§€ adjust à¦•à¦°à§à¦¨
 import InstallAppButton from "../../components/InstallAppButton.jsx";
 import NotificationBell from "../../components/NotificationBell.jsx";
 import ProfileAvatar from "../../components/ProfileAvatar.jsx";
@@ -22,7 +22,7 @@ import ExecutivePerformanceDetail from "./CommunicatorPerformanceDetail.jsx";
 import MyPerformancePage from "./MyPerformancePage.jsx";
 import FollowupsPage from "./FollowupsPage.jsx";
 import { getMe, logout } from "../../api/guest.js";
-import { useRealtimeRefresh } from "../../realtime/RealtimeContext.jsx";
+import { useRealtimeRefresh } from "../../realtime/realtimeHooks.js";
 import ErrorBoundary from "../../components/ErrorBoundary.jsx";
 
 
@@ -123,7 +123,7 @@ export default function AdminApp() {
             className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D0D5DD] text-sm text-[#344054] hover:border-[#84ADFF] hover:bg-[#EEF4FF]"
             aria-label="Toggle navigation menu"
           >
-            {mobileOpen ? "✕" : "☰"}
+            {mobileOpen ? "âœ•" : "â˜°"}
           </button>
         </div>
       </header>
@@ -250,11 +250,11 @@ function Sidebar({ currentUser, canSeeCustomers, onLoggedOut, mobileOpen, setMob
           onClick={() => setMobileOpen(false)}
           className="rounded-lg p-1 text-xs text-[#667085] hover:bg-[#F9FAFB] md:hidden"
         >
-          ✕
+          âœ•
         </button>
       </div>
 
-      {/* Desktop sidebar toggle — kept below the logo */}
+      {/* Desktop sidebar toggle â€” kept below the logo */}
       <div className={`hidden flex-shrink-0 border-b border-[#E9EDF2] p-2 md:flex ${sidebarExpanded ? "justify-stretch" : "justify-center"}`}>
         <button
           type="button"
@@ -272,7 +272,7 @@ function Sidebar({ currentUser, canSeeCustomers, onLoggedOut, mobileOpen, setMob
       <nav className={`flex-1 overflow-y-auto py-4 ${sidebarExpanded ? "px-3" : "px-3 md:px-2"}`}>
         {!isAdmin && (
           <div className={`mb-1 px-2 text-[10px] font-bold uppercase tracking-wider text-[#98A2B3] ${!sidebarExpanded ? "md:hidden" : ""}`}>
-            আমার কাজ
+            à¦†à¦®à¦¾à¦° à¦•à¦¾à¦œ
           </div>
         )}
         <ul className="flex flex-col gap-0.5">

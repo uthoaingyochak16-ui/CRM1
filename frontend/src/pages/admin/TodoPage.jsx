@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMyTodos, updateTask, listTasks, listUsers, bulkAssignTasks } from "../../api/guest.js";
 import LimitReachedModal from "../../components/LimitReachedModal.jsx";
-import { useRealtimeRefresh } from "../../realtime/RealtimeContext.jsx";
+import { useRealtimeRefresh } from "../../realtime/realtimeHooks.js";
 import ProfileAvatar from "../../components/ProfileAvatar.jsx";
 import ListScrollArea from "../../components/ListScrollArea.jsx";
 
@@ -71,10 +71,10 @@ function AdminConsultantTodoView({ onLoggedOut }) {
     <div className="w-full max-w-none px-2 py-3">
       <div className="mb-4">
         <h1 className="font-display text-xl font-black text-[#101828]">Communicator To-do</h1>
-        <p className="mt-0.5 text-xs text-[#667085]">কোনো communicator নির্বাচন করে তার To-do list ও history দেখুন।</p>
+        <p className="mt-0.5 text-xs text-[#667085]">à¦•à§‹à¦¨à§‹ communicator à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à§‡ à¦¤à¦¾à¦° To-do list à¦“ history à¦¦à§‡à¦–à§à¦¨à¥¤</p>
       </div>
-      {loading && <div className="py-10 text-center text-sm text-[#667085]">লোড হচ্ছে…</div>}
-      {!loading && executives.length === 0 && <div className="rounded-xl border border-[#E4E7EC] bg-white py-14 text-center text-sm text-[#98A2B3]">কোনো communicator নেই।</div>}
+      {loading && <div className="py-10 text-center text-sm text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>}
+      {!loading && executives.length === 0 && <div className="rounded-xl border border-[#E4E7EC] bg-white py-14 text-center text-sm text-[#98A2B3]">à¦•à§‹à¦¨à§‹ communicator à¦¨à§‡à¦‡à¥¤</div>}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {executives.map((executive) => (
           <button
@@ -90,7 +90,7 @@ function AdminConsultantTodoView({ onLoggedOut }) {
               <span className="block truncate text-sm font-bold text-[#101828]">{executive.name}</span>
               <span className="block truncate text-[11px] text-[#667085]">{executive.email}</span>
             </span>
-            <span className="text-[#2554C7]">→</span>
+            <span className="text-[#2554C7]">â†’</span>
           </button>
         ))}
       </div>
@@ -132,10 +132,10 @@ function ExecutiveTodoTableView({ onLoggedOut, targetUserId = null, consultantNa
     <div className="w-full max-w-none px-2 py-3">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
-          {onBack && <button onClick={onBack} className="back-button mb-2">← সব Communicator</button>}
-          <h1 className="font-display text-xl font-black text-[#101828]">{consultantName ? `${consultantName} — To-do` : "আজকের To-do"}</h1>
+          {onBack && <button onClick={onBack} className="back-button mb-2">â† à¦¸à¦¬ Communicator</button>}
+          <h1 className="font-display text-xl font-black text-[#101828]">{consultantName ? `${consultantName} â€” To-do` : "à¦†à¦œà¦•à§‡à¦° To-do"}</h1>
           <p className="mt-0.5 text-xs text-[#667085]">
-            {readOnly ? "Read-only view · Filter ব্যবহার করে task history দেখুন" : "আজকের task এবং আগের দিনের অসম্পূর্ণ carry-over task"}
+            {readOnly ? "Read-only view Â· Filter à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦° à¦•à¦°à§‡ task history à¦¦à§‡à¦–à§à¦¨" : "à¦†à¦œà¦•à§‡à¦° task à¦à¦¬à¦‚ à¦†à¦—à§‡à¦° à¦¦à¦¿à¦¨à§‡à¦° à¦…à¦¸à¦®à§à¦ªà§‚à¦°à§à¦£ carry-over task"}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -179,10 +179,10 @@ function ExecutiveTodoTableView({ onLoggedOut, targetUserId = null, consultantNa
         </button>
       </div>
 
-      {loading && <div className="py-10 text-center text-sm text-[#667085]">লোড হচ্ছে…</div>}
+      {loading && <div className="py-10 text-center text-sm text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>}
       {!loading && todos.length === 0 && (
         <div className="rounded-xl border border-[#E4E7EC] bg-white py-14 text-center text-sm text-[#98A2B3]">
-          এই তারিখে কোনো task নেই।
+          à¦à¦‡ à¦¤à¦¾à¦°à¦¿à¦–à§‡ à¦•à§‹à¦¨à§‹ task à¦¨à§‡à¦‡à¥¤
         </div>
       )}
 
@@ -225,11 +225,11 @@ function ExecutiveTodoTableView({ onLoggedOut, targetUserId = null, consultantNa
                         </td>
                         <td className="px-4 py-3 text-xs font-semibold text-[#475467]">{task.customer_id ? "Follow-up" : "General"}</td>
                         <td className="whitespace-nowrap px-4 py-3 text-xs text-[#475467]">
-                          {effectiveDate ? new Date(`${effectiveDate}T00:00:00`).toLocaleDateString("en-GB") : "—"}
+                          {effectiveDate ? new Date(`${effectiveDate}T00:00:00`).toLocaleDateString("en-GB") : "â€”"}
                           {isCarryOver && <span className="ml-2 rounded-md bg-rose-600 px-1.5 py-0.5 text-[9px] font-bold text-white">CARRY-OVER</span>}
                         </td>
-                        <td className="px-4 py-3 text-xs text-[#475467]">{task.project_name || "—"}</td>
-                        <td className="px-4 py-3 text-xs text-[#475467]">{task.stage || "—"}</td>
+                        <td className="px-4 py-3 text-xs text-[#475467]">{task.project_name || "â€”"}</td>
+                        <td className="px-4 py-3 text-xs text-[#475467]">{task.stage || "â€”"}</td>
                         <td className="px-4 py-3">
                           <span className={`rounded-md px-2 py-1 text-[10px] font-bold ${isCompleted ? "bg-emerald-100 text-emerald-800" : isCarryOver ? "bg-rose-100 text-rose-800" : "bg-blue-100 text-blue-800"}`}>
                             {isCompleted ? "Completed" : isCarryOver ? "Overdue" : "Pending"}
@@ -269,9 +269,10 @@ function ExecutiveTodoTableView({ onLoggedOut, targetUserId = null, consultantNa
   );
 }
 
-/* ─────────────────────────────────────────────
-   EXECUTIVE VIEW — নিজের assigned pending tasks
-───────────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   EXECUTIVE VIEW â€” à¦¨à¦¿à¦œà§‡à¦° assigned pending tasks
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+// oxlint-disable no-unused-vars
 function ExecutiveTodoView({ currentUser, onLoggedOut }) {
   const navigate = useNavigate();
   const [todos, setTodos] = useState([]);
@@ -309,13 +310,13 @@ function ExecutiveTodoView({ currentUser, onLoggedOut }) {
         <p className="mt-1 text-xs text-[#667085]">{today}</p>
       </div>
 
-      {loading && <div className="py-10 text-center text-sm text-[#667085]">লোড হচ্ছে…</div>}
+      {loading && <div className="py-10 text-center text-sm text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>}
 
       {!loading && todos.length === 0 && (
         <div className="rounded-xl border border-[#E4E7EC] bg-white py-16 text-center">
-          <div className="text-3xl">✅</div>
-          <div className="mt-2 text-sm font-semibold text-[#027A48]">আজকের সব কাজ সম্পন্ন!</div>
-          <div className="mt-1 text-xs text-[#98A2B3]">কোনো pending task বা follow-up নেই।</div>
+          <div className="text-3xl">âœ…</div>
+          <div className="mt-2 text-sm font-semibold text-[#027A48]">à¦†à¦œà¦•à§‡à¦° à¦¸à¦¬ à¦•à¦¾à¦œ à¦¸à¦®à§à¦ªà¦¨à§à¦¨!</div>
+          <div className="mt-1 text-xs text-[#98A2B3]">à¦•à§‹à¦¨à§‹ pending task à¦¬à¦¾ follow-up à¦¨à§‡à¦‡à¥¤</div>
         </div>
       )}
 
@@ -323,10 +324,10 @@ function ExecutiveTodoView({ currentUser, onLoggedOut }) {
       {followups.length > 0 && (
         <section className="mb-5">
           <div className="mb-2 flex items-center gap-2">
-            <span className="text-base">📞</span>
-            <h2 className="text-sm font-bold text-[#101828]">আজকের Follow-up</h2>
+            <span className="text-base">ðŸ“ž</span>
+            <h2 className="text-sm font-bold text-[#101828]">à¦†à¦œà¦•à§‡à¦° Follow-up</h2>
             <span className="rounded-full bg-[#FEF3F2] px-2 py-0.5 text-[10px] font-bold text-[#D92D20]">
-              {followups.length}টি
+              {followups.length}à¦Ÿà¦¿
             </span>
           </div>
           <div className="flex flex-col gap-2.5">
@@ -349,10 +350,10 @@ function ExecutiveTodoView({ currentUser, onLoggedOut }) {
                       <div className="mt-0.5 text-xs text-[#667085]">{t.project_name}</div>
                     )}
                     {t.customer_problem && (
-                      <div className="mt-1 text-xs text-[#344054]">সমস্যা: {t.customer_problem}</div>
+                      <div className="mt-1 text-xs text-[#344054]">à¦¸à¦®à¦¸à§à¦¯à¦¾: {t.customer_problem}</div>
                     )}
                     {t.executive_remarks && (
-                      <div className="mt-0.5 text-xs text-[#667085]">আগের রিমার্ক: {t.executive_remarks}</div>
+                      <div className="mt-0.5 text-xs text-[#667085]">à¦†à¦—à§‡à¦° à¦°à¦¿à¦®à¦¾à¦°à§à¦•: {t.executive_remarks}</div>
                     )}
                   </div>
                   <div className="flex flex-shrink-0 flex-col gap-1.5">
@@ -360,13 +361,13 @@ function ExecutiveTodoView({ currentUser, onLoggedOut }) {
                       onClick={() => navigate(`/admin/customers/${t.customer_id}`)}
                       className="rounded-full bg-[#EEF4FF] px-3 py-1.5 text-xs font-bold text-[#17368F] hover:bg-[#DBEAFE]"
                     >
-                      Profile →
+                      Profile â†’
                     </button>
                     <button
                       onClick={() => setOpenFormFor(openFormFor === t.id ? null : t.id)}
                       className="rounded-full bg-[#2554C7] px-3 py-1.5 text-xs font-bold text-white"
                     >
-                      {openFormFor === t.id ? "বন্ধ করুন" : "Follow-up দিন"}
+                      {openFormFor === t.id ? "à¦¬à¦¨à§à¦§ à¦•à¦°à§à¦¨" : "Follow-up à¦¦à¦¿à¦¨"}
                     </button>
                   </div>
                 </div>
@@ -390,10 +391,10 @@ function ExecutiveTodoView({ currentUser, onLoggedOut }) {
       {general.length > 0 && (
         <section>
           <div className="mb-2 flex items-center gap-2">
-            <span className="text-base">📋</span>
-            <h2 className="text-sm font-bold text-[#101828]">সাধারণ Task</h2>
+            <span className="text-base">ðŸ“‹</span>
+            <h2 className="text-sm font-bold text-[#101828]">à¦¸à¦¾à¦§à¦¾à¦°à¦£ Task</h2>
             <span className="rounded-full bg-[#EEF4FF] px-2 py-0.5 text-[10px] font-bold text-[#17368F]">
-              {general.length}টি
+              {general.length}à¦Ÿà¦¿
             </span>
           </div>
           <div className="flex flex-col gap-2">
@@ -419,9 +420,11 @@ function ExecutiveTodoView({ currentUser, onLoggedOut }) {
   );
 }
 
-/* ─────────────────────────────────────────────
-   ADMIN VIEW — সব unassigned ও pending tasks
-───────────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   ADMIN VIEW â€” à¦¸à¦¬ unassigned à¦“ pending tasks
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+// oxlint-enable no-unused-vars
+// oxlint-disable no-unused-vars
 function AdminTodoView({ currentUser, onLoggedOut }) {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
@@ -471,7 +474,7 @@ function AdminTodoView({ currentUser, onLoggedOut }) {
       {/* Header */}
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="font-display text-xl font-black text-[#101828]">📋 Task Overview</h1>
+          <h1 className="font-display text-xl font-black text-[#101828]">ðŸ“‹ Task Overview</h1>
           <p className="mt-1 text-xs text-[#667085]">{today}</p>
         </div>
         <div className="flex gap-2 text-xs font-semibold">
@@ -484,12 +487,12 @@ function AdminTodoView({ currentUser, onLoggedOut }) {
         </div>
       </div>
 
-      {loading && <div className="py-10 text-center text-sm text-[#667085]">লোড হচ্ছে…</div>}
+      {loading && <div className="py-10 text-center text-sm text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>}
 
       {!loading && tasks.length === 0 && (
         <div className="rounded-xl border border-[#E4E7EC] bg-white py-16 text-center">
-          <div className="text-3xl">✅</div>
-          <div className="mt-2 text-sm font-semibold text-[#027A48]">কোনো pending task নেই!</div>
+          <div className="text-3xl">âœ…</div>
+          <div className="mt-2 text-sm font-semibold text-[#027A48]">à¦•à§‹à¦¨à§‹ pending task à¦¨à§‡à¦‡!</div>
         </div>
       )}
 
@@ -497,10 +500,10 @@ function AdminTodoView({ currentUser, onLoggedOut }) {
       {unassigned.length > 0 && (
         <section className="mb-6">
           <div className="mb-3 flex items-center gap-2">
-            <span className="text-base">🔴</span>
+            <span className="text-base">ðŸ”´</span>
             <h2 className="text-sm font-bold text-[#101828]">Unassigned Tasks</h2>
             <span className="rounded-full bg-[#FEF3F2] px-2 py-0.5 text-[10px] font-bold text-[#D92D20]">
-              {unassigned.length}টি
+              {unassigned.length}à¦Ÿà¦¿
             </span>
           </div>
           <div className="flex flex-col gap-3">
@@ -520,7 +523,7 @@ function AdminTodoView({ currentUser, onLoggedOut }) {
                       )}
                     </div>
                     {t.project_name && (
-                      <div className="mt-0.5 text-xs text-[#667085]">🗂 {t.project_name}</div>
+                      <div className="mt-0.5 text-xs text-[#667085]">ðŸ—‚ {t.project_name}</div>
                     )}
                     {t.description && (
                       <div className="mt-0.5 text-xs text-[#98A2B3]">{t.description}</div>
@@ -532,7 +535,7 @@ function AdminTodoView({ currentUser, onLoggedOut }) {
                         onClick={() => navigate(`/admin/customers/${t.customer_id}`)}
                         className="rounded-full bg-[#EEF4FF] px-3 py-1.5 text-xs font-bold text-[#17368F] hover:bg-[#DBEAFE] whitespace-nowrap"
                       >
-                        Profile →
+                        Profile â†’
                       </button>
                     )}
                     {executives.length > 0 ? (
@@ -542,7 +545,7 @@ function AdminTodoView({ currentUser, onLoggedOut }) {
                           onChange={(e) => setSelectedExec((prev) => ({ ...prev, [t.id]: e.target.value }))}
                           className="rounded-lg border border-[#D0D5DD] px-2 py-1.5 text-xs outline-none focus:border-[#2554C7]"
                         >
-                          <option value="">Communicator বেছে নিন</option>
+                          <option value="">Communicator à¦¬à§‡à¦›à§‡ à¦¨à¦¿à¦¨</option>
                           {executives.map((e) => (
                             <option key={e.id} value={e.id}>{e.name}</option>
                           ))}
@@ -556,7 +559,7 @@ function AdminTodoView({ currentUser, onLoggedOut }) {
                         </button>
                       </div>
                     ) : (
-                      <span className="text-xs text-[#98A2B3]">কোনো communicator নেই</span>
+                      <span className="text-xs text-[#98A2B3]">à¦•à§‹à¦¨à§‹ communicator à¦¨à§‡à¦‡</span>
                     )}
                   </div>
                 </div>
@@ -570,10 +573,10 @@ function AdminTodoView({ currentUser, onLoggedOut }) {
       {assigned.length > 0 && (
         <section>
           <div className="mb-3 flex items-center gap-2">
-            <span className="text-base">🟡</span>
+            <span className="text-base">ðŸŸ¡</span>
             <h2 className="text-sm font-bold text-[#101828]">Assigned Pending Tasks</h2>
             <span className="rounded-full bg-[#EEF4FF] px-2 py-0.5 text-[10px] font-bold text-[#17368F]">
-              {assigned.length}টি
+              {assigned.length}à¦Ÿà¦¿
             </span>
           </div>
           <div className="flex flex-col gap-2">
@@ -593,7 +596,7 @@ function AdminTodoView({ currentUser, onLoggedOut }) {
                   </div>
                   <div className="mt-0.5 flex gap-3 text-xs text-[#667085]">
                     {t.assignee_name && <span className="flex items-center gap-1"><ProfileAvatar name={t.assignee_name} imageUrl={t.assignee_image_url} className="h-5 w-5" fallbackClassName="bg-slate-500" />{t.assignee_name}</span>}
-                    {t.project_name && <span>🗂 {t.project_name}</span>}
+                    {t.project_name && <span>ðŸ—‚ {t.project_name}</span>}
                   </div>
                 </div>
                 {t.customer_id && (
@@ -601,7 +604,7 @@ function AdminTodoView({ currentUser, onLoggedOut }) {
                     onClick={() => navigate(`/admin/customers/${t.customer_id}`)}
                     className="rounded-full bg-[#EEF4FF] px-3 py-1.5 text-xs font-bold text-[#17368F] hover:bg-[#DBEAFE] whitespace-nowrap"
                   >
-                    Profile →
+                    Profile â†’
                   </button>
                 )}
               </div>
@@ -613,9 +616,9 @@ function AdminTodoView({ currentUser, onLoggedOut }) {
   );
 }
 
-/* ─────────────────────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    FOLLOW-UP MINI FORM (Executive only)
-───────────────────────────────────────────── */
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function FollowUpMini({ task, onDone }) {
   const [form, setForm] = useState({
     stage: task.stage || "",
@@ -635,11 +638,11 @@ function FollowUpMini({ task, onDone }) {
 
   async function handleSubmit(complete) {
     if (complete && (!form.stage || form.call_received === "")) {
-      setError("Task complete করতে Stage এবং Phone Receive Status পূরণ করুন।");
+      setError("Task complete à¦•à¦°à¦¤à§‡ Stage à¦à¦¬à¦‚ Phone Receive Status à¦ªà§‚à¦°à¦£ à¦•à¦°à§à¦¨à¥¤");
       return;
     }
     if (form.next_following_date && !form.next_followup_note.trim()) {
-      setError("পরবর্তী Follow-up date দিলে কেন Follow-up করবেন সেই note লিখুন।");
+      setError("à¦ªà¦°à¦¬à¦°à§à¦¤à§€ Follow-up date à¦¦à¦¿à¦²à§‡ à¦•à§‡à¦¨ Follow-up à¦•à¦°à¦¬à§‡à¦¨ à¦¸à§‡à¦‡ note à¦²à¦¿à¦–à§à¦¨à¥¤");
       return;
     }
     setSaving(true);
@@ -656,8 +659,8 @@ function FollowUpMini({ task, onDone }) {
       });
       onDone();
     } catch (requestError) {
-      const detail = requestError.response?.data?.detail || "Follow-up সংরক্ষণ করা যায়নি।";
-      if (/limit|পূর্ণ হয়েছে/i.test(detail)) setLimitNotice(detail);
+      const detail = requestError.response?.data?.detail || "Follow-up à¦¸à¦‚à¦°à¦•à§à¦·à¦£ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤";
+      if (/limit|à¦ªà§‚à¦°à§à¦£ à¦¹à¦¯à¦¼à§‡à¦›à§‡/i.test(detail)) setLimitNotice(detail);
       else setError(detail);
     } finally {
       setSaving(false);
@@ -674,8 +677,8 @@ function FollowUpMini({ task, onDone }) {
           value={form.stage}
           onChange={(e) => set("stage", e.target.value)}
         >
-          <option value="">নির্বাচন করুন</option>
-          {STAGE_OPTIONS.map((s) => <option key={s} value={s} style={{ color: STAGE_HEX[s], fontWeight: 700 }}>● {s}</option>)}
+          <option value="">à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à§à¦¨</option>
+          {STAGE_OPTIONS.map((s) => <option key={s} value={s} style={{ color: STAGE_HEX[s], fontWeight: 700 }}>â— {s}</option>)}
         </select>
       </div>
       <div>
@@ -687,7 +690,7 @@ function FollowUpMini({ task, onDone }) {
           value={form.call_received}
           onChange={(e) => set("call_received", e.target.value)}
         >
-          <option value="">নির্বাচন করুন</option>
+          <option value="">à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à§à¦¨</option>
           <option value="received">Phone Received</option>
           <option value="not_received">Phone Not Received</option>
         </select>
@@ -695,7 +698,7 @@ function FollowUpMini({ task, onDone }) {
       <div className="col-span-2 grid gap-3 sm:grid-cols-2">
         <div>
         <label className="mb-1 block text-[11px] font-bold uppercase text-[#667085]">
-          পরবর্তী Follow-up
+          à¦ªà¦°à¦¬à¦°à§à¦¤à§€ Follow-up
         </label>
         <input
           type="datetime-local"
@@ -705,8 +708,8 @@ function FollowUpMini({ task, onDone }) {
         />
         </div>
         <div>
-          <label className="mb-1 block text-[11px] font-bold uppercase text-[#667085]">Follow-up Note / কেন আবার Follow-up করবেন</label>
-          <textarea required={Boolean(form.next_following_date)} rows={1} className="input w-full" placeholder="Follow-up করার কারণ লিখুন" value={form.next_followup_note} onChange={(e) => set("next_followup_note", e.target.value)} />
+          <label className="mb-1 block text-[11px] font-bold uppercase text-[#667085]">Follow-up Note / à¦•à§‡à¦¨ à¦†à¦¬à¦¾à¦° Follow-up à¦•à¦°à¦¬à§‡à¦¨</label>
+          <textarea required={Boolean(form.next_following_date)} rows={1} className="input w-full" placeholder="Follow-up à¦•à¦°à¦¾à¦° à¦•à¦¾à¦°à¦£ à¦²à¦¿à¦–à§à¦¨" value={form.next_followup_note} onChange={(e) => set("next_followup_note", e.target.value)} />
         </div>
       </div>
       <div className="col-span-2 flex gap-2">
@@ -722,7 +725,7 @@ function FollowUpMini({ task, onDone }) {
           disabled={saving}
           className="flex-1 rounded-full bg-[#027A48] py-2 text-xs font-bold text-white"
         >
-          {saving ? "Saving…" : "Complete করুন"}
+          {saving ? "Savingâ€¦" : "Complete à¦•à¦°à§à¦¨"}
         </button>
       </div>
       {error && (

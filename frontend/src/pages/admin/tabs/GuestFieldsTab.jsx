@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { listCustomerFields, replaceCustomerFields } from "../../../api/guest.js";
 import { reloadPage } from "../../../utils/reload.js";
-import { useRealtimeRefresh } from "../../../realtime/RealtimeContext.jsx";
+import { useRealtimeRefresh } from "../../../realtime/realtimeHooks.js";
 
 const FIELD_TYPES = ["text", "tel", "email", "textarea", "select", "dropdown", "date", "number", "checkbox"];
 
@@ -27,7 +27,7 @@ export default function CustomerFieldsTab() {
   useEffect(() => {
     listCustomerFields()
       .then((res) => setFields(res.data))
-      .catch(() => setError("Guest profile fields লোড করা যায়নি।"))
+      .catch(() => setError("Guest profile fields à¦²à§‹à¦¡ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤"))
       .finally(() => setLoading(false));
   }, []);
 
@@ -69,7 +69,7 @@ export default function CustomerFieldsTab() {
   }
 
   function removeField(index) {
-    if (!confirm(`"${fields[index].label}" field মুছে ফেলবেন?`)) return;
+    if (!confirm(`"${fields[index].label}" field à¦®à§à¦›à§‡ à¦«à§‡à¦²à¦¬à§‡à¦¨?`)) return;
     setFields((current) => current.filter((_, idx) => idx !== index));
     setSaved(false);
   }
@@ -85,7 +85,7 @@ export default function CustomerFieldsTab() {
     if (editingIndex !== null) {
       const key = makeKey(draft.key || draft.label);
       if (!draft.label.trim() || !key) {
-        setError("Label এবং Key উভয়ই দিন।");
+        setError("Label à¦à¦¬à¦‚ Key à¦‰à¦­à¦¯à¦¼à¦‡ à¦¦à¦¿à¦¨à¥¤");
         return;
       }
       const options = draft.type === "select"
@@ -93,7 +93,7 @@ export default function CustomerFieldsTab() {
         : [];
       const duplicate = nextFields.findIndex((field, idx) => field.key === key && idx !== editingIndex);
       if (duplicate !== -1) {
-        setError("এই Key ইতিমধ্যেই ব্যবহার হচ্ছে।");
+        setError("à¦à¦‡ Key à¦‡à¦¤à¦¿à¦®à¦§à§à¦¯à§‡à¦‡ à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦° à¦¹à¦šà§à¦›à§‡à¥¤");
         return;
       }
       const nextField = { key, label: draft.label.trim(), type: draft.type, options };
@@ -112,7 +112,7 @@ export default function CustomerFieldsTab() {
       closeEditor();
       reloadPage();
     } catch (err) {
-      setError(err.response?.data?.detail || "Guest fields সংরক্ষণ করা যায়নি।");
+      setError(err.response?.data?.detail || "Guest fields à¦¸à¦‚à¦°à¦•à§à¦·à¦£ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
     } finally {
       setSaving(false);
     }
@@ -122,7 +122,7 @@ export default function CustomerFieldsTab() {
     return (
       <div className="rounded-xl border border-[#E4E7EC] bg-white p-5">
         <div className="text-sm font-bold text-[#101828]">Guest Profile Fields</div>
-        <div className="mt-5 text-xs text-[#667085]">লোড হচ্ছে…</div>
+        <div className="mt-5 text-xs text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>
       </div>
     );
   }
@@ -132,7 +132,7 @@ export default function CustomerFieldsTab() {
       <div className="mb-5 flex items-center justify-between gap-3">
         <div>
           <div className="text-sm font-bold text-[#101828]">Guest Profile Fields</div>
-          <div className="mt-1 text-xs text-[#667085]">এই fields গুলো Guest profile এ যোগ করা হবে।</div>
+          <div className="mt-1 text-xs text-[#667085]">à¦à¦‡ fields à¦—à§à¦²à§‹ Guest profile à¦ à¦¯à§‹à¦— à¦•à¦°à¦¾ à¦¹à¦¬à§‡à¥¤</div>
         </div>
         <button onClick={openAdd} className="rounded-full bg-[#EEF4FF] px-3.5 py-1.5 text-xs font-bold text-[#17368F] hover:bg-[#DBEAFE]">
           + Add Field
@@ -141,7 +141,7 @@ export default function CustomerFieldsTab() {
 
       {fields.length === 0 ? (
         <div className="rounded-xl border border-[#F1F2F4] bg-[#FCFCFD] p-5 text-sm text-[#667085]">
-          কোনো guest profile field এখনও নির্ধারিত হয়নি। Add Field করলে address, occupation, note ইত্যাদি save করতে পারবেন।
+          à¦•à§‹à¦¨à§‹ guest profile field à¦à¦–à¦¨à¦“ à¦¨à¦¿à¦°à§à¦§à¦¾à¦°à¦¿à¦¤ à¦¹à¦¯à¦¼à¦¨à¦¿à¥¤ Add Field à¦•à¦°à¦²à§‡ address, occupation, note à¦‡à¦¤à§à¦¯à¦¾à¦¦à¦¿ save à¦•à¦°à¦¤à§‡ à¦ªà¦¾à¦°à¦¬à§‡à¦¨à¥¤
         </div>
       ) : (
         <div className="space-y-3">
@@ -198,12 +198,12 @@ export default function CustomerFieldsTab() {
           {error && <div className="mt-3 rounded-lg bg-[#FEF3F2] px-3 py-2 text-xs text-[#D92D20]">{error}</div>}
           <div className="mt-4 flex flex-wrap gap-2">
             <button onClick={handleSaveFields} disabled={saving} className="rounded-full bg-[#2554C7] px-4 py-2 text-xs font-bold text-white hover:bg-[#17368F] disabled:opacity-60">
-              {saving ? "Saving…" : editingIndex === -1 ? "Add Field" : "Save Field"}
+              {saving ? "Savingâ€¦" : editingIndex === -1 ? "Add Field" : "Save Field"}
             </button>
             <button onClick={closeEditor} disabled={saving} className="rounded-full border border-[#D0D5DD] px-4 py-2 text-xs font-semibold text-[#344054]">
               Cancel
             </button>
-            {saved && <span className="self-center text-xs font-semibold text-[#027A48]">✓ Saved</span>}
+            {saved && <span className="self-center text-xs font-semibold text-[#027A48]">âœ“ Saved</span>}
           </div>
         </div>
       )}
