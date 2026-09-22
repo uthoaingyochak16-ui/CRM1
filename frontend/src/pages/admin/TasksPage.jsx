@@ -688,9 +688,9 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
                           <td className="px-3 py-2.5 align-middle text-xs font-medium leading-5 text-slate-600">
                             <span className="break-words">{summary.profession || "—"}</span>
                           </td>
-                          <td className="max-w-[240px] px-4 py-2.5 align-middle text-xs">
-                            <div className="text-slate-700" title={String(summary.remarks || "")}><span className="font-semibold">Remarks:</span> {truncateWords(summary.remarks)}</div>
-                            <div className="mt-0.5 text-slate-500" title={String(summary.problem || "")}><span className="font-semibold">Problem:</span> {truncateWords(summary.problem)}</div>
+                          <td className="max-w-[280px] px-4 py-2.5 align-middle text-xs">
+                            <div className="break-words whitespace-pre-wrap text-slate-700" title={String(summary.remarks || "")}><span className="font-semibold">Remarks:</span> {truncateWords(summary.remarks, 12)}</div>
+                            <div className="mt-0.5 break-words whitespace-pre-wrap text-slate-500" title={String(summary.problem || "")}><span className="font-semibold">Problem:</span> {truncateWords(summary.problem, 12)}</div>
                           </td>
                         </>}
                         <td className="px-4 py-2.5 align-middle text-xs font-medium text-slate-500">{t.project_name || "—"}</td>
@@ -828,9 +828,9 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
                     </div>
 
                     {(summary.remarks || summary.problem) && (
-                      <div className="truncate text-[10px] leading-tight text-slate-600">
-                        {summary.remarks ? <><span className="font-semibold">R:</span> {truncateWords(summary.remarks, 6)} </> : null}
-                        {summary.problem ? <><span className="font-semibold">P:</span> {truncateWords(summary.problem, 6)}</> : null}
+                      <div className="line-clamp-2 break-words whitespace-pre-wrap text-[10px] leading-tight text-slate-600">
+                        {summary.remarks ? <><span className="font-semibold">R:</span> {truncateWords(summary.remarks, 12)} </> : null}
+                        {summary.problem ? <><span className="font-semibold">P:</span> {truncateWords(summary.problem, 12)}</> : null}
                       </div>
                     )}
 
@@ -959,7 +959,7 @@ function ReadOnlyValue({ label, value }) {
   return (
     <div className="rounded-lg bg-white px-2.5 py-1.5">
       <div className="text-[9px] font-bold uppercase tracking-wide text-slate-400">{label.replace(/_/g, " ")}</div>
-      <div className="mt-1 break-words text-xs font-semibold text-slate-700">{displayValue}</div>
+      <div className="mt-1 break-words whitespace-pre-wrap text-xs font-semibold text-slate-700">{displayValue}</div>
     </div>
   );
 }
