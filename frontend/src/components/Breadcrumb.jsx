@@ -54,10 +54,13 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
   const [breadcrumbContext, setBreadcrumbContext] = useState(null);
   const profileRef = useRef(null);
   const parts = location.pathname.split("/").filter(Boolean); // e.g. ["admin","customers","abc123"]
+  const query = new URLSearchParams(location.search);
 
   // "admin" itself is the Home/root crumb — don't duplicate it as a separate segment.
   const rest = parts[0] === "admin" ? parts.slice(1) : parts;
   const isHomeOnly = rest.length === 0;
+  const activeTab = query.get("tab") || "event";
+  const selectedSheetEvent = query.get("event");
 
   useEffect(() => {
     const updateContext = (event) => setBreadcrumbContext(event.detail || null);
@@ -68,7 +71,9 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
   useEffect(() => {
     const routeParts = location.pathname.split("/").filter(Boolean);
     const routeRest = routeParts[0] === "admin" ? routeParts.slice(1) : routeParts;
-    const projectId = routeRest[0] === "projects" && isDynamicSegment(routeRest[1]) ? routeRest[1] : null;
+    const projectId = routeRest[0] === "projects" && isDynamicSegment(routeRest[1])
+      ? routeRest[1]
+      : routeRest[0] === "sheets" ? selectedSheetEvent : null;
     if (!projectId && routeRest[0] !== "sheets") {
       setBreadcrumbContext(null);
       return;
@@ -80,12 +85,14 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
         setBreadcrumbContext((current) => ({
           projectId,
           projectName: response.data.name,
-          section: current?.projectId === projectId ? current.section : "event",
+          section: current?.projectId === projectId
+            ? current.section
+            : routeRest[0] === "sheets" ? "sheets" : activeTab,
         }));
       }
     }).catch(() => {});
     return () => { cancelled = true; };
-  }, [location.pathname]);
+  }, [location.pathname, activeTab, selectedSheetEvent]);
 
   const sectionLabels = {
     event: "Event",
@@ -105,7 +112,7 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
         crumbs.push({ label: breadcrumbContext.projectName, href: pathAcc, isLast: false });
         if (i === rest.length - 1) {
           crumbs.push({
-            label: sectionLabels[breadcrumbContext.section] || "Page",
+            label: sectionLabels[breadcrumbContext.section || activeTab] || "Page",
             href: pathAcc,
             isLast: true,
           });
@@ -122,8 +129,11 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
     crumbs.push({ label: SEGMENT_LABELS[seg] || seg, href: pathAcc, isLast });
   });
 
-  if (rest[0] === "sheets" && breadcrumbContext?.section === "sheets" && breadcrumbContext.projectName) {
-    crumbs.push({ label: breadcrumbContext.projectName, href: "/admin/sheets", isLast: true });
+  if (rest[0] === "sheets" && selectedSheetEvent) {
+    const sheetProjectName = breadcrumbContext?.projectId === selectedSheetEvent
+      ? breadcrumbContext.projectName
+      : "Event";
+    crumbs.push({ label: sheetProjectName, href: `/admin/sheets?event=${encodeURIComponent(selectedSheetEvent)}`, isLast: true });
   }
 
   useEffect(() => {

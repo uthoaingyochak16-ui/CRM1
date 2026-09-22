@@ -1,5 +1,6 @@
 // frontend/src/pages/admin/SheetsPage.jsx
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { listProjects, listRegistrations } from "../../api/guest";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -24,25 +25,11 @@ export default function SheetsPage({ onLoggedOut }) {
   const [visibleCols, setVisibleCols] = useState(new Set());
   const [colPickerOpen, setColPickerOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  useEffect(() => {
-    listProjects()
-      .then((res) => setProjects(res.data))
-      .catch((err) => {
-        if (err.response?.status === 401) onLoggedOut();
-        else setError("লোড করা যায়নি।");
-      });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useRealtimeRefresh(["projects", "project_permissions"], () => {
-    listProjects().then((res) => setProjects(res.data));
-  });
-  useRealtimeRefresh(["registrations", "form_fields"], () => {
-    if (selectedProject) selectProject(selectedProject);
-  });
-
-  function selectProject(project) {
+  const selectProject = useCallback((project, updateUrl = true) => {
     setSelectedProject(project);
+    if (updateUrl) setSearchParams({ event: project.id });
     window.dispatchEvent(new CustomEvent("qf:breadcrumb-context", {
       detail: { projectId: project.id, projectName: project.name, section: "sheets" },
     }));
@@ -69,7 +56,30 @@ export default function SheetsPage({ onLoggedOut }) {
       })
       .catch(() => setError("Registration লোড করা যায়নি।"))
       .finally(() => setLoading(false));
-  }
+  }, [setSearchParams]);
+
+  useEffect(() => {
+    listProjects()
+      .then((res) => setProjects(res.data))
+      .catch((err) => {
+        if (err.response?.status === 401) onLoggedOut();
+        else setError("লোড করা যায়নি।");
+      });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const projectId = searchParams.get("event");
+    if (!projectId || selectedProject?.id === projectId || projects.length === 0) return;
+    const project = projects.find((item) => item.id === projectId);
+    if (project) selectProject(project, false);
+  }, [projects, searchParams, selectedProject?.id, selectProject]);
+
+  useRealtimeRefresh(["projects", "project_permissions"], () => {
+    listProjects().then((res) => setProjects(res.data));
+  });
+  useRealtimeRefresh(["registrations", "form_fields"], () => {
+    if (selectedProject) selectProject(selectedProject);
+  });
 
   const processed = useMemo(() => {
     let rows = registrations.filter((r) => {

@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { getProject, togglePublish } from "../../api/guest.js";
 import EventTab from "./tabs/EventTab.jsx";
 import FieldsTab from "./tabs/FieldsTab.jsx";
@@ -18,8 +18,9 @@ const TABS = [
 export default function ProjectEditor({ onLoggedOut }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [project, setProject] = useState(null);
-  const [tab, setTab] = useState(() => consumeReloadState()?.projectEditorTab || "event");
+  const [tab, setTab] = useState(() => searchParams.get("tab") || consumeReloadState()?.projectEditorTab || "event");
   const [publishBusy, setPublishBusy] = useState(false);
   const [publishError, setPublishError] = useState("");
   const [urlCopied, setUrlCopied] = useState(false);
@@ -42,11 +43,21 @@ export default function ProjectEditor({ onLoggedOut }) {
   }, [reload]);
 
   useEffect(() => {
+    const nextTab = searchParams.get("tab") || "event";
+    setTab((current) => current === nextTab ? current : nextTab);
+  }, [searchParams]);
+
+  useEffect(() => {
     if (!project) return;
     window.dispatchEvent(new CustomEvent("qf:breadcrumb-context", {
       detail: { projectId: project.id, projectName: project.name, section: tab },
     }));
   }, [project, tab]);
+
+  function selectTab(nextTab) {
+    setTab(nextTab);
+    setSearchParams(nextTab === "event" ? {} : { tab: nextTab });
+  }
 
   async function handleTogglePublish() {
     setPublishBusy(true);
@@ -137,7 +148,7 @@ export default function ProjectEditor({ onLoggedOut }) {
         {TABS.map((t) => (
           <button
             key={t.id}
-            onClick={() => setTab(t.id)}
+            onClick={() => selectTab(t.id)}
             className={`flex-1 rounded-lg py-2 text-xs font-semibold transition ${
               tab === t.id ? "bg-white text-[#17368F] shadow-sm" : "text-[#667085] hover:text-[#344054]"
             }`}
