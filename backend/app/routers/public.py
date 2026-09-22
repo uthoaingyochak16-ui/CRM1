@@ -35,7 +35,7 @@ def get_public_config(project_ref: str, db: Session = Depends(get_db)):
     project = _find_project(db, project_ref)
     ecard_url = (
         project.ecard_image_remote_url
-        or (f"{settings.public_base_url}/{project.ecard_image_path}" if project.ecard_image_path else None)
+        or (f"/{project.ecard_image_path}" if project.ecard_image_path else None)
     )
     return schemas.PublicConfigOut(
         project_id=project.id,

@@ -35,7 +35,7 @@ def _unique_slug(db: Session, base: str) -> str:
 def _to_out(db: Session, p: models.Project) -> schemas.ProjectOut:
     ecard_url = (
         p.ecard_image_remote_url
-        or (f"{settings.public_base_url}/{p.ecard_image_path}" if p.ecard_image_path else None)
+        or (f"/{p.ecard_image_path}" if p.ecard_image_path else None)
     )
     count = db.query(models.Registration).filter(models.Registration.project_id == p.id).count()
     return schemas.ProjectOut(
