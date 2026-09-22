@@ -1,6 +1,7 @@
 # ---------------------------------------------------------------------------
 # Secrets and local environment configuration
 # Keep the documented example files, never commit real credentials.
+.env
 
 !.env.example
 
