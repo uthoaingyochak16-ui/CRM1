@@ -129,7 +129,7 @@ function taskDataValue(task, ...aliases) {
 }
 function truncateWords(value, maxWords = 4) {
   const text = String(value || "").trim();
-  if (!text) return "â€”";
+  if (!text) return "—";
   const words = text.split(/\s+/);
   return words.length > maxWords ? `${words.slice(0, maxWords).join(" ")}...` : text;
 }
@@ -154,14 +154,14 @@ function ageFromDateOfBirth(value) {
 }
 
 function taskSummary(task) {
-  const suppliedAge = task.age ?? taskDataValue(task, "age", "guest_age", "à¦¬à¦¯à¦¼à¦¸", "à¦¬à¦¯à¦¼à¦¸");
-  const dateOfBirth = taskDataValue(task, "date_of_birth", "dob", "birth_date", "à¦œà¦¨à§à¦® à¦¤à¦¾à¦°à¦¿à¦–");
+  const suppliedAge = task.age ?? taskDataValue(task, "age", "guest_age", "বয়স", "বয়স");
+  const dateOfBirth = taskDataValue(task, "date_of_birth", "dob", "birth_date", "জন্ম তারিখ");
   return {
     mobile: taskDataValue(task, "mobile", "phone", "phone_number"),
     age: suppliedAge !== "" && suppliedAge != null ? suppliedAge : ageFromDateOfBirth(dateOfBirth),
-    profession: task.profession || taskDataValue(task, "profession", "occupation", "à¦ªà§‡à¦¶à¦¾"),
-    remarks: task.executive_remarks || taskDataValue(task, "executive_remarks", "consultant_remarks", "remarks", "à¦®à¦¨à§à¦¤à¦¬à§à¦¯"),
-    problem: task.customer_problem || taskDataValue(task, "customer_problem", "problem", "remarks_problem", "à¦¸à¦®à¦¸à§à¦¯à¦¾"),
+    profession: task.profession || taskDataValue(task, "profession", "occupation", "পেশা"),
+    remarks: task.executive_remarks || taskDataValue(task, "executive_remarks", "consultant_remarks", "remarks", "মন্তব্য"),
+    problem: task.customer_problem || taskDataValue(task, "customer_problem", "problem", "remarks_problem", "সমস্যা"),
   };
 }
 
@@ -203,7 +203,7 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
           setWorkload(workloadRes.data);
         }
       })
-      .catch((err) => { if (err.response?.status === 401) onLoggedOut(); else setError("à¦²à§‹à¦¡ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤"); })
+      .catch((err) => { if (err.response?.status === 401) onLoggedOut(); else setError("লোড করা যায়নি।"); })
       .finally(() => setLoading(false));
   }
   useEffect(load, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -211,8 +211,8 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
 
   async function handleCreate(e) {
     e.preventDefault();
-    if (!form.data.full_name.trim()) return setError('"Name" à¦«à¦¿à¦²à§à¦¡à¦Ÿà¦¿ à¦†à¦¬à¦¶à§à¦¯à¦•à¥¤');
-    if (!form.data.mobile.trim()) return setError('"Phone Number" à¦«à¦¿à¦²à§à¦¡à¦Ÿà¦¿ à¦†à¦¬à¦¶à§à¦¯à¦•à¥¤');
+    if (!form.data.full_name.trim()) return setError('"Name" ফিল্ডটি আবশ্যক।');
+    if (!form.data.mobile.trim()) return setError('"Phone Number" ফিল্ডটি আবশ্যক।');
     setLeadSubmitting(true);
     setError("");
     try {
@@ -237,7 +237,7 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
       setCustomFields([]);
       setCreating(false);
     } catch (requestError) {
-      setError(requestError.response?.data?.detail || "Manual lead à¦¤à§ˆà¦°à¦¿ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
+      setError(requestError.response?.data?.detail || "Manual lead তৈরি করা যায়নি।");
     } finally {
       setLeadSubmitting(false);
     }
@@ -254,8 +254,8 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
       setTasks((list) => list.map((t) => (t.id === task.id ? res.data : t)));
       const w = await getExecutiveWorkload(); setWorkload(w.data);
     } catch (requestError) {
-      const detail = requestError.response?.data?.detail || "Task assign à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤";
-      if (/limit|à¦ªà§‚à¦°à§à¦£ à¦¹à¦¯à¦¼à§‡à¦›à§‡/i.test(detail)) setLimitNotice(detail);
+      const detail = requestError.response?.data?.detail || "Task assign করা যায়নি।";
+      if (/limit|পূর্ণ হয়েছে/i.test(detail)) setLimitNotice(detail);
       else setError(detail);
     }
   }
@@ -269,8 +269,8 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
       setSelected(new Set());
       const w = await getExecutiveWorkload(); setWorkload(w.data);
     } catch (requestError) {
-      const detail = requestError.response?.data?.detail || "Task assign à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤";
-      if (/limit|à¦ªà§‚à¦°à§à¦£ à¦¹à¦¯à¦¼à§‡à¦›à§‡/i.test(detail)) setLimitNotice(detail);
+      const detail = requestError.response?.data?.detail || "Task assign করা যায়নি।";
+      if (/limit|পূর্ণ হয়েছে/i.test(detail)) setLimitNotice(detail);
       else setError(detail);
     }
   }
@@ -287,7 +287,7 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
       setSelected(new Set());
       setShowDeleteConfirm(false);
     } catch (requestError) {
-      setError(requestError.response?.data?.detail || "Selected tasks delete à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
+      setError(requestError.response?.data?.detail || "Selected tasks delete করা যায়নি।");
     } finally {
       setBulkDeleting(false);
     }
@@ -306,7 +306,7 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
       const response = await getTaskHistory(task.id);
       setTaskDetail({ task, ...response.data });
     } catch (requestError) {
-      setError(requestError.response?.data?.detail || "Task details load à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
+      setError(requestError.response?.data?.detail || "Task details load করা যায়নি।");
     } finally {
       setDetailLoading(false);
     }
@@ -329,7 +329,7 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
       if (tab === "pending") return isPendingNewLead(t);
       if (tab === "completed") return t.status === "completed";
       if (tab === "followups") return isTodayFollowup(t);
-      if (tab === "data_entries") return Boolean(t.manual_lead_data || t.title?.startsWith("Manual lead â€”"));
+      if (tab === "data_entries") return Boolean(t.manual_lead_data || t.title?.startsWith("Manual lead —"));
       return true;
     })
     .filter((t) => !entryDateRange.dateFrom || toDateInput(t.created_at) >= entryDateRange.dateFrom)
@@ -359,7 +359,7 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
       if (isTodayFollowup(task)) counts.followups += 1;
       return counts;
     },
-    { unassigned: 0, pending: 0, completed: 0, followups: 0, data_entries: tasks.filter((t) => t.title?.startsWith("Manual lead â€”")).length, all: 0 },
+    { unassigned: 0, pending: 0, completed: 0, followups: 0, data_entries: tasks.filter((t) => t.title?.startsWith("Manual lead —")).length, all: 0 },
   );
 
   // New Leads first, All last (per requested ordering)
@@ -402,7 +402,7 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
         <form onSubmit={handleCreate} onMouseDown={(event) => event.stopPropagation()} className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl">
           <div className="mb-4">
             <h2 className="text-sm font-black text-slate-900">Manual Lead Entry</h2>
-            <p className="mt-1 text-xs text-slate-500">Lead-à¦à¦° à¦¤à¦¥à§à¦¯ à¦²à¦¿à¦–à§à¦¨à¥¤ à¦ªà§à¦°à¦¯à¦¼à§‹à¦œà¦¨ à¦¹à¦²à§‡ à¦…à¦¤à¦¿à¦°à¦¿à¦•à§à¦¤ data field à¦¯à§‹à¦— à¦•à¦°à§à¦¨à¥¤</p>
+            <p className="mt-1 text-xs text-slate-500">Lead-এর তথ্য লিখুন। প্রয়োজন হলে অতিরিক্ত data field যোগ করুন।</p>
           </div>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             {[
@@ -476,7 +476,7 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
                     className="rounded-lg border border-rose-200 bg-white text-lg font-bold text-rose-600"
                     aria-label="Remove custom field"
                   >
-                    Ã—
+                    ×
                   </button>
                 </div>
               </div>
@@ -501,13 +501,13 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
         </div>
       )}
 
-      {/* Search + sort â€” always one row, wraps compactly on narrow screens */}
+      {/* Search + sort — always one row, wraps compactly on narrow screens */}
       <div className="mb-2 flex flex-wrap items-center gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-sm md:mb-3 md:gap-2 md:p-2.5">
         <div className="relative min-w-[120px] flex-1 basis-[140px]">
           <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400 md:left-3.5 md:h-4 md:w-4" />
           <input
             type="text"
-            placeholder="à¦¨à¦¾à¦®, task à¦¬à¦¾ program à¦¦à¦¿à¦¯à¦¼à§‡ à¦–à§à¦à¦œà§à¦¨..."
+            placeholder="নাম, task বা program দিয়ে খুঁজুন..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full rounded-lg border border-slate-200 bg-slate-50 py-1.5 pl-7 pr-2 text-[11px] outline-none focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-50 md:py-2 md:pl-9 md:pr-3 md:text-sm"
@@ -560,9 +560,9 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-100 text-rose-700">
               <TrashIcon className="h-6 w-6" />
             </div>
-            <h2 className="mt-4 text-lg font-black text-slate-900">Selected tasks delete à¦•à¦°à¦¬à§‡à¦¨?</h2>
+            <h2 className="mt-4 text-lg font-black text-slate-900">Selected tasks delete করবেন?</h2>
             <p className="mt-2 text-sm leading-6 text-slate-600">
-              à¦†à¦ªà¦¨à¦¿ <strong>{selected.size}à¦Ÿà¦¿ task</strong> à¦¸à§à¦¥à¦¾à¦¯à¦¼à§€à¦­à¦¾à¦¬à§‡ delete à¦•à¦°à¦¤à§‡ à¦¯à¦¾à¦šà§à¦›à§‡à¦¨à¥¤ à¦à¦‡ action undo à¦•à¦°à¦¾ à¦¯à¦¾à¦¬à§‡ à¦¨à¦¾à¥¤
+              আপনি <strong>{selected.size}টি task</strong> স্থায়ীভাবে delete করতে যাচ্ছেন। এই action undo করা যাবে না।
             </p>
             <div className="mt-5 flex justify-end gap-2">
               <button
@@ -587,15 +587,15 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
       )}
 
       {error && <div className="mb-2 rounded-lg bg-rose-50 px-2.5 py-2 text-[11px] text-rose-600 ring-1 ring-rose-200 md:mb-3 md:px-3 md:text-xs">{error}</div>}
-      {loading && <div className="py-10 text-center text-sm text-slate-500">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>}
+      {loading && <div className="py-10 text-center text-sm text-slate-500">লোড হচ্ছে…</div>}
 
       {!loading && visible.length === 0 && (
         <div className="rounded-xl border border-dashed border-slate-300 bg-white py-16 text-center text-sm text-slate-400">
-          à¦•à§‹à¦¨à§‹ task à¦¨à§‡à¦‡à¥¤
+          কোনো task নেই।
         </div>
       )}
 
-      {/* Desktop / tablet table â€” hidden on mobile */}
+      {/* Desktop / tablet table — hidden on mobile */}
       {!loading && visible.length > 0 && (
         <div className="hidden min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm md:block">
           <ListScrollArea>
@@ -674,7 +674,7 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
                             />
                             <div className="min-w-0">
                               <div title={t.customer_name || t.title || ""} className={`overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold text-slate-900 ${t.status==="completed" ? "line-through text-slate-400" : ""}`}>
-                                {t.customer_name || t.title || "â€”"}
+                                {t.customer_name || t.title || "—"}
                               </div>
                               {summary.mobile && <div className="text-[10px] text-slate-500">{summary.mobile}</div>}
                               {isLead && <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400">Lead</span>}
@@ -683,21 +683,21 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
                         </td>
                         {showLeadSummary && <>
                           <td className="px-2 py-2.5 text-center align-middle text-xs font-bold text-slate-600">
-                            {summary.age !== "" && summary.age != null ? summary.age : "â€”"}
+                            {summary.age !== "" && summary.age != null ? summary.age : "—"}
                           </td>
                           <td className="px-3 py-2.5 align-middle text-xs font-medium leading-5 text-slate-600">
-                            <span className="break-words">{summary.profession || "â€”"}</span>
+                            <span className="break-words">{summary.profession || "—"}</span>
                           </td>
                           <td className="max-w-[240px] px-4 py-2.5 align-middle text-xs">
                             <div className="text-slate-700" title={String(summary.remarks || "")}><span className="font-semibold">Remarks:</span> {truncateWords(summary.remarks)}</div>
                             <div className="mt-0.5 text-slate-500" title={String(summary.problem || "")}><span className="font-semibold">Problem:</span> {truncateWords(summary.problem)}</div>
                           </td>
                         </>}
-                        <td className="px-4 py-2.5 align-middle text-xs font-medium text-slate-500">{t.project_name || "â€”"}</td>
+                        <td className="px-4 py-2.5 align-middle text-xs font-medium text-slate-500">{t.project_name || "—"}</td>
                         <td className="px-4 py-2.5 align-middle">
                           {t.stage ? (
                             <span className={`inline-flex max-w-full whitespace-normal break-words rounded-md px-2 py-1 text-[10px] font-bold leading-tight ring-1 ring-inset ${stageClass}`}>{t.stage}</span>
-                          ) : <span className="text-xs text-slate-300">â€”</span>}
+                          ) : <span className="text-xs text-slate-300">—</span>}
                         </td>
                         {isAdmin && (
                           <td className="px-4 py-2.5 align-middle text-xs font-medium text-slate-500">
@@ -757,7 +757,7 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
         </div>
       )}
 
-      {/* Mobile compact card list â€” shown only below md breakpoint */}
+      {/* Mobile compact card list — shown only below md breakpoint */}
       {!loading && visible.length > 0 && (
         <div className="md:hidden">
           {isAdmin && (
@@ -813,12 +813,12 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
                         <ProfileAvatar name={t.customer_name || t.title} imageUrl={t.customer_image_url} fallbackClassName={avatarClass} className="h-6 w-6 shrink-0 text-[10px]" />
                         <div className="min-w-0">
                           <div className={`truncate text-[12px] font-bold leading-tight text-slate-900 ${t.status === "completed" ? "text-slate-400 line-through" : ""}`}>
-                            {t.customer_name || t.title || "â€”"}
+                            {t.customer_name || t.title || "—"}
                           </div>
                           <div className="truncate text-[10px] leading-tight text-slate-500">
-                            {summary.mobile || "â€”"}
-                            {summary.age !== "" && summary.age != null ? ` Â· ${summary.age}y` : ""}
-                            {summary.profession ? ` Â· ${summary.profession}` : ""}
+                            {summary.mobile || "—"}
+                            {summary.age !== "" && summary.age != null ? ` · ${summary.age}y` : ""}
+                            {summary.profession ? ` · ${summary.profession}` : ""}
                           </div>
                         </div>
                       </div>
@@ -836,7 +836,7 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
 
                     <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[9px] leading-tight text-slate-400">
                       {t.project_name && <span className="font-semibold text-slate-500">{t.project_name}</span>}
-                      {isAdmin && (t.assignee_name ? <span>â†’ {t.assignee_name}</span> : <span className="italic">Unassigned</span>)}
+                      {isAdmin && (t.assignee_name ? <span>→ {t.assignee_name}</span> : <span className="italic">Unassigned</span>)}
                       {isAdmin && tab === "data_entries" && t.creator_name && <span>by {t.creator_name}</span>}
                       <span>{new Date(t.created_at).toLocaleDateString("en-GB")}</span>
                       {t.due_date && <span className="font-semibold text-amber-700">FU {new Date(t.due_date).toLocaleDateString("en-GB")}</span>}
@@ -894,7 +894,7 @@ function ReadOnlyTaskDetails({ detail, onClose }) {
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>
             <h2 className="text-lg font-black text-slate-900">{detail.task.customer_name || detail.task.title}</h2>
-            <p className="text-xs text-slate-500">Read-only registration, task completion à¦à¦¬à¦‚ follow-up history</p>
+            <p className="text-xs text-slate-500">Read-only registration, task completion এবং follow-up history</p>
           </div>
           <button onClick={onClose} className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600">Close</button>
         </div>
@@ -920,7 +920,7 @@ function ReadOnlyTaskDetails({ detail, onClose }) {
               <div key={entry.id} className="rounded-xl border border-indigo-100 bg-indigo-50/40 p-3">
                 <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                   <div><span className="rounded-full bg-indigo-600 px-2 py-1 text-[10px] font-black text-white">{entry.kind}</span><span className="ml-2 text-xs font-bold text-slate-600">{entry.consultant || "Unassigned"}</span></div>
-                  <div className="text-right text-[10px] text-slate-500">{new Date(entry.completed_at || entry.created_at).toLocaleString("en-GB")} Â· {entry.status}</div>
+                  <div className="text-right text-[10px] text-slate-500">{new Date(entry.completed_at || entry.created_at).toLocaleString("en-GB")} · {entry.status}</div>
                 </div>
                 <ArrangedReadOnlyValues arranged={arranged} compact />
               </div>
@@ -955,7 +955,7 @@ function ArrangedReadOnlyValues({ arranged, compact = false }) {
 function ReadOnlyValue({ label, value }) {
   const displayValue = label.toLowerCase().includes("date") && value
     ? new Date(value).toLocaleString("en-GB")
-    : typeof value === "object" ? JSON.stringify(value) : String(value || "â€”");
+    : typeof value === "object" ? JSON.stringify(value) : String(value || "—");
   return (
     <div className="rounded-lg bg-white px-2.5 py-1.5">
       <div className="text-[9px] font-bold uppercase tracking-wide text-slate-400">{label.replace(/_/g, " ")}</div>
@@ -987,7 +987,7 @@ function ConsultantLimitCard({ executives, onClose, onSaved }) {
       });
       onSaved(response.data);
     } catch (requestError) {
-      setError(requestError.response?.data?.detail || "Limit save à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
+      setError(requestError.response?.data?.detail || "Limit save করা যায়নি।");
     } finally {
       setSavingId("");
     }
@@ -999,7 +999,7 @@ function ConsultantLimitCard({ executives, onClose, onSaved }) {
         <div className="mb-4 flex items-center justify-between">
           <div>
             <h2 className="text-lg font-black text-slate-900">Communicator Daily Limits</h2>
-            <p className="text-xs text-slate-500">à¦–à¦¾à¦²à¦¿ à¦°à¦¾à¦–à¦²à§‡ Limitless à¦¹à¦¬à§‡à¥¤</p>
+            <p className="text-xs text-slate-500">খালি রাখলে Limitless হবে।</p>
           </div>
           <button onClick={onClose} className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600">Close</button>
         </div>
@@ -1055,7 +1055,7 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
 
   const regData = task.registration_data || {};
   const manualFieldLabels = regData.manual_field_labels || {};
-  const phone = taskDataValue(task, "mobile", "phone", "phone_number", "phone number", "à¦®à§‹à¦¬à¦¾à¦‡à¦²", "à¦«à§‹à¦¨");
+  const phone = taskDataValue(task, "mobile", "phone", "phone_number", "phone number", "মোবাইল", "ফোন");
 
   useEffect(() => {
     Promise.all([listCallLogsByTask(task.id), getCallConfig()])
@@ -1087,11 +1087,11 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
   async function handleSubmit(e) {
     e.preventDefault();
     if (!form.stage) {
-      setSubmitError("Stage à¦…à¦¬à¦¶à§à¦¯à¦‡ à¦ªà§‚à¦°à¦£ à¦•à¦°à¦¤à§‡ à¦¹à¦¬à§‡à¥¤");
+      setSubmitError("Stage অবশ্যই পূরণ করতে হবে।");
       return;
     }
     if (form.next_following_date && !form.followup_reason.trim()) {
-      setSubmitError("à¦ªà¦°à¦¬à¦°à§à¦¤à§€ Follow-up date à¦¦à¦¿à¦²à§‡ à¦•à§‡à¦¨ Follow-up à¦•à¦°à¦¬à§‡à¦¨ à¦¸à§‡à¦‡ note à¦²à¦¿à¦–à§à¦¨à¥¤");
+      setSubmitError("পরবর্তী Follow-up date দিলে কেন Follow-up করবেন সেই note লিখুন।");
       return;
     }
     setSubmitError("");
@@ -1101,8 +1101,8 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
       await onSubmit({ ...form,
         next_following_date: form.next_following_date ? new Date(form.next_following_date).toISOString() : null });
     } catch (err) {
-      const detail = err.response?.data?.detail || "Follow-up submit à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤";
-      if (/limit|à¦ªà§‚à¦°à§à¦£ à¦¹à¦¯à¦¼à§‡à¦›à§‡/i.test(detail)) setLimitNotice(detail);
+      const detail = err.response?.data?.detail || "Follow-up submit করা যায়নি।";
+      if (/limit|পূর্ণ হয়েছে/i.test(detail)) setLimitNotice(detail);
       else setSubmitError(detail);
       setSaving(false);
     }
@@ -1117,7 +1117,7 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
     const template = callConfig.uri_template || "tel:{phone}";
     const callUri = template.replaceAll("{phone}", normalizedPhone);
     if (!/^(tel|sip|sips|callto|zoiper):/i.test(callUri)) {
-      setSubmitError("Call URI Template à¦…à¦¬à¦¶à§à¦¯à¦‡ tel:, sip:, sips:, callto: à¦…à¦¥à¦¬à¦¾ zoiper: à¦¦à¦¿à¦¯à¦¼à§‡ à¦¶à§à¦°à§ à¦¹à¦¤à§‡ à¦¹à¦¬à§‡à¥¤");
+      setSubmitError("Call URI Template অবশ্যই tel:, sip:, sips:, callto: অথবা zoiper: দিয়ে শুরু হতে হবে।");
       return;
     }
     setCallStartedAt(new Date());
@@ -1129,7 +1129,7 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
 
   async function handleLogCall() {
     if (callReceived === "") {
-      setSubmitError("Call Received à¦…à¦¥à¦¬à¦¾ Not Received à¦¨à¦¿à¦°à§à¦¬à¦¾à¦šà¦¨ à¦•à¦°à§à¦¨à¥¤");
+      setSubmitError("Call Received অথবা Not Received নির্বাচন করুন।");
       return;
     }
     setLogging(true);
@@ -1153,7 +1153,7 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
       setCallNotes(""); setCallReceived(""); setCallDuration(""); setCallStartedAt(null);
       setSubmitError("");
     } catch (requestError) {
-      setSubmitError(requestError.response?.data?.detail || "Call log save à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
+      setSubmitError(requestError.response?.data?.detail || "Call log save করা যায়নি।");
     } finally { setLogging(false); }
   }
 
@@ -1178,7 +1178,7 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
         </div>
 
         {dataKeys.length === 0 ? (
-          <div className="py-6 text-center text-xs text-slate-400">à¦•à§‹à¦¨à§‹ registration data à¦¨à§‡à¦‡à¥¤</div>
+          <div className="py-6 text-center text-xs text-slate-400">কোনো registration data নেই।</div>
         ) : (
           <ArrangedReadOnlyValues arranged={arrangedSubmittedData} />
         )}
@@ -1187,7 +1187,7 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
         {(
           <div className="mt-4 min-w-0 rounded-lg border border-slate-200 bg-slate-50 p-3">
             <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-              <span className="min-w-0 text-[10px] font-bold uppercase tracking-wide text-slate-500">Call à¦¶à§‡à¦·à§‡ Log Save à¦•à¦°à§à¦¨</span>
+              <span className="min-w-0 text-[10px] font-bold uppercase tracking-wide text-slate-500">Call শেষে Log Save করুন</span>
               {callStartedAt && <span className="text-[10px] font-bold text-emerald-600">Call started {callStartedAt.toLocaleTimeString("en-GB")}</span>}
             </div>
             <div className="grid min-w-0 grid-cols-2 gap-2">
@@ -1201,7 +1201,7 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
             <input placeholder="Call notes (optional)" value={callNotes} onChange={(e) => setCallNotes(e.target.value)} className="input mt-2 min-w-0 !py-1.5 !text-[11px]" />
             <button onClick={handleLogCall} disabled={logging}
               className="mt-2 block w-full min-w-0 rounded-md bg-blue-600 py-1.5 text-[11px] font-bold text-white hover:bg-blue-700 disabled:opacity-50">
-              {logging ? "Savingâ€¦" : "Save Call Log"}
+              {logging ? "Saving…" : "Save Call Log"}
             </button>
 
             {callLogs.length > 0 && (
@@ -1222,7 +1222,7 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
                         <span className="text-slate-400">{new Date(c.created_at).toLocaleString("en-GB")}</span>
                       </div>
                       <div className="mt-0.5 flex items-center justify-between text-slate-500">
-                        <span>{c.executive_name} Â· {c.provider || "Dialer"}</span>
+                        <span>{c.executive_name} · {c.provider || "Dialer"}</span>
                         {c.duration_seconds > 0 && <span>{Math.round(c.duration_seconds/60)} min</span>}
                       </div>
                       {c.notes && <div className="mt-0.5 text-slate-700">{c.notes}</div>}
@@ -1247,7 +1247,7 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
             <label className="mb-1 block text-[11px] font-semibold text-slate-600">Stage <span className="text-rose-600">*</span></label>
             <select required className="input w-full" value={form.stage} onChange={(e) => { set("stage", e.target.value); setSubmitError(""); }}>
               <option value="">Stage *</option>
-              {STAGE_OPTIONS.map((s) => <option key={s} value={s} style={{ color: STAGE_HEX[s], fontWeight: 700 }}>â— {s}</option>)}
+              {STAGE_OPTIONS.map((s) => <option key={s} value={s} style={{ color: STAGE_HEX[s], fontWeight: 700 }}>● {s}</option>)}
             </select>
           </div>
           <div>
@@ -1258,7 +1258,7 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
             <label className="mb-1 block text-[11px] font-semibold text-slate-600">
               Follow-up note {form.next_following_date ? <span className="text-rose-600">*</span> : null}
             </label>
-            <textarea className="input w-full" rows={2} placeholder="à¦•à§‡à¦¨ next follow-up à¦•à¦°à¦›à§‡à¦¨ / Follow-up note" value={form.followup_reason} onChange={(e) => set("followup_reason", e.target.value)} />
+            <textarea className="input w-full" rows={2} placeholder="কেন next follow-up করছেন / Follow-up note" value={form.followup_reason} onChange={(e) => set("followup_reason", e.target.value)} />
           </div>
 
           {customFields.map((field, index) => (
@@ -1278,7 +1278,7 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
                 }} />
               </div>
               <button type="button" onClick={() => updateCustomFields(customFields.filter((_, itemIndex) => itemIndex !== index))}
-                className="rounded-lg border border-rose-200 bg-white text-lg font-bold text-rose-600">Ã—</button>
+                className="rounded-lg border border-rose-200 bg-white text-lg font-bold text-rose-600">×</button>
             </div>
           ))}
           <button type="button" onClick={() => updateCustomFields([...customFields, { id: crypto.randomUUID(), label: "", value: "" }])}
@@ -1300,8 +1300,8 @@ function FollowUpForm({ task, onSubmit, onCancel }) {
             </span>
           )}
           <div className="ml-auto flex gap-2">
-            <button type="button" onClick={() => triggerSave()} disabled={isSaving} className="rounded-md bg-blue-600 px-4 py-2 text-xs font-bold text-white disabled:opacity-50">{isSaving ? "Savingâ€¦" : "Save Draft"}</button>
-            <button type="submit" disabled={saving} className="rounded-md bg-emerald-600 px-5 py-2 text-xs font-bold text-white hover:bg-emerald-700 disabled:opacity-50">{saving ? "Savingâ€¦" : "Submit & Complete"}</button>
+            <button type="button" onClick={() => triggerSave()} disabled={isSaving} className="rounded-md bg-blue-600 px-4 py-2 text-xs font-bold text-white disabled:opacity-50">{isSaving ? "Saving…" : "Save Draft"}</button>
+            <button type="submit" disabled={saving} className="rounded-md bg-emerald-600 px-5 py-2 text-xs font-bold text-white hover:bg-emerald-700 disabled:opacity-50">{saving ? "Saving…" : "Submit & Complete"}</button>
             <button type="button" onClick={onCancel} className="rounded-md border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">Cancel</button>
           </div>
         </div>

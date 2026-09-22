@@ -40,7 +40,7 @@ export default function FollowupsPage() {
       .then((response) => setRows(response.data))
       .catch((requestError) => {
         setRows([]);
-        setError(requestError.response?.data?.detail || "Follow-up list load à¦•à¦°à¦¾ à¦¯à¦¾à§Ÿà¦¨à¦¿à¥¤");
+        setError(requestError.response?.data?.detail || "Follow-up list load করা যায়নি।");
       })
       .finally(() => setLoading(false));
   }
@@ -57,7 +57,7 @@ export default function FollowupsPage() {
 
   function truncateWords(text, maxWords = 4) {
     const normalized = String(text || "").trim();
-    if (!normalized) return "â€”";
+    if (!normalized) return "—";
     const words = normalized.split(/\s+/);
     if (words.length <= maxWords) return normalized;
     return words.slice(0, maxWords).join(" ") + "...";
@@ -77,7 +77,7 @@ export default function FollowupsPage() {
 
   function formatAge(row) {
     const age = row.age != null ? row.age : (row.date_of_birth ? calculateAge(row.date_of_birth) : null);
-    return age != null ? `${age} à¦¬à¦›à¦°` : "â€”";
+    return age != null ? `${age} বছর` : "—";
   }
 
   const exportRows = rows.map((row) => {
@@ -124,7 +124,7 @@ export default function FollowupsPage() {
     doc.setFontSize(15);
     doc.text("Follow-up List", 36, 35);
     doc.setFontSize(9);
-    doc.text(`${rows.length} records Â· ${new Date().toLocaleString("en-GB")}`, 36, 51);
+    doc.text(`${rows.length} records · ${new Date().toLocaleString("en-GB")}`, 36, 51);
     autoTable(doc, {
       head: [headers],
       body: exportRows,
@@ -140,7 +140,7 @@ export default function FollowupsPage() {
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-xl font-black text-slate-900"></h1>
-          <p className="text-xs text-slate-500">à¦¸à¦¬ follow-up search, filter à¦à¦¬à¦‚ export à¦•à¦°à§à¦¨à¥¤</p>
+          <p className="text-xs text-slate-500">সব follow-up search, filter এবং export করুন।</p>
         </div>
         <div className="flex gap-2">
           <button onClick={downloadCSV} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">CSV Download</button>
@@ -151,7 +151,7 @@ export default function FollowupsPage() {
       <div className="mb-4 flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
           <i className="ti ti-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input className="input !pl-9" placeholder="Stage, location, profession, communicator à¦¬à¦¾ à¦¯à§‡à¦•à§‹à¦¨à§‹ à¦¤à¦¥à§à¦¯ à¦²à¦¿à¦–à§à¦¨..." value={filters.q} onChange={(e) => setFilter("q", e.target.value)} />
+          <input className="input !pl-9" placeholder="Stage, location, profession, communicator বা যেকোনো তথ্য লিখুন..." value={filters.q} onChange={(e) => setFilter("q", e.target.value)} />
         </div>
         <PeriodRangeFilter onChange={({ dateFrom, dateTo }) => setFilters((current) => ({ ...current, dateFrom, dateTo, period: "" }))} />
         {(filters.q || filters.dateFrom || filters.dateTo || filters.period) && <button onClick={() => setFilters(EMPTY_FILTERS)} className="rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold text-slate-600">Clear</button>}
@@ -168,13 +168,13 @@ export default function FollowupsPage() {
             <tbody>{rows.map((row) => <tr key={row.id} onClick={() => setSelected(row)} className="cursor-pointer border-t border-slate-100 hover:bg-blue-50/50">
               <td className="px-3 py-3"><div className="flex min-w-0 items-center gap-2.5"><ProfileAvatar name={row.name} imageUrl={row.profile_image_url} /><div className="min-w-0 flex-1"><b className="block truncate">{row.name}</b><div className="truncate text-slate-400">{row.mobile}</div></div></div></td>
               <td className="px-3 py-3 whitespace-nowrap">{formatAge(row)}</td>
-              <td className="px-3 py-3">{row.profession || "â€”"}</td>
+              <td className="px-3 py-3">{row.profession || "—"}</td>
               <td className="min-w-0 px-3 py-3">
                 <div className="truncate text-slate-700" title={row.executive_remarks || ""}><span className="font-semibold">Remarks:</span> {truncateWords(row.executive_remarks)}</div>
                 <div className="mt-0.5 truncate text-slate-400" title={row.customer_problem || ""}><span className="font-semibold">Problem:</span> {truncateWords(row.customer_problem)}</div>
               </td>
               <td className="px-3 py-3">
-                <div className="font-bold text-blue-700">{row.stage || "â€”"}</div>
+                <div className="font-bold text-blue-700">{row.stage || "—"}</div>
                 {row.consultant && <div className="mt-1 flex items-center gap-1.5 text-[10px] font-semibold text-slate-500"><ProfileAvatar name={row.consultant} imageUrl={row.consultant_image_url} className="h-5 w-5" fallbackClassName="bg-slate-500" /><span className="truncate">{row.consultant}</span></div>}
               </td>
               <td className="px-3 py-3 whitespace-nowrap text-slate-600">{new Date(row.scheduled_at).toLocaleString("en-GB")}</td>
@@ -186,11 +186,11 @@ export default function FollowupsPage() {
 
       {selected && <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/40 p-4" onMouseDown={() => setSelected(null)}>
         <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl" onMouseDown={(e) => e.stopPropagation()}>
-          <div className="flex justify-between"><div><h2 className="text-lg font-black">{selected.name}</h2><p className="text-xs text-slate-500">{selected.mobile} Â· {selected.email}</p></div><button onClick={() => setSelected(null)}>âœ•</button></div>
+          <div className="flex justify-between"><div><h2 className="text-lg font-black">{selected.name}</h2><p className="text-xs text-slate-500">{selected.mobile} · {selected.email}</p></div><button onClick={() => setSelected(null)}>✕</button></div>
           <div className="mt-4 space-y-3">
             {[["Basic Personal Information", selectedArrangement.personal], ["Follow-up Information", selectedArrangement.followup], ["Other Information", selectedArrangement.other]].map(([title, entries]) => entries.length > 0 && (
               <div key={title}><div className="mb-1.5 text-[9px] font-black uppercase tracking-wide text-slate-400">{title}</div><div className="grid gap-2 sm:grid-cols-2">
-                {entries.map(([key, value]) => <div key={key} className="rounded-lg bg-slate-50 p-3"><div className="text-[10px] font-bold uppercase text-slate-400">{key}</div><div className="mt-1 break-words text-xs font-semibold text-slate-700">{key.toLowerCase().includes("date") ? new Date(value).toLocaleString("en-GB") : typeof value === "object" ? JSON.stringify(value) : String(value ?? "â€”")}</div></div>)}
+                {entries.map(([key, value]) => <div key={key} className="rounded-lg bg-slate-50 p-3"><div className="text-[10px] font-bold uppercase text-slate-400">{key}</div><div className="mt-1 break-words text-xs font-semibold text-slate-700">{key.toLowerCase().includes("date") ? new Date(value).toLocaleString("en-GB") : typeof value === "object" ? JSON.stringify(value) : String(value ?? "—")}</div></div>)}
               </div></div>
             ))}
           </div>

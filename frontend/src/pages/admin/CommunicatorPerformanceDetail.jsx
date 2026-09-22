@@ -1,4 +1,4 @@
-// frontend/src/pages/admin/ExecutivePerformanceDetail.jsx â€” new file
+// frontend/src/pages/admin/ExecutivePerformanceDetail.jsx — new file
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getPerfSummary, getPerfTrend, getStageBreakdown, listCommunications, listFeedback, giveFeedback } from "../../api/guest.js";
@@ -43,17 +43,17 @@ export default function ExecutivePerformanceDetail({ onLoggedOut }) {
     listFeedback(userId).then((r) => setFeedbackList(r.data));
   }
 
-  if (!summary) return <div className="p-10 text-center text-sm text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>;
+  if (!summary) return <div className="p-10 text-center text-sm text-[#667085]">লোড হচ্ছে…</div>;
 
   return (
     <div className="mx-auto max-w-6xl px-3 py-3">
-      <button onClick={() => navigate("/admin/performance")} className="back-button mb-4">â† à¦¸à¦¬ Communicator</button>
+      <button onClick={() => navigate("/admin/performance")} className="back-button mb-4">← সব Communicator</button>
 
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#E4E7EC] bg-white p-5">
         <div>
           <h1 className="font-display text-lg font-black text-[#101828]">{summary.name}</h1>
           <div className="mt-1 text-xs text-[#98A2B3]">
-            {summary.status === "online" ? "â— Active" : `Last active: ${summary.last_active ? new Date(summary.last_active).toLocaleString("bn-BD") : "â€”"}`}
+            {summary.status === "online" ? "● Active" : `Last active: ${summary.last_active ? new Date(summary.last_active).toLocaleString("bn-BD") : "—"}`}
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -72,7 +72,7 @@ export default function ExecutivePerformanceDetail({ onLoggedOut }) {
       </div>
 
       <PerformanceCharts summary={summary} trend={trend} />
-      <StagePerformanceChart data={stageData} title={`${summary.name} â€” Guest Stage Breakdown`} />
+      <StagePerformanceChart data={stageData} title={`${summary.name} — Guest Stage Breakdown`} />
 
       <div className="mb-5 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-6">
         <Stat label="Score" value={`${summary.performance_score} (${summary.performance_category})`} />
@@ -91,11 +91,11 @@ export default function ExecutivePerformanceDetail({ onLoggedOut }) {
 
       <div className="mb-5 rounded-xl border border-[#E4E7EC] bg-white p-5">
         <div className="mb-3 text-sm font-bold text-[#101828]">Recent Communications</div>
-        {comms.length === 0 ? <div className="py-4 text-center text-xs text-[#98A2B3]">à¦•à§‹à¦¨à§‹ communication à¦¨à§‡à¦‡à¥¤</div> : (
+        {comms.length === 0 ? <div className="py-4 text-center text-xs text-[#98A2B3]">কোনো communication নেই।</div> : (
           <div className="flex flex-col gap-2">
             {comms.map((c) => (
               <div key={c.id} className="flex items-center justify-between rounded-lg border border-[#E4E7EC] px-3 py-2 text-xs">
-                <span className="font-semibold text-[#101828]">{c.method} â€” {c.outcome}</span>
+                <span className="font-semibold text-[#101828]">{c.method} — {c.outcome}</span>
                 <span className="text-[#98A2B3]">{new Date(c.communication_at).toLocaleDateString("bn-BD")}</span>
               </div>
             ))}
@@ -114,7 +114,7 @@ export default function ExecutivePerformanceDetail({ onLoggedOut }) {
           ))}
         </div>
         <div className="flex gap-2">
-          <input className="input flex-1" placeholder="Feedback à¦²à¦¿à¦–à§à¦¨â€¦" value={newFeedback} onChange={(e) => setNewFeedback(e.target.value)} />
+          <input className="input flex-1" placeholder="Feedback লিখুন…" value={newFeedback} onChange={(e) => setNewFeedback(e.target.value)} />
           <button onClick={submitFeedback} className="rounded-full bg-[#027A48] px-4 py-2 text-xs font-bold text-white">Send</button>
         </div>
       </div>

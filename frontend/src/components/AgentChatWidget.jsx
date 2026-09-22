@@ -8,63 +8,63 @@ const SERVICE_PRESETS = [
   {
     id: "anthropic", label: "Anthropic", provider: "anthropic", endpoint: "https://api.anthropic.com",
     models: [
-      { id: "claude-haiku-4-5-20251001", label: "Claude Haiku 4.5 â€” Fast (Default)" },
-      { id: "claude-sonnet-4-5-20250929", label: "Claude Sonnet 4.5 â€” Balanced" },
-      { id: "claude-opus-4-1-20250805", label: "Claude Opus 4.1 â€” Quality" },
+      { id: "claude-haiku-4-5-20251001", label: "Claude Haiku 4.5 — Fast (Default)" },
+      { id: "claude-sonnet-4-5-20250929", label: "Claude Sonnet 4.5 — Balanced" },
+      { id: "claude-opus-4-1-20250805", label: "Claude Opus 4.1 — Quality" },
     ],
   },
   {
     id: "openai", label: "OpenAI", provider: "openai_compatible", endpoint: "https://api.openai.com/v1",
     models: [
-      { id: "gpt-5-nano", label: "GPT-5 Nano â€” Fast (Default)" },
-      { id: "gpt-5-mini", label: "GPT-5 Mini â€” Balanced" },
-      { id: "gpt-5.1", label: "GPT-5.1 â€” Quality" },
+      { id: "gpt-5-nano", label: "GPT-5 Nano — Fast (Default)" },
+      { id: "gpt-5-mini", label: "GPT-5 Mini — Balanced" },
+      { id: "gpt-5.1", label: "GPT-5.1 — Quality" },
     ],
   },
   {
     id: "gemini", label: "Google Gemini", provider: "gemini", endpoint: "https://generativelanguage.googleapis.com/v1beta",
     models: [
-      { id: "gemini-3.1-flash-lite", label: "Gemini 3.1 Flash-Lite â€” Fast (Default)" },
-      { id: "gemini-3.5-flash", label: "Gemini 3.5 Flash â€” Balanced" },
-      { id: "gemini-3.1-pro-preview", label: "Gemini 3.1 Pro â€” Quality (Preview)" },
+      { id: "gemini-3.1-flash-lite", label: "Gemini 3.1 Flash-Lite — Fast (Default)" },
+      { id: "gemini-3.5-flash", label: "Gemini 3.5 Flash — Balanced" },
+      { id: "gemini-3.1-pro-preview", label: "Gemini 3.1 Pro — Quality (Preview)" },
     ],
   },
   {
     id: "openrouter", label: "OpenRouter", provider: "openai_compatible", endpoint: "https://openrouter.ai/api/v1",
     models: [
-      { id: "openai/gpt-5-nano", label: "GPT-5 Nano â€” Fast (Default)" },
-      { id: "anthropic/claude-sonnet-4.5", label: "Claude Sonnet 4.5 â€” Balanced" },
-      { id: "openai/gpt-5.1", label: "GPT-5.1 â€” Quality" },
+      { id: "openai/gpt-5-nano", label: "GPT-5 Nano — Fast (Default)" },
+      { id: "anthropic/claude-sonnet-4.5", label: "Claude Sonnet 4.5 — Balanced" },
+      { id: "openai/gpt-5.1", label: "GPT-5.1 — Quality" },
     ],
   },
   {
     id: "groq", label: "Groq", provider: "openai_compatible", endpoint: "https://api.groq.com/openai/v1",
     models: [
-      { id: "openai/gpt-oss-20b", label: "GPT-OSS 20B â€” Fast (Default)" },
-      { id: "qwen/qwen3.6-27b", label: "Qwen 3.6 27B â€” Balanced" },
-      { id: "openai/gpt-oss-120b", label: "GPT-OSS 120B â€” Quality" },
+      { id: "openai/gpt-oss-20b", label: "GPT-OSS 20B — Fast (Default)" },
+      { id: "qwen/qwen3.6-27b", label: "Qwen 3.6 27B — Balanced" },
+      { id: "openai/gpt-oss-120b", label: "GPT-OSS 120B — Quality" },
     ],
   },
   {
     id: "deepseek", label: "DeepSeek", provider: "openai_compatible", endpoint: "https://api.deepseek.com/v1",
     models: [
-      { id: "deepseek-chat", label: "DeepSeek Chat â€” Fast (Default)" },
-      { id: "deepseek-reasoner", label: "DeepSeek Reasoner â€” Quality" },
+      { id: "deepseek-chat", label: "DeepSeek Chat — Fast (Default)" },
+      { id: "deepseek-reasoner", label: "DeepSeek Reasoner — Quality" },
     ],
   },
   {
     id: "mistral", label: "Mistral", provider: "openai_compatible", endpoint: "https://api.mistral.ai/v1",
     models: [
-      { id: "mistral-small-latest", label: "Mistral Small â€” Fast (Default)" },
-      { id: "mistral-medium-latest", label: "Mistral Medium â€” Balanced" },
-      { id: "mistral-large-latest", label: "Mistral Large â€” Quality" },
+      { id: "mistral-small-latest", label: "Mistral Small — Fast (Default)" },
+      { id: "mistral-medium-latest", label: "Mistral Medium — Balanced" },
+      { id: "mistral-large-latest", label: "Mistral Large — Quality" },
     ],
   },
   {
     id: "together", label: "Together AI", provider: "openai_compatible", endpoint: "https://api.together.xyz/v1",
     models: [
       { id: "meta-llama/Llama-3.3-70B-Instruct-Turbo", label: "Llama 3.3 70B Turbo (Default)" },
-      { id: "deepseek-ai/DeepSeek-R1", label: "DeepSeek R1 â€” Reasoning" },
+      { id: "deepseek-ai/DeepSeek-R1", label: "DeepSeek R1 — Reasoning" },
     ],
   },
   {
@@ -144,13 +144,13 @@ export default function AgentChatWidget({ currentUser }) {
     onSuccess: (res) => {
       setMessages((previous) => [
         ...previous,
-        { role: "assistant", text: res.data.response || "à¦•à§‹à¦¨à§‹ à¦‰à¦¤à§à¦¤à¦° à¦ªà¦¾à¦“à§Ÿà¦¾ à¦¯à¦¾à§Ÿà¦¨à¦¿à¥¤" },
+        { role: "assistant", text: res.data.response || "কোনো উত্তর পাওয়া যায়নি।" },
       ]);
     },
     onError: (error) => {
       const message =
         error.response?.data?.detail ||
-        "AI assistant-à¦à¦° à¦¸à¦™à§à¦—à§‡ à¦¸à¦‚à¦¯à§‹à¦— à¦•à¦°à¦¾ à¦¯à¦¾à¦šà§à¦›à§‡ à¦¨à¦¾à¥¤ à¦†à¦¬à¦¾à¦° à¦šà§‡à¦·à§à¦Ÿà¦¾ à¦•à¦°à§à¦¨à¥¤";
+        "AI assistant-এর সঙ্গে সংযোগ করা যাচ্ছে না। আবার চেষ্টা করুন।";
       setMessages((previous) => [...previous, { role: "error", text: message }]);
     },
   });
@@ -229,7 +229,7 @@ export default function AgentChatWidget({ currentUser }) {
           </div>
           <div>
             <div className="text-sm font-bold">Quantum AI</div>
-            <div className="text-[11px] text-white/75">à¦†à¦ªà¦¨à¦¾à¦° à¦•à¦¾à¦œà§‡à¦° assistant</div>
+            <div className="text-[11px] text-white/75">আপনার কাজের assistant</div>
           </div>
         </div>
         <div className="flex items-center gap-1">
@@ -261,7 +261,7 @@ export default function AgentChatWidget({ currentUser }) {
             <div>
               <h3 className="text-sm font-bold text-[#101828]">AI provider configuration</h3>
               <p className="mt-1 text-xs leading-5 text-[#667085]">
-                API key server-à¦ à¦¸à¦‚à¦°à¦•à§à¦·à¦¿à¦¤ à¦¹à¦¬à§‡ à¦à¦¬à¦‚ browser-à¦ à¦«à§‡à¦°à¦¤ à¦ªà¦¾à¦ à¦¾à¦¨à§‹ à¦¹à¦¬à§‡ à¦¨à¦¾à¥¤
+                API key server-এ সংরক্ষিত হবে এবং browser-এ ফেরত পাঠানো হবে না।
               </p>
             </div>
 
@@ -311,7 +311,7 @@ export default function AgentChatWidget({ currentUser }) {
                   {(SERVICE_PRESETS.find((item) => item.id === settingsForm.service)?.models || []).map((model) => (
                     <option key={model.id} value={model.id}>{model.label}</option>
                   ))}
-                  <option value="__custom__">Custom model IDâ€¦</option>
+                  <option value="__custom__">Custom model ID…</option>
                 </select>
               ) : (
                 <div className="flex gap-2">
@@ -320,7 +320,7 @@ export default function AgentChatWidget({ currentUser }) {
                     required
                     value={settingsForm.model}
                     onChange={(event) => setSettingsForm((current) => ({ ...current, model: event.target.value }))}
-                    placeholder="à¦¯à§‡à¦®à¦¨: provider/model-name"
+                    placeholder="যেমন: provider/model-name"
                     className="min-w-0 flex-1 rounded-xl border border-[#D0D5DD] bg-white px-3 py-2.5 text-sm outline-none focus:border-[#2554C7] focus:ring-2 focus:ring-[#2554C7]/10"
                   />
                   {settingsForm.service !== "custom" && (
@@ -339,7 +339,7 @@ export default function AgentChatWidget({ currentUser }) {
                 </div>
               )}
               <span className="mt-1 block text-[11px] text-[#667085]">
-                Fast model à¦•à¦® latency à¦¦à§‡à§Ÿ; quality model à¦œà¦Ÿà¦¿à¦² à¦•à¦¾à¦œà§‡ à¦­à¦¾à¦²à§‹à¥¤ à¦ªà§à¦°à¦¥à¦® option-à¦Ÿà¦¿ defaultà¥¤
+                Fast model কম latency দেয়; quality model জটিল কাজে ভালো। প্রথম option-টি default।
               </span>
             </label>
 
@@ -361,17 +361,17 @@ export default function AgentChatWidget({ currentUser }) {
                 type="password"
                 value={settingsForm.api_key}
                 onChange={(event) => setSettingsForm((current) => ({ ...current, api_key: event.target.value }))}
-                placeholder={configQuery.data?.has_api_key ? "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ (setâ€”à¦–à¦¾à¦²à¦¿ à¦°à¦¾à¦–à¦²à§‡ à¦…à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¿à¦¤)" : "API key à¦²à¦¿à¦–à§à¦¨"}
+                placeholder={configQuery.data?.has_api_key ? "•••••••• (set—খালি রাখলে অপরিবর্তিত)" : "API key লিখুন"}
                 className="w-full rounded-xl border border-[#D0D5DD] bg-white px-3 py-2.5 text-sm outline-none focus:border-[#2554C7] focus:ring-2 focus:ring-[#2554C7]/10"
               />
               {settingsForm.service === "ollama" && (
-                <span className="mt-1 block text-[11px] text-[#667085]">Local Ollama-à¦à¦° à¦œà¦¨à§à¦¯ API key à¦–à¦¾à¦²à¦¿ à¦°à¦¾à¦–à¦¾ à¦¯à¦¾à§Ÿà¥¤</span>
+                <span className="mt-1 block text-[11px] text-[#667085]">Local Ollama-এর জন্য API key খালি রাখা যায়।</span>
               )}
             </label>
 
             {configMutation.isError && (
               <div className="rounded-xl border border-[#FECDCA] bg-[#FEF3F2] p-3 text-xs text-[#B42318]">
-                {configMutation.error?.response?.data?.detail || "Configuration save à¦•à¦°à¦¾ à¦¯à¦¾à§Ÿà¦¨à¦¿à¥¤"}
+                {configMutation.error?.response?.data?.detail || "Configuration save করা যায়নি।"}
               </div>
             )}
           </div>
@@ -388,7 +388,7 @@ export default function AgentChatWidget({ currentUser }) {
               disabled={configMutation.isPending}
               className="flex-1 rounded-xl bg-[#2554C7] px-3 py-2.5 text-sm font-semibold text-white hover:bg-[#1D45A6] disabled:opacity-50"
             >
-              {configMutation.isPending ? "Savingâ€¦" : "Save"}
+              {configMutation.isPending ? "Saving…" : "Save"}
             </button>
           </div>
         </form>
@@ -400,9 +400,9 @@ export default function AgentChatWidget({ currentUser }) {
             <div className="mb-2 text-2xl text-[#2554C7]">
               <i className="ti ti-message-chatbot" aria-hidden="true" />
             </div>
-            <p className="text-sm font-semibold text-[#101828]">à¦•à§€à¦­à¦¾à¦¬à§‡ à¦¸à¦¾à¦¹à¦¾à¦¯à§à¦¯ à¦•à¦°à¦¤à§‡ à¦ªà¦¾à¦°à¦¿?</p>
+            <p className="text-sm font-semibold text-[#101828]">কীভাবে সাহায্য করতে পারি?</p>
             <p className="mt-1 text-xs leading-5 text-[#667085]">
-              à¦•à¦¾à¦œ, à¦°à¦¿à¦ªà§‹à¦°à§à¦Ÿ à¦¬à¦¾ Guest follow-up à¦¸à¦®à§à¦ªà¦°à§à¦•à§‡ à¦ªà§à¦°à¦¶à§à¦¨ à¦•à¦°à§à¦¨à¥¤
+              কাজ, রিপোর্ট বা Guest follow-up সম্পর্কে প্রশ্ন করুন।
             </p>
           </div>
         )}
@@ -429,7 +429,7 @@ export default function AgentChatWidget({ currentUser }) {
         {chatMutation.isPending && (
           <div className="flex justify-start">
             <div className="rounded-2xl rounded-bl-md border border-[#E4E7EC] bg-white px-3.5 py-2.5 text-sm text-[#667085]">
-              à¦‰à¦¤à§à¦¤à¦° à¦¤à§ˆà¦°à¦¿ à¦¹à¦šà§à¦›à§‡â€¦
+              উত্তর তৈরি হচ্ছে…
             </div>
           </div>
         )}
@@ -445,7 +445,7 @@ export default function AgentChatWidget({ currentUser }) {
             }
           }}
           rows={1}
-          placeholder="à¦†à¦ªà¦¨à¦¾à¦° à¦ªà§à¦°à¦¶à§à¦¨ à¦²à¦¿à¦–à§à¦¨â€¦"
+          placeholder="আপনার প্রশ্ন লিখুন…"
           className="max-h-28 min-h-10 flex-1 resize-none rounded-xl border border-[#D0D5DD] px-3 py-2 text-sm text-[#101828] outline-none placeholder:text-[#98A2B3] focus:border-[#2554C7] focus:ring-2 focus:ring-[#2554C7]/10"
           aria-label="Message for AI assistant"
         />

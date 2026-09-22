@@ -39,7 +39,7 @@ export default function ProjectList({ onLoggedOut, currentUser }) {
       .then((res) => setProjects(res.data))
       .catch((err) => {
         if (err.response?.status === 401) onLoggedOut();
-        else setError("à¦ªà§à¦°à¦œà§‡à¦•à§à¦Ÿ à¦²à§‹à¦¡ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
+        else setError("প্রজেক্ট লোড করা যায়নি।");
       })
       .finally(() => setLoading(false));
   }, [onLoggedOut]);
@@ -62,12 +62,12 @@ export default function ProjectList({ onLoggedOut, currentUser }) {
       setProjects((p) => [res.data, ...p]);
       navigate(`/admin/projects/${res.data.id}`);
     } catch {
-      setError("à¦ªà§à¦°à¦œà§‡à¦•à§à¦Ÿ à¦¤à§ˆà¦°à¦¿ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
+      setError("প্রজেক্ট তৈরি করা যায়নি।");
     }
   }
 
   async function handleDelete(id, name) {
-    if (!confirm(`"${name}" â€” à¦à¦‡ à¦ªà§à¦°à¦œà§‡à¦•à§à¦Ÿ à¦à¦¬à¦‚ à¦à¦° à¦¸à¦¬ registration à¦®à§à¦›à§‡ à¦«à§‡à¦²à¦¬à§‡à¦¨? à¦à¦‡ à¦•à¦¾à¦œ à¦ªà§‚à¦°à§à¦¬à¦¾à¦¬à¦¸à§à¦¥à¦¾à¦¯à¦¼ à¦«à§‡à¦°à¦¾à¦¨à§‹ à¦¯à¦¾à¦¬à§‡ à¦¨à¦¾à¥¤`)) return;
+    if (!confirm(`"${name}" — এই প্রজেক্ট এবং এর সব registration মুছে ফেলবেন? এই কাজ পূর্বাবস্থায় ফেরানো যাবে না।`)) return;
     await deleteProject(id);
     setProjects((p) => p.filter((x) => x.id !== id));
   }
@@ -80,7 +80,7 @@ export default function ProjectList({ onLoggedOut, currentUser }) {
     reloadPage();
   }
   
-  // Card/row à¦ onMouseEnter à¦¦à¦¿à¦¨
+  // Card/row এ onMouseEnter দিন
   function _handleProjectHover(_id) {
     // Implementation for handling project hover
   }
@@ -93,7 +93,7 @@ export default function ProjectList({ onLoggedOut, currentUser }) {
         <div>
           <h1 className="font-display text-xl font-black text-[#101828]">Events / Projects</h1>
           <p className="text-xs text-[#667085]">
-            {isAdmin ? "Quantum Foundation-à¦à¦° à¦¸à¦¬ registration project à¦à¦–à¦¾à¦¨ à¦¥à§‡à¦•à§‡ à¦®à§à¦¯à¦¾à¦¨à§‡à¦œ à¦•à¦°à§à¦¨à¥¤" : "à¦†à¦ªà¦¨à¦¾à¦•à§‡ à¦¯à§‡à¦¸à¦¬ à¦‡à¦­à§‡à¦¨à§à¦Ÿà§‡ à¦…à§à¦¯à¦¾à¦•à¦¸à§‡à¦¸ à¦¦à§‡à¦“à¦¯à¦¼à¦¾ à¦¹à¦¯à¦¼à§‡à¦›à§‡ à¦¸à§‡à¦—à§à¦²à§‹ à¦à¦–à¦¾à¦¨à§‡ à¦¦à§‡à¦–à¦¾ à¦¯à¦¾à¦šà§à¦›à§‡à¥¤"}
+            {isAdmin ? "Quantum Foundation-এর সব registration project এখান থেকে ম্যানেজ করুন।" : "আপনাকে যেসব ইভেন্টে অ্যাকসেস দেওয়া হয়েছে সেগুলো এখানে দেখা যাচ্ছে।"}
           </p>
         </div>
         <SortDropdown value={sortKey} onChange={setSortKey} options={SORT_OPTIONS} />
@@ -105,7 +105,7 @@ export default function ProjectList({ onLoggedOut, currentUser }) {
             autoFocus
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            placeholder="à¦¨à¦¤à§à¦¨ à¦‡à¦­à§‡à¦¨à§à¦Ÿà§‡à¦° à¦¨à¦¾à¦® à¦²à¦¿à¦–à§à¦¨"
+            placeholder="নতুন ইভেন্টের নাম লিখুন"
             className="flex-1 rounded-lg border border-[#E4E7EC] px-3 py-2 text-sm outline-none focus:border-[#2554C7]"
           />
           <button type="submit" className="rounded-lg bg-[#2554C7] px-4 py-2 text-xs font-bold text-white hover:bg-[#17368F]">
@@ -120,16 +120,16 @@ export default function ProjectList({ onLoggedOut, currentUser }) {
           onClick={() => setCreating(true)}
           className="mb-5 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#D0D5DD] bg-white py-3.5 text-sm font-semibold text-[#2554C7] hover:border-[#2554C7] hover:bg-[#EEF4FF]"
         >
-          + à¦¨à¦¤à§à¦¨ Event à¦¤à§ˆà¦°à¦¿ à¦•à¦°à§à¦¨
+          + নতুন Event তৈরি করুন
         </button>
       ))}
 
       {error && <div className="mb-4 rounded-lg bg-[#FEF3F2] px-3 py-2 text-xs text-[#D92D20]">{error}</div>}
-      {loading && <div className="py-10 text-center text-sm text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>}
+      {loading && <div className="py-10 text-center text-sm text-[#667085]">লোড হচ্ছে…</div>}
 
       {!loading && sortedProjects.length === 0 && (
         <div className="rounded-xl border border-[#E4E7EC] bg-white py-14 text-center text-sm text-[#98A2B3]">
-          {isAdmin ? "à¦à¦–à¦¨à§‹ à¦•à§‹à¦¨à§‹ Event à¦¤à§ˆà¦°à¦¿ à¦¹à¦¯à¦¼à¦¨à¦¿à¥¤" : "à¦†à¦ªà¦¨à¦¾à¦•à§‡ à¦à¦–à¦¨à§‹ à¦•à§‹à¦¨à§‹ à¦‡à¦­à§‡à¦¨à§à¦Ÿà§‡ à¦…à§à¦¯à¦¾à¦•à¦¸à§‡à¦¸ à¦¦à§‡à¦“à¦¯à¦¼à¦¾ à¦¹à¦¯à¦¼à¦¨à¦¿ â€” à¦…à§à¦¯à¦¾à¦¡à¦®à¦¿à¦¨à§‡à¦° à¦¸à¦¾à¦¥à§‡ à¦¯à§‹à¦—à¦¾à¦¯à§‹à¦— à¦•à¦°à§à¦¨à¥¤"}
+          {isAdmin ? "এখনো কোনো Event তৈরি হয়নি।" : "আপনাকে এখনো কোনো ইভেন্টে অ্যাকসেস দেওয়া হয়নি — অ্যাডমিনের সাথে যোগাযোগ করুন।"}
         </div>
       )}
 
@@ -177,14 +177,14 @@ export default function ProjectList({ onLoggedOut, currentUser }) {
                     title="Rename"
                     className="rounded-lg border border-[#E4E7EC] p-1.5 text-[#667085] hover:border-[#2554C7] hover:text-[#2554C7]"
                   >
-                    âœŽ
+                    ✎
                   </button>
                   <button
                     onClick={() => handleDelete(p.id, p.name)}
                     title="Delete"
                     className="rounded-lg border border-[#E4E7EC] p-1.5 text-[#667085] hover:border-[#D92D20] hover:text-[#D92D20]"
                   >
-                    ðŸ—‘
+                    🗑
                   </button>
                 </>
               )}
@@ -192,7 +192,7 @@ export default function ProjectList({ onLoggedOut, currentUser }) {
                 onClick={() => navigate(`/admin/projects/${p.id}`)}
                 className="rounded-lg bg-[#2554C7] px-3 py-1.5 text-xs font-bold text-white hover:bg-[#17368F]"
               >
-                Open â†’
+                Open →
               </button>
             </div>
           </div>

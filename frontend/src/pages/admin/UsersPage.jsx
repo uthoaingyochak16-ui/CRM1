@@ -17,13 +17,13 @@ import ProfileAvatar from "../../components/ProfileAvatar.jsx";
 import PasswordInput from "../../components/PasswordInput.jsx";
 
 const FEATURES = [
-  { key: "can_view", label: "à¦ªà§à¦°à¦œà§‡à¦•à§à¦Ÿ à¦¦à§‡à¦–à¦¾" },
-  { key: "can_view_registrations", label: "Registrations à¦¦à§‡à¦–à¦¾/à¦¡à¦¿à¦²à¦¿à¦Ÿ" },
-  { key: "can_edit_event", label: "Event à¦¤à¦¥à§à¦¯ à¦à¦¡à¦¿à¦Ÿ" },
-  { key: "can_edit_fields", label: "Form Fields à¦à¦¡à¦¿à¦Ÿ" },
+  { key: "can_view", label: "প্রজেক্ট দেখা" },
+  { key: "can_view_registrations", label: "Registrations দেখা/ডিলিট" },
+  { key: "can_edit_event", label: "Event তথ্য এডিট" },
+  { key: "can_edit_fields", label: "Form Fields এডিট" },
   { key: "can_publish", label: "Publish/Unpublish" },
   { key: "can_export", label: "CSV Export" },
-  { key: "can_manage_tasks", label: "Task à¦®à§à¦¯à¦¾à¦¨à§‡à¦œ" },
+  { key: "can_manage_tasks", label: "Task ম্যানেজ" },
 ];
 
 const emptyForm = { name: "", username: "", email: "", phone: "", designation: "", center: "", password: "", role: "executive" };
@@ -45,7 +45,7 @@ export default function UsersPage({ onLoggedOut, currentUser }) {
       .then((res) => setUsers(res.data))
       .catch((err) => {
         if (err.response?.status === 401) onLoggedOut();
-        else setError("à¦‡à¦‰à¦œà¦¾à¦° à¦²à§‹à¦¡ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
+        else setError("ইউজার লোড করা যায়নি।");
       })
       .finally(() => setLoading(false));
   }, [onLoggedOut]);
@@ -67,7 +67,7 @@ export default function UsersPage({ onLoggedOut, currentUser }) {
       setForm(emptyForm);
       setCreating(false);
     } catch (err) {
-      setError(err.response?.data?.detail || "à¦…à§à¦¯à¦¾à¦•à¦¾à¦‰à¦¨à§à¦Ÿ à¦¤à§ˆà¦°à¦¿ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
+      setError(err.response?.data?.detail || "অ্যাকাউন্ট তৈরি করা যায়নি।");
     }
   }
 
@@ -104,18 +104,18 @@ export default function UsersPage({ onLoggedOut, currentUser }) {
   }
 
   async function handleDelete(u) {
-    if (!confirm(`"${u.name}" (${u.email}) à¦…à§à¦¯à¦¾à¦•à¦¾à¦‰à¦¨à§à¦Ÿà¦Ÿà¦¿ à¦®à§à¦›à§‡ à¦«à§‡à¦²à¦¬à§‡à¦¨?`)) return;
+    if (!confirm(`"${u.name}" (${u.email}) অ্যাকাউন্টটি মুছে ফেলবেন?`)) return;
     await deleteUser(u.id);
     setUsers((list) => list.filter((x) => x.id !== u.id));
     if (accessUserId === u.id) setAccessUserId(null);
   }
 
   async function handleResetPassword(u) {
-    const pw = prompt(`"${u.name}"-à¦à¦° à¦œà¦¨à§à¦¯ à¦¨à¦¤à§à¦¨ à¦ªà¦¾à¦¸à¦“à¦¯à¦¼à¦¾à¦°à§à¦¡ à¦¦à¦¿à¦¨ (à¦•à¦®à¦ªà¦•à§à¦·à§‡ à§§à§¦ à¦…à¦•à§à¦·à¦°, letter à¦“ number):`);
+    const pw = prompt(`"${u.name}"-এর জন্য নতুন পাসওয়ার্ড দিন (কমপক্ষে ১০ অক্ষর, letter ও number):`);
     if (!pw) return;
-    if (pw.length < 10 || !/[A-Za-z]/.test(pw) || !/\d/.test(pw)) return alert("à¦ªà¦¾à¦¸à¦“à¦¯à¦¼à¦¾à¦°à§à¦¡à§‡ à¦•à¦®à¦ªà¦•à§à¦·à§‡ à§§à§¦ à¦…à¦•à§à¦·à¦°, à¦à¦•à¦Ÿà¦¿ letter à¦“ à¦à¦•à¦Ÿà¦¿ number à¦¥à¦¾à¦•à¦¤à§‡ à¦¹à¦¬à§‡à¥¤");
+    if (pw.length < 10 || !/[A-Za-z]/.test(pw) || !/\d/.test(pw)) return alert("পাসওয়ার্ডে কমপক্ষে ১০ অক্ষর, একটি letter ও একটি number থাকতে হবে।");
     await resetUserPassword(u.id, pw);
-    alert("à¦ªà¦¾à¦¸à¦“à¦¯à¦¼à¦¾à¦°à§à¦¡ à¦°à¦¿à¦¸à§‡à¦Ÿ à¦¹à¦¯à¦¼à§‡à¦›à§‡à¥¤");
+    alert("পাসওয়ার্ড রিসেট হয়েছে।");
   }
 
   const accessUser = users.find((u) => u.id === accessUserId);
@@ -131,7 +131,7 @@ export default function UsersPage({ onLoggedOut, currentUser }) {
     <div className="mx-auto max-w-3xl px-3 py-3">
       <div className="mb-6">
         {/* <h1 className="font-display text-xl font-black text-[#101828]">Users & Access Control</h1> */}
-        {/* <p className="text-xs text-[#667085]">Admin à¦“ Communicator à¦…à§à¦¯à¦¾à¦•à¦¾à¦‰à¦¨à§à¦Ÿ à¦¤à§ˆà¦°à¦¿ à¦•à¦°à§à¦¨ à¦à¦¬à¦‚ à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ communicator à¦•à§‹à¦¨ project-à¦ à¦•à§€ à¦•à¦°à¦¤à§‡ à¦ªà¦¾à¦°à¦¬à§‡ à¦¸à§‡à¦Ÿà¦¾ à¦¨à¦¿à¦¯à¦¼à¦¨à§à¦¤à§à¦°à¦£ à¦•à¦°à§à¦¨à¥¤</p> */}
+        {/* <p className="text-xs text-[#667085]">Admin ও Communicator অ্যাকাউন্ট তৈরি করুন এবং প্রতিটি communicator কোন project-এ কী করতে পারবে সেটা নিয়ন্ত্রণ করুন।</p> */}
       </div>
 
       <div className="mb-4 relative">
@@ -143,7 +143,7 @@ export default function UsersPage({ onLoggedOut, currentUser }) {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Name, phone à¦…à¦¥à¦¬à¦¾ email à¦¦à¦¿à¦¯à¦¼à§‡ à¦ªà§à¦°à§‹à¦«à¦¾à¦‡à¦² à¦–à§à¦à¦œà§à¦¨â€¦"
+          placeholder="Name, phone অথবা email দিয়ে প্রোফাইল খুঁজুন…"
           className="w-full rounded-full border border-[#E4E7EC] bg-white py-2.5 pl-9 pr-4 text-xs outline-none focus:border-[#2554C7] focus:ring-2 focus:ring-[#EEF4FF]"
         />
         {search && (
@@ -152,7 +152,7 @@ export default function UsersPage({ onLoggedOut, currentUser }) {
             className="absolute right-3 top-1/2 -translate-y-1/2 text-[#98A2B3] hover:text-[#344054]"
             title="Clear"
           >
-            âœ•
+            ✕
           </button>
         )}
       </div>
@@ -174,7 +174,7 @@ export default function UsersPage({ onLoggedOut, currentUser }) {
           <Field label="Phone Number">
             <input required type="tel" className="input" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
           </Field>
-          <Field label="à¦ªà¦¦à¦¬à§€ / Designation">
+          <Field label="পদবী / Designation">
             <input className="input" value={form.designation} onChange={(e) => setForm((f) => ({ ...f, designation: e.target.value }))} />
           </Field>
           <Field label="Center">
@@ -202,15 +202,15 @@ export default function UsersPage({ onLoggedOut, currentUser }) {
           onClick={() => setCreating(true)}
           className="mb-5 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#D0D5DD] bg-white py-3 text-sm font-semibold text-[#2554C7] hover:border-[#2554C7] hover:bg-[#EEF4FF]"
         >
-          + à¦¨à¦¤à§à¦¨ Admin/Communicator/User à¦…à§à¦¯à¦¾à¦•à¦¾à¦‰à¦¨à§à¦Ÿ à¦¤à§ˆà¦°à¦¿ à¦•à¦°à§à¦¨
+          + নতুন Admin/Communicator/User অ্যাকাউন্ট তৈরি করুন
         </button>
       )}
 
       {error && !creating && <div className="mb-4 rounded-lg bg-[#FEF3F2] px-3 py-2 text-xs text-[#D92D20]">{error}</div>}
-      {loading && <div className="py-10 text-center text-sm text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>}
+      {loading && <div className="py-10 text-center text-sm text-[#667085]">লোড হচ্ছে…</div>}
 
       {!loading && filteredUsers.length === 0 && (
-        <div className="py-10 text-center text-sm text-[#98A2B3]">à¦•à§‹à¦¨à§‹ à¦ªà§à¦°à§‹à¦«à¦¾à¦‡à¦² à¦ªà¦¾à¦“à¦¯à¦¼à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤</div>
+        <div className="py-10 text-center text-sm text-[#98A2B3]">কোনো প্রোফাইল পাওয়া যায়নি।</div>
       )}
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
@@ -252,7 +252,7 @@ export default function UsersPage({ onLoggedOut, currentUser }) {
               onClick={() => setViewingImageUser(null)}
               className="absolute right-2 top-2 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-bold text-slate-600 shadow-sm"
             >
-              âœ•
+              ✕
             </button>
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
               {viewingImageUser.profile_image_url ? (
@@ -400,7 +400,7 @@ function EditUserModal({ user, canChangeRole, onSave, onClose }) {
         ...(canChangeRole ? { role: values.role } : {}),
       });
     } catch (requestError) {
-      setError(requestError.response?.data?.detail || "Account à¦¤à¦¥à§à¦¯ update à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
+      setError(requestError.response?.data?.detail || "Account তথ্য update করা যায়নি।");
     } finally {
       setSaving(false);
     }
@@ -417,10 +417,10 @@ function EditUserModal({ user, canChangeRole, onSave, onClose }) {
       <form onSubmit={handleSubmit} className="relative z-10 w-full max-w-md rounded-2xl border border-[#E4E7EC] bg-white p-5 shadow-2xl">
         <div className="mb-5 flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-base font-black text-[#101828]">Account à¦¤à¦¥à§à¦¯ à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¨</h2>
-            <p className="mt-1 text-xs text-[#667085]">{user.role === "admin" ? "Admin" : "Communicator"} account-à¦à¦° name à¦“ email edit à¦•à¦°à§à¦¨à¥¤</p>
+            <h2 className="text-base font-black text-[#101828]">Account তথ্য পরিবর্তন</h2>
+            <p className="mt-1 text-xs text-[#667085]">{user.role === "admin" ? "Admin" : "Communicator"} account-এর name ও email edit করুন।</p>
           </div>
-          <button type="button" onClick={onClose} className="rounded-lg p-1.5 text-[#667085] hover:bg-[#F2F4F7]">âœ•</button>
+          <button type="button" onClick={onClose} className="rounded-lg p-1.5 text-[#667085] hover:bg-[#F2F4F7]">✕</button>
         </div>
 
         <div className="space-y-4">
@@ -453,7 +453,7 @@ function EditUserModal({ user, canChangeRole, onSave, onClose }) {
           <Field label="Phone Number">
             <input required type="tel" className="input" value={values.phone} onChange={(event) => setValues((current) => ({ ...current, phone: event.target.value }))} />
           </Field>
-          <Field label="à¦ªà¦¦à¦¬à§€ / Designation">
+          <Field label="পদবী / Designation">
             <input className="input" value={values.designation} onChange={(event) => setValues((current) => ({ ...current, designation: event.target.value }))} />
           </Field>
           <Field label="Center">
@@ -517,20 +517,20 @@ function AccessModal({ user, onToggleCustomerAccess, onToggleManualLeadAccess, o
           <div className="flex flex-col gap-3">
             <label className="flex w-fit items-center gap-2 text-xs font-semibold text-[#344054]">
               <input type="checkbox" checked={user.role === "user" || Boolean(user.can_manage_customers)} onChange={onToggleCustomerAccess} disabled={user.role === "user"} className="h-4 w-4" />
-              Guest Profile à¦¤à¦¾à¦²à¦¿à¦•à¦¾ à¦¦à§‡à¦–à¦¤à§‡ à¦ªà¦¾à¦°à¦¬à§‡ (global)
+              Guest Profile তালিকা দেখতে পারবে (global)
             </label>
             <label className="flex w-fit items-center gap-2 text-xs font-semibold text-[#344054]">
               <input type="checkbox" checked={user.role === "user" || Boolean(user.can_manual_lead_entry)} onChange={onToggleManualLeadAccess} disabled={user.role === "user"} className="h-4 w-4" />
-              Manual Lead Entry à¦•à¦°à¦¤à§‡ à¦ªà¦¾à¦°à¦¬à§‡ (global)
+              Manual Lead Entry করতে পারবে (global)
             </label>
             {user.role === "user" && (
               <label className="flex w-fit items-center gap-2 text-xs font-semibold text-[#344054]">
                 <input type="checkbox" checked={Boolean(user.can_create_events)} onChange={onToggleEventCreateAccess} className="h-4 w-4" />
-                à¦¨à¦¤à§à¦¨ Event à¦¤à§ˆà¦°à¦¿ à¦•à¦°à¦¤à§‡ à¦ªà¦¾à¦°à¦¬à§‡
+                নতুন Event তৈরি করতে পারবে
               </label>
             )}
             <div className="rounded-lg bg-[#EEF4FF] px-3 py-2 text-xs font-semibold text-[#2554C7]">
-              AI chat widget à¦¸à¦¬ active user-à¦à¦° à¦œà¦¨à§à¦¯ availableà¥¤
+              AI chat widget সব active user-এর জন্য available।
             </div>
           </div>
         </div>
@@ -601,12 +601,12 @@ function PermissionsEditor({ user }) {
     }
   }
 
-  if (loading) return <div className="py-6 text-center text-xs text-[#98A2B3]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>;
+  if (loading) return <div className="py-6 text-center text-xs text-[#98A2B3]">লোড হচ্ছে…</div>;
 
   return (
     <div>
       {projects.length === 0 ? (
-        <div className="py-4 text-center text-xs text-[#98A2B3]">à¦•à§‹à¦¨à§‹ à¦‡à¦­à§‡à¦¨à§à¦Ÿ à¦¨à§‡à¦‡à¥¤</div>
+        <div className="py-4 text-center text-xs text-[#98A2B3]">কোনো ইভেন্ট নেই।</div>
       ) : (
         <div className="flex flex-col gap-3">
           {projects.map((p) => (
@@ -631,7 +631,7 @@ function PermissionsEditor({ user }) {
 
       <div className="mt-3 flex items-center gap-3">
         <button onClick={handleSave} disabled={saving} className="rounded-full bg-[#027A48] px-5 py-2 text-xs font-bold text-white hover:opacity-90 disabled:opacity-60">
-          {saving ? "Savingâ€¦" : "Save Access"}
+          {saving ? "Saving…" : "Save Access"}
         </button>
         {saved && (
           <span className="flex items-center gap-1 text-xs font-semibold text-[#027A48]">

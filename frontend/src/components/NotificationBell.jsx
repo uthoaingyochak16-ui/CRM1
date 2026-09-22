@@ -1,4 +1,4 @@
-// frontend/src/components/NotificationBell.jsx â€” new file
+// frontend/src/components/NotificationBell.jsx — new file
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { listNotifications, getUnreadCount, markNotificationRead } from "../api/guest.js";
@@ -128,8 +128,8 @@ export default function NotificationBell({ placement = "sidebar" }) {
           >
           <div className="border-b border-[#E4E7EC] px-4 py-3 text-sm font-bold text-[#101828]">Notifications</div>
           <div className={showAll ? "max-h-[32rem] overflow-y-auto" : ""}>
-            {!loaded && <div className="px-4 py-6 text-center text-xs text-[#98A2B3]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>}
-            {loaded && items.length === 0 && <div className="px-4 py-6 text-center text-xs text-[#98A2B3]">à¦•à§‹à¦¨à§‹ notification à¦¨à§‡à¦‡à¥¤</div>}
+            {!loaded && <div className="px-4 py-6 text-center text-xs text-[#98A2B3]">লোড হচ্ছে…</div>}
+            {loaded && items.length === 0 && <div className="px-4 py-6 text-center text-xs text-[#98A2B3]">কোনো notification নেই।</div>}
             {visibleItems.map((n) => (
               <button
                 type="button"
@@ -155,7 +155,7 @@ export default function NotificationBell({ placement = "sidebar" }) {
                       {new Date(n.created_at).toLocaleString("bn-BD")}
                     </span>
                   </span>
-                  <span className="text-sm text-[#667085]" aria-hidden="true">â†’</span>
+                  <span className="text-sm text-[#667085]" aria-hidden="true">→</span>
                 </div>
               </button>
             ))}
@@ -166,7 +166,7 @@ export default function NotificationBell({ placement = "sidebar" }) {
               onClick={() => setShowAll((current) => !current)}
               className="w-full border-t border-[#E4E7EC] px-4 py-2.5 text-xs font-bold text-[#2554C7] hover:bg-[#F8FAFC]"
             >
-              {showAll ? "à¦•à¦® à¦¦à§‡à¦–à§à¦¨" : `à¦†à¦°à¦“ à¦¦à§‡à¦–à§à¦¨ (${hiddenCount})`}
+              {showAll ? "কম দেখুন" : `আরও দেখুন (${hiddenCount})`}
             </button>
           )}
         </div>

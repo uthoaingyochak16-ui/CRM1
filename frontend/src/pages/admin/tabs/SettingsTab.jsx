@@ -10,15 +10,15 @@ import { useAutosave } from "../../../hooks/useAutosave.js";
 import { useRealtimeRefresh } from "../../../realtime/realtimeHooks.js";
 
 const STATIC_KEYWORDS = [
-  { tag: "{{registration_details}}", desc: "Success page-à¦à¦° Registration ID, à¦¸à¦¬ form data à¦“ registration time" },
-  { tag: "{{customer_name}}", desc: "Guest à¦à¦° à¦ªà§‚à¦°à§à¦£ à¦¨à¦¾à¦®" },
-  { tag: "{{mobile}}", desc: "à¦®à§‹à¦¬à¦¾à¦‡à¦² à¦¨à¦®à§à¦¬à¦°" },
-  { tag: "{{email}}", desc: "à¦‡à¦®à§‡à¦‡à¦²" },
-  { tag: "{{event_title}}", desc: "Event à¦à¦° à¦¶à¦¿à¦°à§‹à¦¨à¦¾à¦®" },
-  { tag: "{{event_date}}", desc: "Event à¦à¦° à¦¤à¦¾à¦°à¦¿à¦–" },
-  { tag: "{{event_place}}", desc: "Event à¦à¦° à¦¸à§à¦¥à¦¾à¦¨" },
+  { tag: "{{registration_details}}", desc: "Success page-এর Registration ID, সব form data ও registration time" },
+  { tag: "{{customer_name}}", desc: "Guest এর পূর্ণ নাম" },
+  { tag: "{{mobile}}", desc: "মোবাইল নম্বর" },
+  { tag: "{{email}}", desc: "ইমেইল" },
+  { tag: "{{event_title}}", desc: "Event এর শিরোনাম" },
+  { tag: "{{event_date}}", desc: "Event এর তারিখ" },
+  { tag: "{{event_place}}", desc: "Event এর স্থান" },
   { tag: "{{reg_id}}", desc: "Registration ID" },
-  { tag: "{{slip_no}}", desc: "Slip à¦¨à¦®à§à¦¬à¦°" },
+  { tag: "{{slip_no}}", desc: "Slip নম্বর" },
   { tag: "{{amount}}", desc: "Payment amount" },
 ];
 
@@ -95,7 +95,7 @@ export default function SettingsTab({ project, onSaved }) {
   function addCcEmail() {
     const email = ccDraft.trim().toLowerCase();
     if (!email || !email.includes("@") || email.startsWith("@") || email.endsWith("@")) {
-      setCcError("à¦à¦•à¦Ÿà¦¿ à¦¸à¦ à¦¿à¦• CC email address à¦²à¦¿à¦–à§à¦¨à¥¤");
+      setCcError("একটি সঠিক CC email address লিখুন।");
       return;
     }
     setCcError("");
@@ -191,7 +191,7 @@ export default function SettingsTab({ project, onSaved }) {
   async function handleCreateTemplate(event) {
     event.preventDefault();
     if (!templateDraft.name.trim()) {
-      setTemplateError("Template name à¦¦à¦¿à¦¨à¥¤");
+      setTemplateError("Template name দিন।");
       return;
     }
     setTemplateSaving(true);
@@ -207,7 +207,7 @@ export default function SettingsTab({ project, onSaved }) {
       setTemplateDraft({ name: "", subject: "", html_body: "" });
       setTemplateEditorOpen(false);
     } catch (error) {
-      setTemplateError(error.response?.data?.detail || "Template à¦¤à§ˆà¦°à¦¿ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
+      setTemplateError(error.response?.data?.detail || "Template তৈরি করা যায়নি।");
     } finally {
       setTemplateSaving(false);
     }
@@ -233,7 +233,7 @@ export default function SettingsTab({ project, onSaved }) {
     <div className="flex flex-col gap-5">
 
       {/* Payment */}
-      <Card title="Payment" sub="Registration à¦à¦° à¦ªà¦°à§‡ payment gateway à¦ redirect à¦•à¦°à¦¬à§‡à¥¤">
+      <Card title="Payment" sub="Registration এর পরে payment gateway এ redirect করবে।">
         <div className="flex flex-col gap-4">
           <Toggle
             label="Enable Payment"
@@ -257,11 +257,11 @@ export default function SettingsTab({ project, onSaved }) {
       </Card>
 
       {/* Automation Triggers */}
-      <Card title="Automation Triggers" sub="à¦¨à¦¿à¦°à§à¦¦à¦¿à¦·à§à¦Ÿ event à¦ à¦¸à§à¦¬à¦¯à¦¼à¦‚à¦•à§à¦°à¦¿à¦¯à¦¼à¦­à¦¾à¦¬à§‡ email à¦ªà¦¾à¦ à¦¾à¦¬à§‡à¥¤">
+      <Card title="Automation Triggers" sub="নির্দিষ্ট event এ স্বয়ংক্রিয়ভাবে email পাঠাবে।">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2 rounded-lg border border-[#E4E7EC] p-4">
             <Toggle
-              label="Auto Email â€” Registration Success"
+              label="Auto Email — Registration Success"
               checked={form.auto_email_on_registration}
               onChange={(v) => set("auto_email_on_registration", v)}
             />
@@ -274,7 +274,7 @@ export default function SettingsTab({ project, onSaved }) {
                     onChange={(value) => set("registration_email_cc_enabled", value)}
                   />
                   <p className="mt-1 text-[11px] leading-5 text-[#667085]">
-                    CC à¦¬à¦¨à§à¦§ à¦¥à¦¾à¦•à¦²à§‡ à¦¨à¦¿à¦šà§‡à¦° list save à¦¥à¦¾à¦•à¦¬à§‡, à¦•à¦¿à¦¨à§à¦¤à§ registration email à¦¤à¦¾à¦¦à§‡à¦° à¦•à¦¾à¦›à§‡ à¦¯à¦¾à¦¬à§‡ à¦¨à¦¾à¥¤
+                    CC বন্ধ থাকলে নিচের list save থাকবে, কিন্তু registration email তাদের কাছে যাবে না।
                   </p>
                   {form.registration_email_cc_enabled && (
                     <div className="mt-3">
@@ -314,12 +314,12 @@ export default function SettingsTab({ project, onSaved }) {
                               aria-label={`Remove ${email}`}
                               className="text-sm font-black text-[#D92D20]"
                             >
-                              Ã—
+                              ×
                             </button>
                           </span>
                         ))}
                         {(form.registration_email_cc_list || []).length === 0 && (
-                          <span className="text-[11px] text-[#98A2B3]">à¦à¦–à¦¨à§‹ à¦•à§‹à¦¨à§‹ CC recipient à¦¯à§‹à¦— à¦•à¦°à¦¾ à¦¹à§Ÿà¦¨à¦¿à¥¤</span>
+                          <span className="text-[11px] text-[#98A2B3]">এখনো কোনো CC recipient যোগ করা হয়নি।</span>
                         )}
                       </div>
                     </div>
@@ -335,7 +335,7 @@ export default function SettingsTab({ project, onSaved }) {
                         value={form.registration_email_subject}
                         onChange={(e) => set("registration_email_subject", e.target.value)}
                         className="input"
-                        placeholder="Registration Successful â€” {{event_title}}"
+                        placeholder="Registration Successful — {{event_title}}"
                       />
                     </div>
                     <div>
@@ -368,8 +368,8 @@ export default function SettingsTab({ project, onSaved }) {
                       />
                     )}
                     <p className="text-[11px] leading-relaxed text-[#667085]">
-                      Registration à¦¸à¦«à¦² à¦¹à¦²à§‡ guest-à¦à¦° form email address-à¦ à¦à¦‡ card automatically à¦ªà¦¾à¦ à¦¾à¦¨à§‹ à¦¹à¦¬à§‡à¥¤
-                      à¦¨à¦¿à¦šà§‡à¦° placeholder tags subject à¦“ HTMLâ€”à¦¦à§à¦‡ à¦œà¦¾à§Ÿà¦—à¦¾à¦¤à§‡à¦‡ à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦° à¦•à¦°à¦¤à§‡ à¦ªà¦¾à¦°à¦¬à§‡à¦¨à¥¤
+                      Registration সফল হলে guest-এর form email address-এ এই card automatically পাঠানো হবে।
+                      নিচের placeholder tags subject ও HTML—দুই জায়গাতেই ব্যবহার করতে পারবেন।
                     </p>
                   </>
                 )}
@@ -379,7 +379,7 @@ export default function SettingsTab({ project, onSaved }) {
 
           <div className="flex flex-col gap-2 rounded-lg border border-[#E4E7EC] p-4">
             <Toggle
-              label="Auto Email â€” Payment Success"
+              label="Auto Email — Payment Success"
               checked={form.auto_email_on_payment}
               onChange={(v) => set("auto_email_on_payment", v)}
             />
@@ -389,7 +389,7 @@ export default function SettingsTab({ project, onSaved }) {
                 <select value={form.email_template_payment}
                   onChange={(e) => set("email_template_payment", e.target.value)}
                   className="input">
-                  <option value="">â€” Template Select à¦•à¦°à§à¦¨ â€”</option>
+                  <option value="">— Template Select করুন —</option>
                   {templates.map((t) => <option key={t.id} value={String(t.id)}>{t.name}</option>)}
                 </select>
               </div>
@@ -398,7 +398,7 @@ export default function SettingsTab({ project, onSaved }) {
         </div>
       </Card>
 
-      <Card title="Registration Email Templates" sub="Template list à¦¥à§‡à¦•à§‡ à¦à¦•à¦Ÿà¦¿ select à¦•à¦°à§à¦¨ à¦…à¦¥à¦¬à¦¾ à¦¨à¦¤à§à¦¨ template à¦¤à§ˆà¦°à¦¿ à¦•à¦°à§à¦¨à¥¤">
+      <Card title="Registration Email Templates" sub="Template list থেকে একটি select করুন অথবা নতুন template তৈরি করুন।">
         <div className="mb-4 flex items-center justify-between gap-3">
           <div>
             <div className="text-xs font-bold text-[#344054]">Template Library</div>
@@ -409,7 +409,7 @@ export default function SettingsTab({ project, onSaved }) {
             onClick={() => {
               setTemplateDraft({
                 name: "",
-                subject: "Registration Successful â€” {{event_title}}",
+                subject: "Registration Successful — {{event_title}}",
                 html_body: form.registration_email_html,
               });
               setTemplateError("");
@@ -442,7 +442,7 @@ export default function SettingsTab({ project, onSaved }) {
                   </div>
                   {template.builtIn && (
                     <span className="mt-1 inline-block rounded-full bg-[#EEF4FF] px-2 py-0.5 text-[9px] font-bold text-[#2554C7]">
-                      Built-in Â· Customizable
+                      Built-in · Customizable
                     </span>
                   )}
                 </div>
@@ -473,13 +473,13 @@ export default function SettingsTab({ project, onSaved }) {
 
         {!form.auto_email_on_registration && (
           <p className="mt-3 rounded-lg bg-[#FFFAEB] px-3 py-2 text-[11px] text-[#B54708]">
-            Template selected à¦¥à¦¾à¦•à¦²à§‡à¦“ à¦‰à¦ªà¦°à§‡à¦° Auto Email toggle OFF à¦¥à¦¾à¦•à¦²à§‡ registration email à¦ªà¦¾à¦ à¦¾à¦¨à§‹ à¦¹à¦¬à§‡ à¦¨à¦¾à¥¤
+            Template selected থাকলেও উপরের Auto Email toggle OFF থাকলে registration email পাঠানো হবে না।
           </p>
         )}
       </Card>
 
       {templateEditorOpen && (
-        <Card title="Create New Email Template" sub="à¦¨à¦¾à¦®à¦Ÿà¦¿ template list-à¦ à¦¦à§‡à¦–à¦¾ à¦¯à¦¾à¦¬à§‡à¥¤ HTML-à¦ dynamic placeholder à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦° à¦•à¦°à¦¤à§‡ à¦ªà¦¾à¦°à¦¬à§‡à¦¨à¥¤">
+        <Card title="Create New Email Template" sub="নামটি template list-এ দেখা যাবে। HTML-এ dynamic placeholder ব্যবহার করতে পারবেন।">
           <form onSubmit={handleCreateTemplate} className="space-y-3">
             <div>
               <label className="mb-1 block text-[11px] font-bold uppercase tracking-wide text-[#667085]">Template Name</label>
@@ -512,7 +512,7 @@ export default function SettingsTab({ project, onSaved }) {
             {templateError && <div className="text-xs font-semibold text-[#D92D20]">{templateError}</div>}
             <div className="flex gap-2">
               <button type="submit" disabled={templateSaving} className="rounded-full bg-[#2554C7] px-5 py-2.5 text-xs font-bold text-white disabled:opacity-60">
-                {templateSaving ? "Creatingâ€¦" : "Create Template"}
+                {templateSaving ? "Creating…" : "Create Template"}
               </button>
               <button type="button" onClick={() => setTemplateEditorOpen(false)} className="rounded-full border border-[#D0D5DD] px-5 py-2.5 text-xs font-bold text-[#667085]">
                 Cancel
@@ -523,7 +523,7 @@ export default function SettingsTab({ project, onSaved }) {
       )}
 
       {viewTemplate && (
-        <Card title={viewTemplate.name} sub="Demo registration data à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦° à¦•à¦°à§‡ email-à¦à¦° exact preview à¦¦à§‡à¦–à¦¾à¦¨à§‹ à¦¹à¦šà§à¦›à§‡à¥¤">
+        <Card title={viewTemplate.name} sub="Demo registration data ব্যবহার করে email-এর exact preview দেখানো হচ্ছে।">
           <div className="mb-3 flex w-fit gap-1 rounded-lg bg-[#F1F2F4] p-1">
             <button
               type="button"
@@ -563,7 +563,7 @@ export default function SettingsTab({ project, onSaved }) {
       )}
 
       {/* Dynamic Keywords Chart */}
-      <Card title="Dynamic Keywords Reference" sub="à¦à¦‡ placeholder à¦—à§à¦²à§‹ HTML template à¦ à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦° à¦•à¦°à§à¦¨à¥¤">
+      <Card title="Dynamic Keywords Reference" sub="এই placeholder গুলো HTML template এ ব্যবহার করুন।">
         <div className="overflow-hidden rounded-lg border border-[#E4E7EC]">
           <table className="min-w-full text-xs">
             <thead>
@@ -581,7 +581,7 @@ export default function SettingsTab({ project, onSaved }) {
                   <td className="px-4 py-2.5">
                     <button onClick={() => copy(kw.tag)}
                       className="rounded-full bg-[#F1F2F4] px-2.5 py-1 text-[10px] font-semibold text-[#344054] hover:bg-[#EEF4FF] hover:text-[#2554C7]">
-                      {copied === kw.tag ? "âœ“ Copied" : "Copy"}
+                      {copied === kw.tag ? "✓ Copied" : "Copy"}
                     </button>
                   </td>
                 </tr>

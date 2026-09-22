@@ -61,18 +61,18 @@ export default function FieldsTab({ projectId }) {
   function confirmDraft() {
     const key = makeKey(draft.key || draft.label);
     if (!draft.label.trim() || !key) {
-      setError("Label à¦à¦¬à¦‚ Key à¦¦à¦¿à¦¨à¥¤");
+      setError("Label এবং Key দিন।");
       return;
     }
     const isDropdown = draft.type === "select" || draft.type === "dropdown";
     const options = isDropdown ? optionsText.split(",").map((s) => s.trim()).filter(Boolean) : [];
     if (isDropdown && options.length === 0) {
-      setError("Dropdown field à¦¹à¦²à§‡ à¦…à¦¨à§à¦¤à¦¤ à¦à¦•à¦Ÿà¦¿ option à¦¦à¦¿à¦¨à¥¤");
+      setError("Dropdown field হলে অন্তত একটি option দিন।");
       return;
     }
     const dupIndex = fields.findIndex((f, i) => f.key === key && i !== editingIndex);
     if (dupIndex !== -1) {
-      setError("à¦à¦‡ Field Key à¦‡à¦¤à¦¿à¦®à¦§à§à¦¯à§‡ à¦¬à§à¦¯à¦¬à¦¹à¦¾à¦° à¦¹à¦šà§à¦›à§‡à¥¤");
+      setError("এই Field Key ইতিমধ্যে ব্যবহার হচ্ছে।");
       return;
     }
     setError("");
@@ -90,7 +90,7 @@ export default function FieldsTab({ projectId }) {
   }
 
   function removeField(i) {
-    if (!confirm(`"${fields[i].label}" à¦«à¦¿à¦²à§à¦¡ à¦®à§à¦›à§‡ à¦«à§‡à¦²à¦¬à§‡à¦¨?`)) return;
+    if (!confirm(`"${fields[i].label}" ফিল্ড মুছে ফেলবেন?`)) return;
     setFields((prev) => prev.filter((_, idx) => idx !== i));
     markDirty();
   }
@@ -127,13 +127,13 @@ export default function FieldsTab({ projectId }) {
       setSaved(true);
       reloadPage({ projectEditorTab: "fields" });
     } catch (err) {
-      setError(err.response?.data?.detail || "à¦¸à¦‚à¦°à¦•à§à¦·à¦£ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
+      setError(err.response?.data?.detail || "সংরক্ষণ করা যায়নি।");
     } finally {
       setSaving(false);
     }
   }
 
-  if (loading) return <div className="py-10 text-center text-sm text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>;
+  if (loading) return <div className="py-10 text-center text-sm text-[#667085]">লোড হচ্ছে…</div>;
 
   return (
     <div className="flex flex-col gap-4">
@@ -160,20 +160,20 @@ export default function FieldsTab({ projectId }) {
                 Required
               </label>
               <div className="flex flex-shrink-0 gap-1">
-                <IconBtn onClick={() => openEdit(i)} title="Edit">âœŽ</IconBtn>
-                <IconBtn onClick={() => move(i, -1)} disabled={i === 0} title="Move up">â†‘</IconBtn>
-                <IconBtn onClick={() => move(i, 1)} disabled={i === fields.length - 1} title="Move down">â†“</IconBtn>
-                <IconBtn onClick={() => removeField(i)} title="Delete" danger>ðŸ—‘</IconBtn>
+                <IconBtn onClick={() => openEdit(i)} title="Edit">✎</IconBtn>
+                <IconBtn onClick={() => move(i, -1)} disabled={i === 0} title="Move up">↑</IconBtn>
+                <IconBtn onClick={() => move(i, 1)} disabled={i === fields.length - 1} title="Move down">↓</IconBtn>
+                <IconBtn onClick={() => removeField(i)} title="Delete" danger>🗑</IconBtn>
               </div>
             </div>
           ))}
-          {fields.length === 0 && <div className="py-6 text-center text-xs text-[#98A2B3]">à¦•à§‹à¦¨à§‹ field à¦¨à§‡à¦‡à¥¤</div>}
+          {fields.length === 0 && <div className="py-6 text-center text-xs text-[#98A2B3]">কোনো field নেই।</div>}
         </div>
       </div>
 
       {editingIndex !== null && (
         <div className="rounded-xl border-l-[3px] border-l-[#2554C7] bg-[#EEF4FF] p-5">
-          <div className="mb-3 text-sm font-bold text-[#101828]">{editingIndex === -1 ? "à¦¨à¦¤à§à¦¨ Field" : "Field à¦¸à¦®à§à¦ªà¦¾à¦¦à¦¨à¦¾"}</div>
+          <div className="mb-3 text-sm font-bold text-[#101828]">{editingIndex === -1 ? "নতুন Field" : "Field সম্পাদনা"}</div>
           <div className="grid grid-cols-2 gap-3">
             <Field label="Label">
               <input className="input" value={draft.label} onChange={(e) => setDraft((d) => ({ ...d, label: e.target.value }))} />
@@ -215,9 +215,9 @@ export default function FieldsTab({ projectId }) {
 
       <div className="flex items-center gap-3">
         <button onClick={handleSaveAll} disabled={saving} className="rounded-full bg-[#027A48] px-5 py-2.5 text-xs font-bold text-white hover:opacity-90 disabled:opacity-60">
-          {saving ? "Savingâ€¦" : "Save Field Changes"}
+          {saving ? "Saving…" : "Save Field Changes"}
         </button>
-        {saved && <span className="text-xs font-semibold text-[#027A48]">âœ“ Saved</span>}
+        {saved && <span className="text-xs font-semibold text-[#027A48]">✓ Saved</span>}
       </div>
 
       <style>{`

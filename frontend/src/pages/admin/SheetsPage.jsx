@@ -30,7 +30,7 @@ export default function SheetsPage({ onLoggedOut }) {
       .then((res) => setProjects(res.data))
       .catch((err) => {
         if (err.response?.status === 401) onLoggedOut();
-        else setError("à¦²à§‹à¦¡ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤");
+        else setError("লোড করা যায়নি।");
       });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -64,7 +64,7 @@ export default function SheetsPage({ onLoggedOut }) {
           setVisibleCols(new Set(["date"]));
         }
       })
-      .catch(() => setError("Registration à¦²à§‹à¦¡ à¦•à¦°à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤"))
+      .catch(() => setError("Registration লোড করা যায়নি।"))
       .finally(() => setLoading(false));
   }
 
@@ -174,7 +174,7 @@ export default function SheetsPage({ onLoggedOut }) {
     doc.setFontSize(9);
     doc.setFont(undefined, "normal");
     doc.setTextColor(120);
-    doc.text(`Exported: ${new Date().toLocaleString("en-GB")}  â€¢  ${rows.length} records`, 40, 56);
+    doc.text(`Exported: ${new Date().toLocaleString("en-GB")}  •  ${rows.length} records`, 40, 56);
 
     autoTable(doc, {
       head: [headers],
@@ -199,7 +199,7 @@ export default function SheetsPage({ onLoggedOut }) {
               onClick={() => setSelectedProject(null)}
               className="back-button mb-2"
             >
-              â† All Sheets
+              ← All Sheets
             </button>
           )}
           <h1 className="font-display text-2xl font-black text-[#101828]">
@@ -218,13 +218,13 @@ export default function SheetsPage({ onLoggedOut }) {
               onClick={downloadCSV}
               className="flex items-center gap-1.5 rounded-full border border-[#D0D5DD] bg-white px-4 py-2.5 text-xs font-bold text-[#344054] hover:border-[#2554C7] hover:text-[#2554C7]"
             >
-              â¬‡ CSV
+              ⬇ CSV
             </button>
             <button
               onClick={downloadPDF}
               className="flex items-center gap-1.5 rounded-full bg-[#2554C7] px-4 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-[#17368F]"
             >
-              â¬‡ PDF
+              ⬇ PDF
             </button>
           </div>
         )}
@@ -241,7 +241,7 @@ export default function SheetsPage({ onLoggedOut }) {
               className="group relative overflow-hidden rounded-2xl border border-[#E4E7EC] bg-white p-5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#2554C7] hover:shadow-md"
             >
               <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#EEF4FF] text-lg">
-                ðŸ“Š
+                📊
               </div>
               <div className="truncate text-sm font-bold text-[#101828] group-hover:text-[#2554C7]">{p.name}</div>
               <div className="mt-1 flex items-center gap-1 text-xs text-[#667085]">
@@ -251,7 +251,7 @@ export default function SheetsPage({ onLoggedOut }) {
           ))}
           {projects.length === 0 && (
             <div className="col-span-full rounded-xl border border-dashed border-[#D0D5DD] bg-white py-14 text-center text-sm text-[#98A2B3]">
-              à¦•à§‹à¦¨à§‹ event à¦ªà¦¾à¦“à¦¯à¦¼à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿à¥¤
+              কোনো event পাওয়া যায়নি।
             </div>
           )}
         </div>
@@ -261,7 +261,7 @@ export default function SheetsPage({ onLoggedOut }) {
           {registrations.length > 0 && (
             <div className="mb-4 flex flex-col gap-3 rounded-2xl border border-[#E4E7EC] bg-white p-4 shadow-sm md:flex-row md:items-center md:flex-wrap">
               <div className="relative min-w-[220px] flex-1">
-                <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#98A2B3]">ðŸ”</span>
+                <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#98A2B3]">🔍</span>
                 <input
                   type="text"
                   placeholder="Search by Reg ID, name, phone, email..."
@@ -287,7 +287,7 @@ export default function SheetsPage({ onLoggedOut }) {
                   onClick={toggleSortDirection}
                   className="rounded-lg border border-[#E4E7EC] px-3 py-2 text-xs font-semibold text-[#344054] hover:border-[#2554C7] hover:text-[#2554C7]"
                 >
-                  {sortDir === "asc" ? "Aâ†’Z" : "Zâ†’A"}
+                  {sortDir === "asc" ? "A→Z" : "Z→A"}
                 </button>
               </div>
 
@@ -296,7 +296,7 @@ export default function SheetsPage({ onLoggedOut }) {
                   onClick={() => setColPickerOpen((o) => !o)}
                   className="flex items-center gap-1.5 rounded-lg border border-[#E4E7EC] px-3 py-2 text-xs font-semibold text-[#344054] hover:border-[#2554C7] hover:text-[#2554C7]"
                 >
-                  âš™ Columns ({activeFields.length + (showDate ? 1 : 0) + 1})
+                  ⚙ Columns ({activeFields.length + (showDate ? 1 : 0) + 1})
                 </button>
                 {colPickerOpen && (
                   <>
@@ -329,17 +329,17 @@ export default function SheetsPage({ onLoggedOut }) {
             </div>
           )}
 
-          {loading && <div className="py-10 text-center text-sm text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>}
+          {loading && <div className="py-10 text-center text-sm text-[#667085]">লোড হচ্ছে…</div>}
 
           {!loading && registrations.length === 0 && (
             <div className="rounded-2xl border border-dashed border-[#D0D5DD] bg-white py-16 text-center text-sm text-[#98A2B3]">
-              à¦à¦‡ program à¦ à¦•à§‹à¦¨à§‹ registration à¦¨à§‡à¦‡à¥¤
+              এই program এ কোনো registration নেই।
             </div>
           )}
 
           {!loading && registrations.length > 0 && processed.length === 0 && (
             <div className="rounded-2xl border border-dashed border-[#D0D5DD] bg-white py-16 text-center text-sm text-[#98A2B3]">
-              à¦•à§‹à¦¨à§‹ à¦«à¦²à¦¾à¦«à¦² à¦ªà¦¾à¦“à¦¯à¦¼à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿ â€” filter à¦ªà¦°à¦¿à¦¬à¦°à§à¦¤à¦¨ à¦•à¦°à§‡ à¦¦à§‡à¦–à§à¦¨à¥¤
+              কোনো ফলাফল পাওয়া যায়নি — filter পরিবর্তন করে দেখুন।
             </div>
           )}
 
@@ -372,7 +372,7 @@ export default function SheetsPage({ onLoggedOut }) {
                           </td>
                         )}
                         {activeFields.map((f) => (
-                          <td key={f} className="max-w-[220px] truncate px-4 py-3 text-[#344054]">{r.data?.[f] ?? "â€”"}</td>
+                          <td key={f} className="max-w-[220px] truncate px-4 py-3 text-[#344054]">{r.data?.[f] ?? "—"}</td>
                         ))}
                       </tr>
                     ))}
@@ -380,8 +380,8 @@ export default function SheetsPage({ onLoggedOut }) {
                 </table>
               </ListScrollArea>
               <div className="flex items-center justify-between border-t border-[#F1F2F4] bg-[#FAFBFC] px-4 py-2.5 text-[10px] text-[#98A2B3]">
-                <span>à¦¦à§‡à¦–à¦¾à¦šà§à¦›à§‡ {processed.length} / à¦®à§‹à¦Ÿ {registrations.length} à¦Ÿà¦¿ registration</span>
-                <span>Sorted by <b className="text-[#667085]">{sortKey === "reg_id" ? "Reg ID" : sortKey === "date" ? "Date" : sortKey.replace(/_/g," ")}</b> ({sortDir === "asc" ? "Aâ†’Z" : "Zâ†’A"})</span>
+                <span>দেখাচ্ছে {processed.length} / মোট {registrations.length} টি registration</span>
+                <span>Sorted by <b className="text-[#667085]">{sortKey === "reg_id" ? "Reg ID" : sortKey === "date" ? "Date" : sortKey.replace(/_/g," ")}</b> ({sortDir === "asc" ? "A→Z" : "Z→A"})</span>
               </div>
             </div>
           )}
@@ -415,7 +415,7 @@ function SortableTh({ label, active, dir, onClick, capitalize }) {
       <span className="inline-flex items-center gap-1">
         {label}
         <span className={`text-[9px] ${active ? "opacity-100" : "opacity-30"}`}>
-          {active ? (dir === "asc" ? "â–²" : "â–¼") : "â‡…"}
+          {active ? (dir === "asc" ? "▲" : "▼") : "⇅"}
         </span>
       </span>
     </th>

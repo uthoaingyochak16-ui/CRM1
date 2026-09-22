@@ -1,4 +1,4 @@
-// frontend/src/pages/admin/PerformancePage.jsx â€” new file (admin leaderboard)
+// frontend/src/pages/admin/PerformancePage.jsx — new file (admin leaderboard)
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLeaderboard } from "../../api/guest.js";
@@ -75,7 +75,7 @@ export default function PerformancePage({ onLoggedOut }) {
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-display text-xl font-black text-[#101828]">Communicator Performance</h1>
-          <p className="text-xs text-[#667085]">à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¾ communicator-à¦à¦° activity, communication à¦à¦¬à¦‚ conversion track à¦•à¦°à§à¦¨à¥¤</p>
+          <p className="text-xs text-[#667085]">প্রতিটা communicator-এর activity, communication এবং conversion track করুন।</p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setShowDocumentation(true)} className="rounded-lg border border-[#D0D5DD] bg-white px-3 py-2 text-xs font-semibold text-[#344054] hover:border-[#2554C7] hover:text-[#2554C7]">
@@ -99,8 +99,8 @@ export default function PerformancePage({ onLoggedOut }) {
         <StatCard label="Avg Score" value={totals.avgScore} color="text-[#2554C7]" />
       </div>
 
-      {loading && <div className="py-10 text-center text-sm text-[#667085]">à¦²à§‹à¦¡ à¦¹à¦šà§à¦›à§‡â€¦</div>}
-      {!loading && rows.length === 0 && <div className="rounded-xl border border-[#E4E7EC] bg-white py-14 text-center text-sm text-[#98A2B3]">à¦•à§‹à¦¨à§‹ communicator à¦¨à§‡à¦‡à¥¤</div>}
+      {loading && <div className="py-10 text-center text-sm text-[#667085]">লোড হচ্ছে…</div>}
+      {!loading && rows.length === 0 && <div className="rounded-xl border border-[#E4E7EC] bg-white py-14 text-center text-sm text-[#98A2B3]">কোনো communicator নেই।</div>}
 
       {!loading && rows.length > 0 && (
         <ListScrollArea className="rounded-xl border border-[#E4E7EC] bg-white">
@@ -144,7 +144,7 @@ export default function PerformancePage({ onLoggedOut }) {
                       <div>
                         <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-bold ${STATUS_COLOR.offline}`}>Offline</span>
                         <div className="mt-1 truncate text-[9px] text-[#667085]" title={r.last_active ? new Date(r.last_active).toLocaleString("en-GB") : ""}>
-                          Last active: {r.last_active ? new Date(r.last_active).toLocaleString("en-GB", { dateStyle: "short", timeStyle: "short" }) : "â€”"}
+                          Last active: {r.last_active ? new Date(r.last_active).toLocaleString("en-GB", { dateStyle: "short", timeStyle: "short" }) : "—"}
                         </div>
                       </div>
                     )}
@@ -157,12 +157,12 @@ export default function PerformancePage({ onLoggedOut }) {
                   <td className="px-2 py-3 font-semibold text-[#2554C7]">{r.total_points}</td>
                   <td className="px-2 py-3">
                     <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${CATEGORY_COLOR[r.performance_category]}`}>
-                      {r.performance_score} Â· {r.performance_category}
+                      {r.performance_score} · {r.performance_category}
                     </span>
                   </td>
                   <td className="px-2 py-3 text-right">
                     <button onClick={() => navigate(`/admin/performance/${r.user_id}`)} className="rounded-lg bg-[#EEF4FF] px-2 py-1.5 text-[10px] font-bold text-[#17368F] hover:bg-[#DBEAFE]">
-                      Details â†’
+                      Details →
                     </button>
                   </td>
                 </tr>
