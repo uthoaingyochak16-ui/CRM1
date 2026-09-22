@@ -116,7 +116,7 @@ export default function NotificationBell({ placement = "sidebar" }) {
               left: "50%",
               transform: "translateX(-50%)",
               ...(typeof window !== "undefined" && (() => {
-                const btn = ref.current?.getBoundingGuestRect();
+                const btn = ref.current?.getBoundingClientRect();
                 if (!btn) return {};
                 const spaceRight = window.innerWidth - btn.left;
                 const spaceLeft = btn.right;

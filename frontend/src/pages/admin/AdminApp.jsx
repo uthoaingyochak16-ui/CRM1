@@ -23,6 +23,7 @@ import MyPerformancePage from "./MyPerformancePage.jsx";
 import FollowupsPage from "./FollowupsPage.jsx";
 import { getMe, logout } from "../../api/guest.js";
 import { useRealtimeRefresh } from "../../realtime/RealtimeContext.jsx";
+import ErrorBoundary from "../../components/ErrorBoundary.jsx";
 
 
 function readStoredUser() {
@@ -152,7 +153,8 @@ export default function AdminApp() {
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <Breadcrumb currentUser={currentUser} onLoggedOut={handleLoggedOut} />
         <main className={`min-h-0 min-w-0 flex-1 overflow-y-auto p-3 transition-[padding] duration-200 ${sidebarExpanded ? "md:p-4 lg:px-5 lg:py-4" : "md:p-2"}`}>
-          <Routes>
+          <ErrorBoundary>
+            <Routes>
           
           <Route
             path="/"
@@ -186,7 +188,8 @@ export default function AdminApp() {
           {isAdmin && <Route path="/performance" element={<PerformancePage onLoggedOut={handleLoggedOut} />} />}
           {isAdmin && <Route path="/performance/:userId" element={<ExecutivePerformanceDetail onLoggedOut={handleLoggedOut} />} />}
           {!isAdmin && !isDataUser && <Route path="/my-performance" element={<MyPerformancePage onLoggedOut={handleLoggedOut} />} />}
-          </Routes>
+            </Routes>
+          </ErrorBoundary>
         </main>
       </div>
     </div>

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient as QueryGuest, QueryClientProvider as QueryGuestProvider } from "@tanstack/react-query";
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import App from "./App.jsx";
 import { RealtimeProvider } from "./realtime/RealtimeContext.jsx";
 import "./index.css";
@@ -27,7 +28,7 @@ const queryGuest = new QueryGuest({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5,
-      cacheTime: 1000 * 60 * 10,
+      gcTime: 1000 * 60 * 10,
       refetchOnWindowFocus: false,
     },
   },
@@ -35,12 +36,14 @@ const queryGuest = new QueryGuest({
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <QueryGuestProvider client={queryGuest}>
-      <RealtimeProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </RealtimeProvider>
-    </QueryGuestProvider>
+    <ErrorBoundary>
+      <QueryGuestProvider client={queryGuest}>
+        <RealtimeProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </RealtimeProvider>
+      </QueryGuestProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 );

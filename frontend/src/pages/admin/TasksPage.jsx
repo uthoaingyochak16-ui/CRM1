@@ -137,7 +137,7 @@ function truncateWords(value, maxWords = 4) {
 function ageFromDateOfBirth(value) {
   if (!value) return "";
   const text = String(value).trim();
-  const match = text.match(/^(\d{1,2})[\/](\d{1,2})[\/](\d{4})$/);
+  const match = text.match(/^(\d{1,2})[/](\d{1,2})[/](\d{4})$/);
   let birthDate;
   if (match) {
     birthDate = new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]));
@@ -313,7 +313,7 @@ export default function TasksPage({ currentUser, onLoggedOut }) {
   }
 
   function toggleSelect(id) {
-    setSelected((s) => { const n = new Set(s); n.has(id) ? n.delete(id) : n.add(id); return n; });
+    setSelected((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
   }
   function toggleSelectAll(ids) {
     setSelected((s) => (s.size === ids.length ? new Set() : new Set(ids)));

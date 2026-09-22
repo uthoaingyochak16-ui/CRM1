@@ -17,21 +17,25 @@ export default function CommunicatorPicker({
     if (!open) return undefined;
 
     const positionMenu = () => {
-      const button = buttonRef.current;
-      if (!button) return;
-      const rect = button.getBoundingGuestRect();
-      const menuWidth = 256;
-      const gap = 8;
-      const spaceBelow = window.innerHeight - rect.bottom - gap;
-      const spaceAbove = rect.top - gap;
-      const openAbove = spaceBelow < 180 && spaceAbove > spaceBelow;
-      const desiredHeight = Math.min(320, 16 + Math.max(1, executives?.length || 0) * 48);
-      const maxHeight = Math.max(80, Math.min(desiredHeight, (openAbove ? spaceAbove : spaceBelow) - 8));
-      setMenuPosition({
-        top: openAbove ? Math.max(8, rect.top - maxHeight - gap) : rect.bottom + gap,
-        left: Math.max(8, Math.min(rect.right - menuWidth, window.innerWidth - menuWidth - 8)),
-        maxHeight,
-      });
+      try {
+        const button = buttonRef.current;
+        if (!button || typeof button.getBoundingClientRect !== "function") return;
+        const rect = button.getBoundingClientRect();
+        const menuWidth = 256;
+        const gap = 8;
+        const spaceBelow = window.innerHeight - rect.bottom - gap;
+        const spaceAbove = rect.top - gap;
+        const openAbove = spaceBelow < 180 && spaceAbove > spaceBelow;
+        const desiredHeight = Math.min(320, 16 + Math.max(1, executives?.length || 0) * 48);
+        const maxHeight = Math.max(80, Math.min(desiredHeight, (openAbove ? spaceAbove : spaceBelow) - 8));
+        setMenuPosition({
+          top: openAbove ? Math.max(8, rect.top - maxHeight - gap) : rect.bottom + gap,
+          left: Math.max(8, Math.min(rect.right - menuWidth, window.innerWidth - menuWidth - 8)),
+          maxHeight,
+        });
+      } catch (err) {
+        console.error("Error positioning CommunicatorPicker:", err);
+      }
     };
     const closeOutside = (event) => {
       if (!buttonRef.current?.contains(event.target) && !menuRef.current?.contains(event.target)) setOpen(false);
@@ -49,7 +53,9 @@ export default function CommunicatorPicker({
   }, [open, executives?.length]);
 
   const handleSelect = (executiveId) => {
-    onSelect(executiveId);
+    if (typeof onSelect === "function") {
+      onSelect(executiveId);
+    }
     setOpen(false);
   };
 
