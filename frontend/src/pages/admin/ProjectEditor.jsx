@@ -41,6 +41,13 @@ export default function ProjectEditor({ onLoggedOut }) {
     return () => window.removeEventListener("qf:refresh-current-view", reload);
   }, [reload]);
 
+  useEffect(() => {
+    if (!project) return;
+    window.dispatchEvent(new CustomEvent("qf:breadcrumb-context", {
+      detail: { projectId: project.id, projectName: project.name, section: tab },
+    }));
+  }, [project, tab]);
+
   async function handleTogglePublish() {
     setPublishBusy(true);
     setPublishError("");

@@ -43,6 +43,9 @@ export default function SheetsPage({ onLoggedOut }) {
 
   function selectProject(project) {
     setSelectedProject(project);
+    window.dispatchEvent(new CustomEvent("qf:breadcrumb-context", {
+      detail: { projectId: project.id, projectName: project.name, section: "sheets" },
+    }));
     setLoading(true);
     setRegistrations([]);
     setFields([]);

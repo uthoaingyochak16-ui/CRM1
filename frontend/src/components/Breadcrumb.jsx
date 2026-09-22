@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { HomeIcon } from "./Icons.jsx";
 import NotificationBell from "./NotificationBell.jsx";
 import ProfileAvatar from "./ProfileAvatar.jsx";
+import { getProject } from "../api/guest.js";
 
 // Map of known path segments -> display label.
 // Add a new entry here whenever you add a new top-level admin route.
@@ -50,6 +51,7 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
   const navigate = useNavigate();
   const [profileOpen, setProfileOpen] = useState(false);
   const [historyState, setHistoryState] = useState(() => window.history.state);
+  const [breadcrumbContext, setBreadcrumbContext] = useState(null);
   const profileRef = useRef(null);
   const parts = location.pathname.split("/").filter(Boolean); // e.g. ["admin","customers","abc123"]
 
@@ -57,12 +59,59 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
   const rest = parts[0] === "admin" ? parts.slice(1) : parts;
   const isHomeOnly = rest.length === 0;
 
+  useEffect(() => {
+    const updateContext = (event) => setBreadcrumbContext(event.detail || null);
+    window.addEventListener("qf:breadcrumb-context", updateContext);
+    return () => window.removeEventListener("qf:breadcrumb-context", updateContext);
+  }, []);
+
+  useEffect(() => {
+    const routeParts = location.pathname.split("/").filter(Boolean);
+    const routeRest = routeParts[0] === "admin" ? routeParts.slice(1) : routeParts;
+    const projectId = routeRest[0] === "projects" && isDynamicSegment(routeRest[1]) ? routeRest[1] : null;
+    if (!projectId && routeRest[0] !== "sheets") {
+      setBreadcrumbContext(null);
+      return;
+    }
+    if (!projectId) return;
+    let cancelled = false;
+    getProject(projectId).then((response) => {
+      if (!cancelled) {
+        setBreadcrumbContext((current) => ({
+          projectId,
+          projectName: response.data.name,
+          section: current?.projectId === projectId ? current.section : "event",
+        }));
+      }
+    }).catch(() => {});
+    return () => { cancelled = true; };
+  }, [location.pathname]);
+
+  const sectionLabels = {
+    event: "Event",
+    fields: "Form Fields",
+    registrations: "Registrations",
+    settings: "Settings",
+    sheets: "Sheets",
+  };
+
   const crumbs = [];
   let pathAcc = "/admin";
   rest.forEach((seg, i) => {
     pathAcc += `/${seg}`;
     const isLast = i === rest.length - 1;
     if (isDynamicSegment(seg)) {
+      if (rest[i - 1] === "projects" && breadcrumbContext?.projectName) {
+        crumbs.push({ label: breadcrumbContext.projectName, href: pathAcc, isLast: false });
+        if (i === rest.length - 1) {
+          crumbs.push({
+            label: sectionLabels[breadcrumbContext.section] || "Page",
+            href: pathAcc,
+            isLast: true,
+          });
+        }
+        return;
+      }
       crumbs.push({
         label: dynamicSegmentLabel(rest[i - 1], dynamicLabel),
         href: pathAcc,
@@ -72,6 +121,10 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
     }
     crumbs.push({ label: SEGMENT_LABELS[seg] || seg, href: pathAcc, isLast });
   });
+
+  if (rest[0] === "sheets" && breadcrumbContext?.section === "sheets" && breadcrumbContext.projectName) {
+    crumbs.push({ label: breadcrumbContext.projectName, href: "/admin/sheets", isLast: true });
+  }
 
   useEffect(() => {
     const syncHistoryState = () => setHistoryState(window.history.state);
