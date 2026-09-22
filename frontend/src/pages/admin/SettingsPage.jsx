@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   API_BASE,
   changeOwnPassword,
@@ -64,12 +65,24 @@ const AI_RESOURCE_OPTIONS = [
 
 export default function SettingsPage({ currentUser, onLoggedOut }) {
   const isAdmin = currentUser?.role === "admin";
-  const [activeSetting, setActiveSetting] = useState(() => consumeReloadState()?.settingsActiveSetting || null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeSetting, setActiveSetting] = useState(
+    () => searchParams.get("setting") || consumeReloadState()?.settingsActiveSetting || null,
+  );
   const visibleOptions = SETTINGS_OPTIONS.filter(
     (o) => (!o.adminOnly || isAdmin) && (!o.superAdminOnly || currentUser?.is_super_admin),
   );
 
-  const handleBack = () => setActiveSetting(null);
+  useEffect(() => {
+    setActiveSetting(searchParams.get("setting") || null);
+  }, [searchParams]);
+
+  function openSetting(setting) {
+    setActiveSetting(setting);
+    setSearchParams(setting ? { setting } : {});
+  }
+
+  const handleBack = () => openSetting(null);
   useRealtimeRefresh(["app_settings"], () => {
     reloadPage({ settingsActiveSetting: activeSetting });
   });
@@ -123,7 +136,7 @@ export default function SettingsPage({ currentUser, onLoggedOut }) {
             {visibleOptions.map((o) => (
               <button
                 key={o.id}
-                onClick={() => setActiveSetting(o.id)}
+                onClick={() => openSetting(o.id)}
                 className="flex items-center gap-3 rounded-xl border border-[#E4E7EC] bg-white p-4 text-left hover:border-[#2554C7]"
               >
                 <span className="text-xl">{o.icon}</span>

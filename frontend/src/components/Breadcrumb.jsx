@@ -61,6 +61,7 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
   const isHomeOnly = rest.length === 0;
   const activeTab = query.get("tab") || "event";
   const selectedSheetEvent = query.get("event");
+  const selectedSetting = query.get("setting");
 
   useEffect(() => {
     const updateContext = (event) => setBreadcrumbContext(event.detail || null);
@@ -102,6 +103,15 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
     sheets: "Sheets",
   };
 
+  const settingLabels = {
+    password: "My Account & Profile",
+    "login-appearance": "Login Page Image",
+    call: "Direct Call & Zoiper Setup",
+    email: "Email Configuration",
+    whatsapp: "WhatsApp Configuration",
+    ai: "AI Setup",
+  };
+
   const crumbs = [];
   let pathAcc = "/admin";
   rest.forEach((seg, i) => {
@@ -134,6 +144,14 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
       ? breadcrumbContext.projectName
       : "Event";
     crumbs.push({ label: sheetProjectName, href: `/admin/sheets?event=${encodeURIComponent(selectedSheetEvent)}`, isLast: true });
+  }
+
+  if (rest[0] === "settings" && selectedSetting) {
+    crumbs.push({
+      label: settingLabels[selectedSetting] || "Setting Details",
+      href: `/admin/settings?setting=${encodeURIComponent(selectedSetting)}`,
+      isLast: true,
+    });
   }
 
   useEffect(() => {
