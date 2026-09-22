@@ -41,6 +41,7 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [profileOpen, setProfileOpen] = useState(false);
+  const [historyState, setHistoryState] = useState(() => window.history.state);
   const profileRef = useRef(null);
   const parts = location.pathname.split("/").filter(Boolean); // e.g. ["admin","customers","abc123"]
 
@@ -61,12 +62,30 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
   });
 
   useEffect(() => {
+    const syncHistoryState = () => setHistoryState(window.history.state);
+    window.addEventListener("popstate", syncHistoryState);
+    return () => window.removeEventListener("popstate", syncHistoryState);
+  }, [location.key]);
+
+  useEffect(() => {
     function closeProfile(event) {
       if (profileRef.current && !profileRef.current.contains(event.target)) setProfileOpen(false);
     }
     document.addEventListener("mousedown", closeProfile);
     return () => document.removeEventListener("mousedown", closeProfile);
   }, []);
+
+  const historyIndex = historyState?.idx;
+  const canGoBack = Number.isInteger(historyIndex) && historyIndex > 0;
+  const canGoForward = Number.isInteger(historyIndex) && historyIndex < window.history.length - 1;
+
+  function goBack() {
+    if (canGoBack) navigate(-1);
+  }
+
+  function goForward() {
+    if (canGoForward) navigate(1);
+  }
 
   const roleLabel = currentUser?.role === "admin"
     ? "Admin"
@@ -77,10 +96,11 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
       <div className="flex flex-none items-center gap-1">
         <button
           type="button"
-          onClick={() => navigate(-1)}
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-[#2554C7] transition-colors hover:bg-[#EEF4FF] hover:text-[#173B7A]"
+          onClick={goBack}
+          disabled={!canGoBack}
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-[#2554C7] transition-colors hover:bg-[#EEF4FF] hover:text-[#173B7A] disabled:cursor-not-allowed disabled:text-[#D0D5DD] disabled:hover:bg-transparent"
           aria-label="Go back"
-          title="Back"
+          title={canGoBack ? "Back" : "No previous page"}
         >
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-[18px] w-[18px]" aria-hidden="true">
             <path d="M15 10H5.5M9 6.5 5.5 10 9 13.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -88,10 +108,11 @@ export default function Breadcrumb({ dynamicLabel, currentUser, onLoggedOut }) {
         </button>
         <button
           type="button"
-          onClick={() => navigate(1)}
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-[#667085] transition-colors hover:bg-[#EEF4FF] hover:text-[#2554C7]"
+          onClick={goForward}
+          disabled={!canGoForward}
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-[#667085] transition-colors hover:bg-[#EEF4FF] hover:text-[#2554C7] disabled:cursor-not-allowed disabled:text-[#D0D5DD] disabled:hover:bg-transparent"
           aria-label="Go forward"
-          title="Forward"
+          title={canGoForward ? "Forward" : "No next page"}
         >
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-[18px] w-[18px]" aria-hidden="true">
             <path d="M5 10h9.5M11 6.5l3.5 3.5-3.5 3.5" strokeLinecap="round" strokeLinejoin="round" />
